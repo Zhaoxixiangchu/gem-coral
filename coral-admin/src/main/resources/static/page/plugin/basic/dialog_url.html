@@ -1,0 +1,22 @@
+<div style="padding: 25px 25px 15px 25px;" id="demoUrlDialog">
+    <div class="layui-text">
+        这是一个type=1的页面层弹窗，弹窗内容却来源于一个html页面，它可以不用iframe就能加载一个独立页面，
+        这是admin.open对layer的扩展，相比type=2的iframe弹窗，它有很多优点，开发文档中有关于它的详细描述。
+    </div>
+    <div class="text-center" style="padding-top: 15px;">
+        <button class="layui-btn" ew-event="closePageDialog">关闭我</button>
+    </div>
+</div>
+
+<!-- js部分 -->
+<script>
+    layui.use(['layer', 'admin'], function () {
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var admin = layui.admin;
+
+        var layerData = admin.getLayerData('#demoUrlDialog');
+        layer.msg('我收到了的数据：' + JSON.stringify(layerData), {icon: 2});
+
+    });
+</script>
