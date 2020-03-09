@@ -1,22 +1,5 @@
-server:
-  port: 8088
-  servlet:
-    context-path: /admin
-
-
-
 spring:
-  jpa:
-    # 是否打印sql
-    show-sql: false
-    generate-ddl: true
-    hibernate:
-      # 开启自动建表功能，一般选update，每次启动会对比实体和数据表结构是否相同，不相同会更新
-      ddl-auto: update
-      format_sql: true
-    # 设置创表引擎为Innodb，不然默认为MyiSam
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-
+  #数据源配置
   datasource:
     # 使用阿里的Druid连接池
     type: com.alibaba.druid.pool.DruidDataSource
@@ -63,26 +46,10 @@ spring:
         #  禁用HTML页面上的“Reset All”功能
         reset-enable: true
         # 登录名
-#        login-username: admin
-#        # 登录密码
-#        login-password: 123456
-
-    #初始化数据库表配置
-#    platform: mysql
-#    #启动时需要初始化的建表语句
-#    #schema: classpath:schema-mysql.sql
-#    #初始化的数据
-#    data: classpath:gem-mysql.sql
-#    # Initialize the datasource with available DDL and DML scripts.
-#    initialization-mode: always
-#    continue-on-error: false
-#    #schema-password:
-#    #schema-username:
-#    data-username: root
-#    data-password: root
-#    sql-script-encoding: utf-8
-#    separator: ;
-
+        #login-username: admin
+        # 登录密码
+        #login-password: 123456
+  #Redis配置
   redis:
     host: 127.0.0.1
     port: 6379
@@ -90,16 +57,26 @@ spring:
     #连接超时时间（毫秒）
     timeout: 30000
 
-  thymeleaf:
-    prefix: classpath:/templates/
-    suffix: .html
-    encoding: UTF-8
-    mode: HTML
-    cache: false
+#mybatis-plus配置
+mybatis-plus:
+  #指定的mapper.xml位置
+  mapper-locations: classpath:/mapper/*.xml
+  #指定的实体类包路径
+  type-aliases-package: com.gemframework.model.entity.po
+  global-config:
+    db-config:
+      id-type: auto
+      field-strategy: not_empty
+      #驼峰下划线转换
+      column-underline: true
+      #逻辑删除配置
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+      db-type: mysql
+    refresh: false
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
 
-  devtools:
-    restart:
-      enabled: true #开启热部署
-      additional-paths: src/main/java
-#      exclude: static/**,public/**
+
 

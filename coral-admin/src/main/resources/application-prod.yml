@@ -1,38 +1,3 @@
-server:
-  port: 9040
-  servlet:
-    context-path: /admin
-
-
-
-gem:
-  #
-  #  min: 0.01
-  #  max: 999
-  #  desc: 这是自定义配置，最小值${gem.min},最大值${gem.max}
-  #  outPut: asb
-  security:
-    open: true
-    login-page: /login
-    error-page: /error
-    denied-page: /403
-    nofound-page: /404
-    index-page: /index
-
-
-  redis:
-    open: true
-
-  swagger:
-    web-package-path: com.gemframework.controller
-
-  system:
-    min: 2
-    max: 22
-    desc: xxdd
-    generate-code-server-path: /app
-
-
 spring:
   jpa:
     # 是否打印sql
@@ -136,4 +101,31 @@ spring:
       enabled: true #开启热部署
       additional-paths: src/main/java
 #      exclude: static/**,public/**
+
+gem:
+  #
+  #  min: 0.01
+  #  max: 999
+  #  desc: 这是自定义配置，最小值${gem.min},最大值${gem.max}
+  #  outPut: asb
+  security:
+    open: true
+    login-page: /login
+    error-page: /error
+    denied-page: /403
+    nofound-page: /404
+    index-page: /index
+
+
+  redis:
+    open: true
+
+  swagger:
+    web-package-path: com.gemframework.controller
+
+  system:
+    min: 2
+    max: 22
+    desc: xxdd
+    generate-code-server-path: /app
 

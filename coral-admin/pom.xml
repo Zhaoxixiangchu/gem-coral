@@ -2,13 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>coral</artifactId>
         <groupId>com.gemframework</groupId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
 
     <artifactId>coral-admin</artifactId>
     <version>${parent.version}</version>
@@ -22,6 +21,12 @@
             <artifactId>coral-common</artifactId>
             <version>${parent.version}</version>
         </dependency>
+        <!--service模块-->
+        <dependency>
+            <groupId>com.gemframework</groupId>
+            <artifactId>coral-common-service</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
 
         <!--shiro-->
         <dependency>
@@ -29,17 +34,22 @@
             <artifactId>shiro-spring</artifactId>
         </dependency>
 
-        <!--thymeleaf模版引擎-->
+        <!--Thymeleaf模版引擎-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
-
-        <!--引入>thymeleaf-extras-springsecurity5-->
+        <!--WEB相关 -->
         <dependency>
-            <groupId>org.thymeleaf.extras</groupId>
-            <artifactId>thymeleaf-extras-springsecurity5</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
+<!--        &lt;!&ndash; 代码生成器模板 &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.freemarker</groupId>-->
+<!--            <artifactId>freemarker</artifactId>-->
+<!--        </dependency>-->
 
         <!--热部署-->
         <dependency>

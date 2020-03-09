@@ -36,12 +36,50 @@ coral
  |
  |--coral-common-service 服务模块
  |
- |--coral-common-dao 数据操作模块
+ |--coral-common-mapper 数据操作模块
  |
  |--coral-common-model 模型层
 
+```
+#### 包结构
+```
+java
+  |
+  |--com.gemframework.common 公共包
+  |--com.gemframework.common.annotation 公共自定义注解
+  |--com.gemframework.common.constant 公共常量
+  |--com.gemframework.common.utils 公共工具包
+
+  |--com.gemframework.constant 常量包
+  |--com.gemframework.config 配置包
+  |--com.gemframework.utils 工具包
+
+  |--com.gemframework.controller 控制器包
+
+  |--com.gemframework.mapper 映射器包 
+
+  |--com.gemframework.model 模型类包
+  |--com.gemframework.model.common 公共模型
+  |--com.gemframework.model.entity 实体对象
+  |--com.gemframework.model.entity.po 持久对象
+  |--com.gemframework.model.entity.vo 表现层对象
+  |--com.gemframework.model.request API请求体对象
+  |--com.gemframework.model.response API响应体对象
+
+  |--com.gemframework.service 接口服务包
+  |--com.gemframework.service.impl 接口实现包
 
 ```
+#### 静态资源包结构
+```
+resource
+  |
+  |--static 存放静态文件处 如css,js,img,fonts等
+  |--templates 存放页面模版处 如html,jsp,vm等
+  |--mapper 存放Mybatis SQL映射文件处
+
+```
+
 
 #### 参与贡献
 

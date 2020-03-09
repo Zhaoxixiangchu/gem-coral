@@ -1,19 +1,46 @@
 package com.gemframework.controller;
-
-import com.gemframework.admin.modules.system.po.User;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.subject.Subject;
+import com.gemframework.model.entity.po.User;
+import com.gemframework.service.UserService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
+@Slf4j
 @Controller
 @RequestMapping("/user")
 public class UserController {
 
+    @Autowired
+    private UserService userService;
+
+    @RequestMapping("/getAll")
+    @ResponseBody
+    public String getAll() {
+        List<User> list = userService.list();
+        System.out.println("list:" + list);
+        return list.toString();
+    }
+
+    @RequestMapping("/insert")
+    @ResponseBody
+    public String insert(User user) {
+        // 不设置id的话，会自动生成一个UUID
+//        user.setId(new Date().getTime() + "");
+        boolean save = userService.save(user);
+        return getAll();
+    }
+
+    @RequestMapping("/update")
+    @ResponseBody
+    public String update(User user) {
+        boolean save = userService.updateById(user);
+        return getAll();
+    }
     /**
      * 身份认证测试接口
      * @param request
@@ -22,6 +49,7 @@ public class UserController {
     @RequestMapping("/admin")
     public String admin(HttpServletRequest request) {
         Object user = request.getSession().getAttribute("user");
+        log.info("admin============1"+user);
         return "success";
     }
 
@@ -45,29 +73,4 @@ public class UserController {
         return "success";
     }
 
-    /**
-     * 用户登录接口
-     * @param user user
-     * @param request request
-     * @return string
-     */
-    @PostMapping("/login")
-    public String login(User user, HttpServletRequest request) {
-
-        // 根据用户名和密码创建 Token
-        UsernamePasswordToken token = new UsernamePasswordToken(user.getUsername(), user.getPassword());
-        // 获取 subject 认证主体
-        Subject subject = SecurityUtils.getSubject();
-        try{
-            // 开始认证，这一步会跳到我们自定义的 Realm 中
-            subject.login(token);
-            request.getSession().setAttribute("user", user);
-            return "success";
-        }catch(Exception e){
-            e.printStackTrace();
-            request.getSession().setAttribute("user", user);
-            request.setAttribute("error", "用户名或密码错误！");
-            return "login";
-        }
-    }
 }

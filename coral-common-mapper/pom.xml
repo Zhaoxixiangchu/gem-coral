@@ -9,7 +9,8 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>coral-common-dao</artifactId>
+
+    <artifactId>coral-common-mapper</artifactId>
     <version>${parent.version}</version>
     <description>公共dao层</description>
     <packaging>jar</packaging>
@@ -28,12 +29,6 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <scope>runtime</scope>
-        </dependency>
-
-        <!--苞米豆-->
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>mybatis-plus-boot-starter</artifactId>
         </dependency>
 
         <!--Druid-->

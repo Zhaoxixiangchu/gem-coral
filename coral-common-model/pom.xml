@@ -7,12 +7,48 @@
         <artifactId>coral</artifactId>
         <groupId>com.gemframework</groupId>
         <version>0.0.1-SNAPSHOT</version>
+        <relativePath/>
     </parent>
 
     <artifactId>coral-common-model</artifactId>
     <version>${parent.version}</version>
     <description>公共Model层</description>
     <packaging>jar</packaging>
+
+    <dependencies>
+        <!--common-->
+        <dependency>
+            <groupId>com.gemframework</groupId>
+            <artifactId>coral-common</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
+
+        <!-- jpa -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <!-- jackson-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>2.10.2</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!--jakarta.validation-->
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+        </dependency>
+
+        <!--苞米豆-->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+        </dependency>
+    </dependencies>
 
 
 </project>

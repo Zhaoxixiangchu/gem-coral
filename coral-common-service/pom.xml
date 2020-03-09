@@ -19,7 +19,7 @@
         <!--coral模块-->
         <dependency>
             <groupId>com.gemframework</groupId>
-            <artifactId>coral-common-dao</artifactId>
+            <artifactId>coral-common-mapper</artifactId>
             <version>${parent.version}</version>
         </dependency>
     </dependencies>

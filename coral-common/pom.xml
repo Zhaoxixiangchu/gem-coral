@@ -7,7 +7,7 @@
         <artifactId>coral</artifactId>
         <groupId>com.gemframework</groupId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
+        <relativePath/>
     </parent>
 
     <artifactId>coral-common</artifactId>
@@ -16,12 +16,23 @@
     <packaging>jar</packaging>
 
     <dependencies>
-        <!--coral模块-->
+        <!--Alibaba fastjson-->
         <dependency>
-            <groupId>com.gemframework</groupId>
-            <artifactId>coral-common-service</artifactId>
-            <version>${parent.version}</version>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+        </dependency>
+
+        <!--hibernate校验 -->
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

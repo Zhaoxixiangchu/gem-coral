@@ -23,15 +23,23 @@
 
         <!--公共依赖模块-->
         <module>coral-common-service</module>
-        <module>coral-common-dao</module>
+        <module>coral-common-mapper</module>
         <module>coral-common-model</module>
     </modules>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
-        <druid.version>1.1.10</druid.version>
         <baomidou.version>3.3.1.tmp</baomidou.version>
         <shiro.version>1.4.0</shiro.version>
+        <commons.lang.version>2.6</commons.lang.version>
+        <commons.io.version>2.5</commons.io.version>
+        <commons.conf.version>1.10</commons.conf.version>
+        <fasterxml.jackson.version>2.10.2</fasterxml.jackson.version>
+
+        <alibaba.druid.version>1.1.10</alibaba.druid.version>
+        <alibaba.fastjson.version>1.2.58</alibaba.fastjson.version>
     </properties>
 
 
@@ -44,33 +52,59 @@
                 <version>${baomidou.version}</version>
             </dependency>
 
-            <!--Druid-->
+            <!-- fasterxml.jackson-->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${fasterxml.jackson.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <!--Alibaba fastjson-->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${alibaba.fastjson.version}</version>
+            </dependency>
+
+            <!--Alibaba Druid-->
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid-spring-boot-starter</artifactId>
-                <version>${druid.version}</version>
+                <version>${alibaba.druid.version}</version>
             </dependency>
 
+
+            <!--Shiro-->
             <dependency>
                 <groupId>org.apache.shiro</groupId>
                 <artifactId>shiro-spring</artifactId>
                 <version>${shiro.version}</version>
             </dependency>
+
+            <!--commons-->
+            <dependency>
+                <groupId>commons-lang</groupId>
+                <artifactId>commons-lang</artifactId>
+                <version>${commons.lang.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons.io.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-configuration</groupId>
+                <artifactId>commons-configuration</artifactId>
+                <version>${commons.conf.version}</version>
+            </dependency>
+
+
         </dependencies>
     </dependencyManagement>
 
     <dependencies>
         <!--SpringBoot相关依赖-->
-        <!--Thymeleaf-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
-        <!--WEB相关 -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
         <!--Lombok-->
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -89,8 +123,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
-
     </dependencies>
 
     <build>

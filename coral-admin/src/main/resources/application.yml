@@ -1,5 +1,25 @@
+server:
+  port: 8088
+  servlet:
+    context-path: /
+
 spring:
   profiles:
     # dev 开发 prod 生产 test 测试（demo）
     active: dev
 
+  #==============公共的配置&不常修改的配置==============
+  #thymeleaf配置
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    encoding: UTF-8
+    mode: HTML
+    cache: false
+
+  #热部署配置
+  devtools:
+    restart:
+      enabled: true #开启热部署
+      additional-paths: src/main/java
+      #exclude: static/**,public/**
