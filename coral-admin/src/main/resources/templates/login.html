@@ -12,7 +12,7 @@
 <body>
 <div class="login-wrapper">
     <div class="login-header">
-        <img th:src="@{/assets/images/logo.png}">
+        <img th:src="@{/assets/images/logo_w.png}">
         CORAL开源权限管理系统
     </div>
     <div class="login-body">
@@ -40,11 +40,11 @@
                     <div class="layui-input-block">
                         <div class="layui-row inline-block">
                             <div class="layui-col-xs7">
-                                <input name="code" type="text" placeholder="验证码" class="layui-input"
+                                <input name="validcode" type="text" placeholder="验证码" class="layui-input"
                                        autocomplete="off" lay-verType="tips" lay-verify="required" required/>
                             </div>
                             <div class="layui-col-xs5" style="padding-left: 6px;">
-                                <img class="login-captcha" src="https://www.oschina.net/action/user/captcha">
+                                <img class="login-captcha" src="katcha/code">
                             </div>
                         </div>
                     </div>

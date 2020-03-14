@@ -1,4 +1,4 @@
-package com.gemframework.common.shiro;
+package com.gemframework.config.shiro;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -31,6 +31,7 @@ public class ShiroConfig {
         // anon:所有url都都可以匿名访问;
         filterChainDefinitionMap.put("/login", "anon");
         filterChainDefinitionMap.put("/assets/**", "anon");
+        filterChainDefinitionMap.put("/katcha/code", "anon");
 
         filterChainDefinitionMap.put("/admin/**", "authc");
         filterChainDefinitionMap.put("/user/**", "authc");

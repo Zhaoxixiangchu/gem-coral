@@ -1,4 +1,4 @@
-package com.gemframework.common.shiro;
+package com.gemframework.config.shiro;
 
 import com.gemframework.model.entity.po.User;
 import com.gemframework.service.UserService;

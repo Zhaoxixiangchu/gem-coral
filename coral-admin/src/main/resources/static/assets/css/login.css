@@ -1,10 +1,10 @@
 /** 登录页面样式 */
 
 body {
-    background-image: url("../../assets/images/bg_login2.png");
-    background-position: center 110px;
-    background-repeat: no-repeat;
-    background-size: 100%;
+    background-image: url("../../assets/images/bg_login.png");
+    background-position: center 0px;
+    /*background-size: 100%;*/
+    /*background-repeat: no-repeat;*/
     background-color: #f0f2f5;
 }
 
@@ -109,7 +109,7 @@ body {
     font-size: 20px;
     font-weight: 600;
     color: rgba(255, 255, 255, 0.85) !important;
-    padding: 10px;
+    padding: 30px;
 }
 
 .login-header img {
@@ -149,17 +149,19 @@ body {
 }
 
 .login-header {
-    color: rgba(0, 0, 0, .85) !important;
+    /*color: rgba(0, 0, 0, 0.85) !important;*/
+    color: rgba(255, 255, 255, 0.85) !important;
 }
 
 .login-footer {
-    color: rgba(0, 0, 0, 0.7) !important;
+    /*color: rgba(4, 38, 72, 0.85) !important;*/
+    color: rgba(255, 255, 255, 0.85) !important;
 }
 
 .login-footer a {
-    color: rgba(0, 0, 0, 0.7) !important;
+    color: rgba(255, 255, 255, 0.85) !important;
 }
 
 .login-footer a:hover {
-    color: rgba(0, 0, 0, 0.4) !important;
+    color: rgba(22, 122, 224, 0.4) !important;
 }
