@@ -1,6 +1,6 @@
 package com.gemframework.model.entity.vo;
 
-import com.gemframework.model.common.BaseVo;
+import com.gemframework.model.common.BaseEntityVo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -24,7 +24,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class RoleVo extends BaseVo {
+public class RoleVo extends BaseEntityVo {
 
     private Long id;
 

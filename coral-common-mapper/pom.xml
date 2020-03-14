@@ -20,7 +20,7 @@
         <!--coral模块-->
         <dependency>
             <groupId>com.gemframework</groupId>
-            <artifactId>coral-common-model</artifactId>
+            <artifactId>coral-common</artifactId>
             <version>${parent.version}</version>
         </dependency>
 

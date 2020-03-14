@@ -3,9 +3,8 @@ package com.gemframework.model.entity.vo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.gemframework.model.common.BaseVo;
-import com.gemframework.model.entity.po.Dept;
-import com.gemframework.common.annotation.ValidMoblie;
+import com.gemframework.model.annotation.ValidMoblie;
+import com.gemframework.model.common.BaseEntityVo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -20,7 +19,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper=true)
-public class UserVo extends BaseVo {
+public class UserVo extends BaseEntityVo {
 
     private Long id;
 
@@ -74,7 +73,6 @@ public class UserVo extends BaseVo {
 
     private List<String> deptNames;
 
-    private Dept dept;
 
     @JsonIgnore
     public String getPassword() {

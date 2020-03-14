@@ -37,14 +37,84 @@
         <commons.io.version>2.5</commons.io.version>
         <commons.conf.version>1.10</commons.conf.version>
         <fasterxml.jackson.version>2.10.2</fasterxml.jackson.version>
-
         <alibaba.druid.version>1.1.10</alibaba.druid.version>
         <alibaba.fastjson.version>1.2.58</alibaba.fastjson.version>
+        <springfox.swagger.version>2.6.1</springfox.swagger.version>
+        <kaptcha.version>2.3.2</kaptcha.version>
+        <dozer.version>5.5.1</dozer.version>
+        <knife4j.version>2.0.1</knife4j.version>
+        <velocity.version>1.7</velocity.version>
+
     </properties>
 
 
     <dependencyManagement>
         <dependencies>
+
+            <!--Shiro-->
+            <dependency>
+                <groupId>org.apache.shiro</groupId>
+                <artifactId>shiro-spring</artifactId>
+                <version>${shiro.version}</version>
+            </dependency>
+
+            <!--commons-->
+            <dependency>
+                <groupId>commons-lang</groupId>
+                <artifactId>commons-lang</artifactId>
+                <version>${commons.lang.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${commons.io.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-configuration</groupId>
+                <artifactId>commons-configuration</artifactId>
+                <version>${commons.conf.version}</version>
+            </dependency>
+
+            <!--swagger-->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${springfox.swagger.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${springfox.swagger.version}</version>
+            </dependency>
+
+            <!--swagger增强-->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
+            </dependency>
+
+            <!--velocity-->
+            <dependency>
+                <artifactId>velocity</artifactId>
+                <groupId>org.apache.velocity</groupId>
+                <version>${velocity.version}</version>
+            </dependency>
+
+            <!--kaptcha-->
+            <dependency>
+                <groupId>com.github.penggle</groupId>
+                <artifactId>kaptcha</artifactId>
+                <version>${kaptcha.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/net.sf.dozer/dozer -->
+            <dependency>
+                <groupId>net.sf.dozer</groupId>
+                <artifactId>dozer</artifactId>
+                <version>${dozer.version}</version>
+            </dependency>
+
             <!--苞米豆-->
             <dependency>
                 <groupId>com.baomidou</groupId>
@@ -74,31 +144,17 @@
                 <version>${alibaba.druid.version}</version>
             </dependency>
 
-
-            <!--Shiro-->
-            <dependency>
-                <groupId>org.apache.shiro</groupId>
-                <artifactId>shiro-spring</artifactId>
-                <version>${shiro.version}</version>
-            </dependency>
-
-            <!--commons-->
+            <!--commns工具包-->
             <dependency>
                 <groupId>commons-lang</groupId>
                 <artifactId>commons-lang</artifactId>
-                <version>${commons.lang.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>commons-io</groupId>
-                <artifactId>commons-io</artifactId>
-                <version>${commons.io.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>commons-configuration</groupId>
-                <artifactId>commons-configuration</artifactId>
-                <version>${commons.conf.version}</version>
             </dependency>
 
+            <!--hibernate校验 -->
+            <dependency>
+                <groupId>org.hibernate.validator</groupId>
+                <artifactId>hibernate-validator</artifactId>
+            </dependency>
 
         </dependencies>
     </dependencyManagement>

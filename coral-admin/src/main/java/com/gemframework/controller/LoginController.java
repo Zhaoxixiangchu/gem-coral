@@ -11,12 +11,6 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class LoginController {
 
-    @GetMapping(value = "/index")
-    @ResponseBody
-    public String index() {
-        return "首页";
-    }
-
     @GetMapping(value = "/login")
     public String login() {
         return "login";

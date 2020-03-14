@@ -16,25 +16,11 @@
     <packaging>jar</packaging>
 
     <dependencies>
-        <!--common-->
-        <dependency>
-            <groupId>com.gemframework</groupId>
-            <artifactId>coral-common</artifactId>
-            <version>${parent.version}</version>
-        </dependency>
 
-        <!-- jpa -->
+        <!--支持web的包-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-
-        <!-- jackson-->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-            <version>2.10.2</version>
-            <scope>compile</scope>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
         <!--jakarta.validation-->
@@ -48,7 +34,19 @@
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
         </dependency>
+
+        <!--Alibaba fastjson-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
+
+        <!-- jackson-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <scope>compile</scope>
+        </dependency>
+
     </dependencies>
-
-
 </project>

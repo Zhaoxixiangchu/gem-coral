@@ -47,6 +47,7 @@ java
   |
   |--com.gemframework.common 公共包
   |--com.gemframework.common.annotation 公共自定义注解
+  |--com.gemframework.common.config 公共配置
   |--com.gemframework.common.constant 公共常量
   |--com.gemframework.common.utils 公共工具包
 
@@ -59,6 +60,7 @@ java
   |--com.gemframework.mapper 映射器包 
 
   |--com.gemframework.model 模型类包
+  |--com.gemframework.model.annotation 模型注解
   |--com.gemframework.model.common 公共模型
   |--com.gemframework.model.entity 实体对象
   |--com.gemframework.model.entity.po 持久对象

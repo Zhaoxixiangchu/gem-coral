@@ -29,9 +29,7 @@ public class UserController {
     @RequestMapping("/insert")
     @ResponseBody
     public String insert(User user) {
-        // 不设置id的话，会自动生成一个UUID
-//        user.setId(new Date().getTime() + "");
-        boolean save = userService.save(user);
+        userService.save(user);
         return getAll();
     }
 
@@ -40,37 +38,6 @@ public class UserController {
     public String update(User user) {
         boolean save = userService.updateById(user);
         return getAll();
-    }
-    /**
-     * 身份认证测试接口
-     * @param request
-     * @return
-     */
-    @RequestMapping("/admin")
-    public String admin(HttpServletRequest request) {
-        Object user = request.getSession().getAttribute("user");
-        log.info("admin============1"+user);
-        return "success";
-    }
-
-    /**
-     * 角色认证测试接口
-     * @param request
-     * @return
-     */
-    @RequestMapping("/student")
-    public String student(HttpServletRequest request) {
-        return "success";
-    }
-
-    /**
-     * 权限认证测试接口
-     * @param request
-     * @return
-     */
-    @RequestMapping("/teacher")
-    public String teacher(HttpServletRequest request) {
-        return "success";
     }
 
 }
