@@ -1,5 +1,6 @@
 package com.gemframework.controller;
 
+import com.gemframework.model.common.BaseResultData;
 import com.gemframework.model.request.UserLoginRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -19,7 +20,7 @@ public class LoginController {
 
     @PostMapping(value = "/login")
     @ResponseBody
-    public String login(UserLoginRequest request) {
+    public BaseResultData login(UserLoginRequest request) {
         //TODO:增加验证码校验
 
         // 创建主体
@@ -31,21 +32,39 @@ public class LoginController {
         try {
             subject.login(token);
         } catch (UnknownAccountException uae) {
-            return "未知账户";
+            return BaseResultData.ERROR(-1,"未知账户");
         } catch (IncorrectCredentialsException ice) {
-            return "密码不正确";
+            return BaseResultData.ERROR(-3,"密码不正确");
         } catch (LockedAccountException lae) {
-            return "账户已锁定";
+            return BaseResultData.ERROR(-4,"账户已锁定");
         } catch (ExcessiveAttemptsException eae) {
-            return "用户名或密码错误次数过多";
+            return BaseResultData.ERROR(-5,"用户名或密码错误次数过多");
         } catch (AuthenticationException ae) {
-            return "用户名或密码不正确！";
+            return BaseResultData.ERROR(-6,"用户名或密码不正确");
         }
         if (subject.isAuthenticated()) {
-            return "登录成功";
+            return BaseResultData.SUCCESS("登录成功");
         } else {
             token.clear();
-            return "登录失败";
+            return BaseResultData.ERROR(-7,"登录失败");
         }
+    }
+
+    @GetMapping(value = "/logout")
+    public String logout() {
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
+        return "login";
+    }
+
+
+    @GetMapping(value = "/home")
+    public String home() {
+        return "home";
+    }
+
+    @GetMapping(value = "/index")
+    public String index() {
+        return "index";
     }
 }

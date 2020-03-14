@@ -41,35 +41,29 @@ public class BaseResultData {
 
     }
 
-    public BaseResultData(Integer code, String msg, Object data) {
+    public BaseResultData(Integer code, String msg, Long count,Object data) {
         this.code = code;
         this.msg = msg;
+        this.count = count;
         this.data = data;
     }
 
     public BaseResultData(Object data) {
+        this.code = 0;
+        this.msg = "OK";
         if(data instanceof PageInfo){
             this.data = ((PageInfo) data).getRows();
             this.count = ((PageInfo) data).getTotal();
         }else{
             this.data = data;
         }
-        this.code = 0;
-        this.msg = "OK";
-
     }
 
     public BaseResultData(Object data, Long count) {
-        this.count = count;
         this.code = 0;
         this.msg = "OK";
+        this.count = count;
         this.data = data;
-    }
-
-    public BaseResultData(ErrorCode errorCode) {
-        this.code = errorCode.getCode();
-        this.msg = errorCode.getMsg();
-        this.data = null;
     }
 
     /**
@@ -80,8 +74,8 @@ public class BaseResultData {
      * @Description:
      * @Date: 2019/11/27 22:39
      */
-    public static BaseResultData build(Integer status, String msg, Object data) {
-        return new BaseResultData(status, msg, data);
+    public static BaseResultData build(Integer status, String msg, Long count,Object data) {
+        return new BaseResultData(status, msg, count, data);
     }
 
     /**
@@ -93,7 +87,7 @@ public class BaseResultData {
      * @Date: 2019/11/27 22:40
      */
     public static BaseResultData ERROR(Integer code, String msg) {
-        return new BaseResultData(code, msg, null);
+        return new BaseResultData(code, msg, null,null);
     }
 
     /**
@@ -105,8 +99,21 @@ public class BaseResultData {
      * @Date: 2019/11/29 14:37
      */
     public static BaseResultData ERROR(ErrorCode errorCode) {
+        return new BaseResultData(errorCode.getCode(), errorCode.getMsg(), null,null);
+    }
 
-        return new BaseResultData(errorCode.getCode(), errorCode.getMsg(), null);
+
+
+    /**
+     * @Title:  SUCCESS
+     * @MethodName:  SUCCESS
+     * @Param: []
+     * @Retrun: com.gemframework.model.BasicResult
+     * @Description:
+     * @Date: 2019/11/27 22:41
+     */
+    public static BaseResultData SUCCESS() {
+        return SUCCESS(null);
     }
 
     /**
@@ -134,17 +141,6 @@ public class BaseResultData {
     }
 
 
-    /**
-     * @Title:  SUCCESS
-     * @MethodName:  SUCCESS
-     * @Param: []
-     * @Retrun: com.gemframework.model.BasicResult
-     * @Description:
-     * @Date: 2019/11/27 22:41
-     */
-    public static BaseResultData SUCCESS() {
-        return SUCCESS(null);
-    }
 
     /**
      * @param json
@@ -186,7 +182,7 @@ public class BaseResultData {
                     obj = mapper.readValue(data.asText(), clazz);
                 }
             }
-            return build(jsonNode.get("code").intValue(), jsonNode.get("msg").asText(), obj);
+            return build(jsonNode.get("code").intValue(), jsonNode.get("msg").asText(),jsonNode.get("count").longValue(), obj);
         } catch (Exception e) {
             return null;
         }
@@ -210,7 +206,7 @@ public class BaseResultData {
                 obj = mapper.readValue(data.traverse(),
                         mapper.getTypeFactory().constructCollectionType(List.class, clazz));
             }
-            return build(jsonNode.get("code").intValue(), jsonNode.get("msg").asText(), obj);
+            return build(jsonNode.get("code").intValue(), jsonNode.get("msg").asText(),jsonNode.get("count").longValue(), obj);
         } catch (Exception e) {
             return null;
         }

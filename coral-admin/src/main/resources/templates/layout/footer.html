@@ -1,0 +1,9 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn" class="fullscreen-bg" xmlns:th="http://www.thymeleaf.org">
+<!--底部-->
+<div th:fragment="footer" class="layui-footer layui-text">
+    Copyright © [[${#dates.format(new java.util.Date().getTime(), 'yyyy')}]]
+    <a href="http://www.gemframework.com" target="_blank">gemframework.com</a> all rights reserved.
+    <span class="pull-right">Version 3.1.6</span>
+</div>
+</html>
