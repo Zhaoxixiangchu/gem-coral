@@ -1,5 +1,9 @@
 package com.gemframework.controller;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.segments.MergeSegments;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gemframework.common.utils.GemBeanUtils;
 import com.gemframework.model.common.BaseResultData;
@@ -64,6 +68,24 @@ public class TestController {
     public BaseResultData page(Page page) {
         page = userService.page(page);
         return BaseResultData.SUCCESS(page.getRecords(),page.getTotal());
+    }
+
+    @ResponseBody
+    @RequestMapping("user/pageByParam")
+    public BaseResultData pageByParam(Page page,UserVo userVo) {
+        QueryWrapper<User> wp = new QueryWrapper<User>();
+        wp.eq("username","zhangsan");
+        page = userService.page(page, wp);
+        return BaseResultData.SUCCESS(page.getRecords(),page.getTotal());
+    }
+
+    @ResponseBody
+    @RequestMapping("user/delete")
+    public BaseResultData delete(Page page,UserVo userVo) {
+        UpdateWrapper<User> wp = new UpdateWrapper<User>();
+        wp.eq("username","zhangsan");
+        userService.remove(wp);
+        return page(page);
     }
 
 }

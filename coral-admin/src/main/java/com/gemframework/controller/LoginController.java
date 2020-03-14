@@ -1,5 +1,6 @@
 package com.gemframework.controller;
 
+import com.gemframework.model.request.UserLoginRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
@@ -16,14 +17,17 @@ public class LoginController {
         return "login";
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @PostMapping(value = "/login")
     @ResponseBody
-    public String login(@RequestParam("username") String username, @RequestParam("password") String password) {
-        // 从SecurityUtils里边创建一个 subject
+    public String login(UserLoginRequest request) {
+        //TODO:增加验证码校验
+
+        // 创建主体
         Subject subject = SecurityUtils.getSubject();
-        // 在认证提交前准备 token（令牌）
-        UsernamePasswordToken token = new UsernamePasswordToken(username, password);
-        // 执行认证登陆
+        // 准备token
+        UsernamePasswordToken token = new UsernamePasswordToken(request.getUsername(),request.getPassword());
+        token.setRememberMe(request.isRememberMe());
+        // 提交认证
         try {
             subject.login(token);
         } catch (UnknownAccountException uae) {
