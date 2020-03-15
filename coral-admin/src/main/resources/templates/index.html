@@ -23,7 +23,9 @@
 </div>
 
 <!-- js部分 -->
+<div th:replace="common/scripts :: jquery"></div>
 <div th:replace="common/scripts :: common"></div>
+<div th:replace="common/scripts :: index"></div>
 <script>
     layui.use(['index'], function () {
         var $ = layui.jquery;

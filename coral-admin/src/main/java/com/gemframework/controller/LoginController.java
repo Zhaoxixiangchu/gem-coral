@@ -20,11 +20,6 @@ import static com.gemframework.model.enums.ErrorCode.LOGIN_FAIL;
 @Controller
 public class LoginController {
 
-    @GetMapping(value = "/login")
-    public String login() {
-        return "login";
-    }
-
     @PostMapping(value = "/login")
     @ResponseBody
     public BaseResultData login(UserLoginRequest loginRequest, HttpServletRequest request) {
@@ -67,16 +62,5 @@ public class LoginController {
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
         return "login";
-    }
-
-
-    @GetMapping(value = "/home")
-    public String home() {
-        return "home";
-    }
-
-    @GetMapping(value = "/index")
-    public String index() {
-        return "index";
     }
 }

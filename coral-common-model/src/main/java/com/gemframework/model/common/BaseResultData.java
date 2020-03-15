@@ -50,7 +50,7 @@ public class BaseResultData {
 
     public BaseResultData(Object data) {
         this.code = 0;
-        this.msg = "OK";
+        this.msg = "成功";
         if(data instanceof PageInfo){
             this.data = ((PageInfo) data).getRows();
             this.count = ((PageInfo) data).getTotal();
@@ -61,7 +61,7 @@ public class BaseResultData {
 
     public BaseResultData(Object data, Long count) {
         this.code = 0;
-        this.msg = "OK";
+        this.msg = "成功";
         this.count = count;
         this.data = data;
     }

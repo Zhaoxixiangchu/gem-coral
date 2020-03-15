@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-cn" class="fullscreen-bg" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/links :: common_header(~{::title},~{},~{})">
+<title>权限管理</title>
+</head>
+<body>
+<!-- 正文开始 -->
+<div class="layui-fluid">
+    <div class="layui-card">
+        <div class="layui-card-body">
+            <div class="layui-form toolbar">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label w-auto">搜索：</label>
+                        <div class="layui-input-inline mr0">
+                            <input id="edtSearchAuth" class="layui-input" placeholder="输入关键字"/>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button id="btnSearchAuth" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索
+                        </button>
+                        <button id="btnAddAuth" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>添加</button>
+                    </div>
+                </div>
+            </div>
+
+            <table id="tableAuth"></table>
+        </div>
+    </div>
+</div>
+
+<!-- 表格操作列 -->
+<script type="text/html" id="tableBarAuth">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<!-- 表单弹窗 -->
+<script type="text/html" id="modelAuth">
+    <form id="modelAuthForm" lay-filter="modelAuthForm" class="layui-form model-form">
+        <input name="id" type="hidden"/>
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">所属上级</label>
+            <div class="layui-input-block">
+                <select id="pid" name="pid" lay-search>
+                    <option value="">请选择上级菜单</option>
+                    <option value="0" selected>主菜单</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">权限名称</label>
+            <div class="layui-input-block">
+                <input name="name" placeholder="请输入权限名称" type="text" class="layui-input" maxlength="50"
+                       lay-verType="tips" lay-verify="required" required/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">权限类型</label>
+            <div class="layui-input-block">
+                <input name="type" type="radio" value="0" title="菜单" checked/>
+                <input name="type" type="radio" value="1" title="按钮"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">权限标识</label>
+            <div class="layui-input-block">
+                <input name="flag" placeholder="请输入权限标识" type="text" class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">菜单URL</label>
+            <div class="layui-input-block">
+                <input name="link" placeholder="请输入URL" type="text" class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">菜单位置</label>
+            <div class="layui-input-block">
+                <select name="position" lay-search>
+                    <option value="0" selected>左侧</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">菜单图标</label>
+            <div class="layui-input-block">
+                <input name="icon" placeholder="请输入菜单图标" type="text" class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">排序序号</label>
+            <div class="layui-input-block">
+                <input name="sortNumber" placeholder="请输入排序号" type="number" class="layui-input" min="0" max="1000"
+                       lay-verType="tips" lay-verify="required|number" required value="99"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">备注信息</label>
+            <div class="layui-input-block">
+                <input name="remark" placeholder="备注信息" type="text" class="layui-input" lay-verType="tips"/>
+            </div>
+        </div>
+        <div class="layui-form-item text-right">
+            <button class="layui-btn layui-btn-primary" type="button" ew-event="closePageDialog">取消</button>
+            <button class="layui-btn" lay-filter="modelSubmitAuth" lay-submit>保存</button>
+        </div>
+    </form>
+</script>
+<!-- js部分 -->
+<div th:replace="common/scripts :: common"></div>
+<script>
+    layui.use(['layer', 'form', 'admin', 'treeTable', 'util'], function () {
+        var $ = layui.jquery;
+        var layer = layui.layer;
+        var form = layui.form;
+        var admin = layui.admin;
+        var treeTable = layui.treeTable;
+        var util = layui.util;
+
+        // 渲染表格
+        var insTb = treeTable.render({
+            elem: '#tableAuth',
+            tree: {
+                iconIndex: 1,  // 折叠图标显示在第几列
+                idName: 'id',  // 自定义id字段的名称
+                pidName: 'pid',  // 自定义标识是否还有子节点的字段名称
+                isPidData: true  // 是否是pid形式数据
+            },
+            cellMinWidth: 100,
+            cols: [
+                {type: 'numbers'},
+                {field: 'name', title: '权限名称', width: 260},
+                {field: 'link', title: '菜单URL'},
+                {field: 'flag', title: '权限标识'},
+                {field: 'sortNumber', title: '排序', align: 'center', width: 100},
+                {
+                    title: '类型', templet: function (d) {
+                        var strs = [
+                            '<span class="layui-badge layui-badge-green">菜单</span>',
+                            '<span class="layui-badge layui-badge-blue">按钮</span>'
+                        ];
+                        return strs[d.type];
+                    }, align: 'center', width: 100
+                },
+                {
+                    templet: function (d) {
+                        return util.toDateString(d.createTime);
+                    }, title: '创建时间', align: 'center'
+                },
+                {templet: '#tableBarAuth', title: '操作', align: 'center', width: 160}
+            ],
+            reqData: function (data, callback) {
+                $.get('right/page', function (res) {
+                    callback(res.data);
+                });
+            }
+        });
+
+        // 搜索
+        $('#btnSearchAuth').click(function () {
+            var keyword = $('#edtSearchAuth').val();
+            if (keyword) {
+                insTb.filterData(keyword);
+            } else {
+                insTb.clearFilter();
+            }
+        });
+
+        // 添加按钮点击事件
+        $('#btnAddAuth').click(function () {
+            showEditModel();
+        });
+
+        // 工具条点击事件
+        treeTable.on('tool(tableAuth)', function (obj) {
+            var data = obj.data;
+            var layEvent = obj.event;
+            if (layEvent === 'edit') { // 修改
+                showEditModel(data);
+            } else if (layEvent === 'del') { // 删除
+                doDel(data.id, data.name);
+            }
+        });
+
+        // 显示表单弹窗
+        function showEditModel(mAuth) {
+            getParents(mAuth)
+            admin.open({
+                type: 1,
+                title: (mAuth ? '修改' : '添加') + '权限',
+                content: $('#modelAuth').html(),
+                success: function (layero, dIndex) {
+                    $(layero).children('.layui-layer-content').css('overflow', 'visible');
+                    var url = 'right/saveOrUpdate';
+                    if (mAuth && mAuth.isMenu == '1') {
+                        $('#modelAuthForm input[name="isMenu"][value="1"]').prop("checked", true);
+                    }
+                    form.val('modelAuthForm', mAuth);  // 回显数据
+                    // 表单提交事件
+                    form.on('submit(modelSubmitAuth)', function (data) {
+                        if (data.field.pid == '') {
+                            data.field.pid = '0';
+                        }
+                        layer.load(2);
+                        $.post(url, data.field, function (res) {
+                            layer.closeAll('loading');
+                            if (res.code == 0) {
+                                layer.close(dIndex);
+                                layer.msg(res.msg, {icon: 1});
+                                insTb.refresh();
+                            } else {
+                                layer.msg(res.msg, {icon: 2});
+                            }
+                        }, 'json');
+                        return false;
+                    });
+                }
+            });
+        }
+
+        // 删除
+        function doDel(authorityId, authorityName) {
+            layer.confirm('确定要删除“' + authorityName + '”吗？', {
+                skin: 'layui-layer-admin',
+                shade: .1
+            }, function (index) {
+                layer.close(index);
+                layer.load(2);
+                $.post('right/delete', {
+                    id: authorityId
+                }, function (res) {
+                    layer.closeAll('loading');
+                    if (res.code == 0) {
+                        layer.msg(res.msg, {icon: 1});
+                        insTb.refresh();
+                    } else {
+                        layer.msg(res.msg, {icon: 2});
+                    }
+                }, 'json');
+            });
+        }
+
+
+        //获取上级菜单并填充下拉框
+        function getParents(mAuth) {
+            console.log(mAuth)
+            var data = {type:'MENU'};
+            $.get('right/listByType', data , function (res) {
+                layer.closeAll('loading');
+                if (res.code == 0) {
+                    var option = "";
+                    for(var i=0;i<res.data.length;i++){
+                        option += "<option value='"+res.data[i].id+"' "+(mAuth && res.data[i].id == mAuth.pid ? 'selected': '')+">"+res.data[i].name+"</option>";
+                    }
+                    $("#pid").append(option);
+                } else {
+                }
+                form.render();
+            }, 'json');
+        }
+
+    });
+</script>
+</body>
+</html>

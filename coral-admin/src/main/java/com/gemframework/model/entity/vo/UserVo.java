@@ -3,13 +3,14 @@ package com.gemframework.model.entity.vo;
 import com.gemframework.model.annotation.ValidMoblie;
 import com.gemframework.model.common.BaseEntityVo;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
-
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class UserVo extends BaseEntityVo {
 
     @NotNull(message = "部门ID不能为空")

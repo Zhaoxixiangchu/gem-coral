@@ -19,12 +19,21 @@ import lombok.Data;
 @Data
 public class Right extends BaseEntityPo {
 
+    //父级ID
     private Long pid;
+    //名称
     private String name;
+    //标识
     private String flag;
+    //图标
     private String icon;
+    //链接
     private String link;
+    //类型 0 菜单 1 按钮 2 权限
     private Integer type;
+    //级别
     private Integer level;
+    //位置 0 左侧 1 顶部 2 底部
+    private Integer position;
 
 }

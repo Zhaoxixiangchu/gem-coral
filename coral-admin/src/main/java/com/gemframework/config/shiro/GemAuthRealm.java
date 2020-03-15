@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @Date: 2020-03-08 15:41:42
  * @Version: v1.0
  * @Description: 自定义Realm
- * @Author: zysh666
+ * @Author: qq769990999
  * @Copyright: Copyright (c) 2020 wanyong
  * @Company: www.gemframework.com
  */
