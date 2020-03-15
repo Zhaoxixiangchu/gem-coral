@@ -34,10 +34,10 @@ public class VerifyCodeUtil {
     public static boolean checkVerifyCode(HttpServletRequest request) {
         //获取生成的验证码
         String verifyCodeExpected = (String) request.getSession().getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
-        log.debug("生成的验证码："+verifyCodeExpected);
+        log.info("生成的验证码："+verifyCodeExpected);
         //获取用户输入的验证码
-        String verifyCodeActual = VerifyCodeUtil.getString(request, "verifycode");
-        log.debug("输入的验证码："+verifyCodeActual);
+        String verifyCodeActual = VerifyCodeUtil.getString(request, "validCode");
+        log.info("输入的验证码："+verifyCodeActual);
         if(verifyCodeActual == null ||!verifyCodeActual.equalsIgnoreCase(verifyCodeExpected)) {
             return false;
         }

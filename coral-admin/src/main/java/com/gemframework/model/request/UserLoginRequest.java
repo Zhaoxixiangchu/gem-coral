@@ -8,6 +8,5 @@ public class UserLoginRequest extends BaseRequest {
 
     private String username;
     private String password;
-    private String validCode;
     private boolean rememberMe = false;
 }

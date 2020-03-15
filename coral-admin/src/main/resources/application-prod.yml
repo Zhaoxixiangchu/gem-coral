@@ -1,3 +1,8 @@
+server:
+  port: 8088
+  servlet:
+    context-path: /admin
+
 spring:
   jpa:
     # 是否打印sql
