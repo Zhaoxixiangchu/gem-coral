@@ -369,6 +369,21 @@
         }
 
         /* 渲染表格 */
+        var cols = [
+            {type: 'checkbox'},
+            {type: 'numbers'},
+            {field: 'username', title: '账号', sort: true},
+            {field: 'nickName', title: '用户名', sort: true},
+            {field: 'sex', title: '性别', sort: true},
+            {field: 'phone', title: '手机号', sort: true},
+            {field: 'roleName', title: '角色', sort: true},
+            {
+                field: 'createTime', title: '创建时间', templet: function (d) {
+                    return util.toDateString(d.createTime);
+                }, sort: true
+            },
+            {title: '操作', toolbar: '#organizationUserTbBar', align: 'center', width: 120, minWidth: 120}
+        ]
         var insTb = table.render({
             elem: '#organizationUserTable',
             data: [],
@@ -376,21 +391,7 @@
             page: true,
             toolbar: '#organizationUserTbToolBar',
             cellMinWidth: 100,
-            cols: [[
-                {type: 'checkbox'},
-                {type: 'numbers'},
-                {field: 'username', title: '账号', sort: true},
-                {field: 'nickName', title: '用户名', sort: true},
-                {field: 'sex', title: '性别', sort: true},
-                {field: 'phone', title: '手机号', sort: true},
-                {field: 'roleName', title: '角色', sort: true},
-                {
-                    field: 'createTime', title: '创建时间', templet: function (d) {
-                        return util.toDateString(d.createTime);
-                    }, sort: true
-                },
-                {title: '操作', toolbar: '#organizationUserTbBar', align: 'center', width: 120, minWidth: 120}
-            ]],
+            cols: [cols],
             done: function () {
                 // 表格搜索
                 form.on('submit(organizationUserTbSearch)', function (data) {

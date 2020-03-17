@@ -13,6 +13,18 @@
                 <li class="layui-nav-item" lay-unselect>
                     <a ew-event="refresh" title="刷新"><i class="layui-icon layui-icon-refresh-3"></i></a>
                 </li>
+                <li class="layui-nav-item layui-hide-xs layui-this" lay-unselect><a nav-bind="xt1">基础功能</a></li>
+                <li class="layui-nav-item layui-hide-xs" lay-unselect><a nav-bind="xt2">高级功能</a></li>
+                <li class="layui-nav-item layui-hide-xs" lay-unselect><a nav-bind="xt3">扩展功能</a></li>
+                <!-- 小屏幕下变为下拉形式 -->
+                <li class="layui-nav-item layui-hide-sm layui-show-xs-inline-block" lay-unselect>
+                    <a>更多</a>
+                    <dl class="layui-nav-child">
+                        <dd lay-unselect><a nav-bind="xt1">基础功能</a></dd>
+                        <dd lay-unselect><a nav-bind="xt2">高级功能</a></dd>
+                        <dd lay-unselect><a nav-bind="xt3">扩展功能</a></dd>
+                    </dl>
+                </li>
             </ul>
             <ul class="layui-nav layui-layout-right">
                 <li class="layui-nav-item" lay-unselect>
