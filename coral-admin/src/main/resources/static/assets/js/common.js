@@ -1,23 +1,22 @@
-/** EasyWeb iframe v3.1.6 date:2020-02-08 License By http://easyweb.vip */
+﻿/** EasyWeb iframe v3.1.7 date:2020-03-11 License By http://easyweb.vip */
 
 // 以下代码是配置layui扩展模块的目录，每个页面都需要引入
 layui.config({
-    version: '316',
+    version: '317',
     base: getProjectUrl() + 'assets/module/'
 }).extend({
-    dropdown: 'dropdown/dropdown',
+    steps: 'steps/steps',
     notice: 'notice/notice',
     cascader: 'cascader/cascader',
+    dropdown: 'dropdown/dropdown',
     fileChoose: 'fileChoose/fileChoose',
-    treeSelect: 'treeSelect/treeSelect',
-    step: 'step-lay/step',
     treeTable: 'treeTable/treeTable',
-    tagsInput: 'tagsInput/tagsInput',
     Split: 'Split/Split',
     Cropper: 'Cropper/Cropper',
+    tagsInput: 'tagsInput/tagsInput',
     citypicker: 'city-picker/city-picker',
-    zTree: 'zTree/zTree',
-    introJs: 'introJs/introJs'
+    introJs: 'introJs/introJs',
+    zTree: 'zTree/zTree'
 }).use(['layer', 'admin'], function () {
     var $ = layui.jquery;
     var layer = layui.layer;

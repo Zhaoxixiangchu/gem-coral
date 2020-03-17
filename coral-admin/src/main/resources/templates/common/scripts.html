@@ -9,15 +9,20 @@
     <script type="text/javascript" th:src="@{/assets/libs/jquery/jquery-3.2.1.min.js}"></script>
 </div>
 
-<div th:fragment="custom">
-    <script type="text/javascript" th:src="@{/assets/js/custom.js}"></script>
-</div>
-
-<div th:fragment="index">
-    <script type="text/javascript" th:src="@{/assets/js/index.js}"></script>
-</div>
-
 <div th:fragment="echarts">
     <script type="text/javascript" th:src="@{/assets/libs/echarts/echarts.min.js}"></script>
     <script type="text/javascript" th:src="@{/assets/libs/echarts/echartsTheme.js}"></script>
+</div>
+
+<!--自定义js-->
+<div th:fragment="custom">
+    <script type="text/javascript" th:src="@{/coral/js/custom.js}"></script>
+</div>
+
+<div th:fragment="index">
+    <script type="text/javascript" th:src="@{/coral/js/index.js}"></script>
+</div>
+
+<div th:fragment="menutree">
+    <script type="text/javascript" th:src="@{/coral/js/menutree.js}"></script>
 </div>

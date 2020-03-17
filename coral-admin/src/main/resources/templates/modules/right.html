@@ -8,23 +8,39 @@
 <div class="layui-fluid">
     <div class="layui-card">
         <div class="layui-card-body">
-            <div class="layui-form toolbar">
+            <!--表格工具栏-->
+            <form class="layui-form toolbar">
                 <div class="layui-form-item">
                     <div class="layui-inline">
-                        <label class="layui-form-label w-auto">搜索：</label>
-                        <div class="layui-input-inline mr0">
-                            <input id="edtSearchAuth" class="layui-input" placeholder="输入关键字"/>
+                        <label class="layui-form-label">权限名称:</label>
+                        <div class="layui-input-inline">
+                            <input name="name" class="layui-input" placeholder="输入权限名称"/>
                         </div>
                     </div>
                     <div class="layui-inline">
-                        <button id="btnSearchAuth" class="layui-btn icon-btn"><i class="layui-icon">&#xe615;</i>搜索
+                        <label class="layui-form-label">菜单URL:</label>
+                        <div class="layui-input-inline">
+                            <input name="link" class="layui-input" placeholder="输入路由地址"/>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">权限标识:</label>
+                        <div class="layui-input-inline">
+                            <input name="flag" class="layui-input" placeholder="输入权限标识"/>
+                        </div>
+                    </div>
+                    <div class="layui-inline">&emsp;
+                        <button class="layui-btn icon-btn" lay-filter="searchBtn" lay-submit>
+                            <i class="layui-icon">&#xe615;</i>搜索
+                        </button>&nbsp;
+                        <button id="addBtn" class="layui-btn icon-btn" type="button">
+                            <i class="layui-icon">&#xe654;</i>添加
                         </button>
-                        <button id="btnAddAuth" class="layui-btn icon-btn"><i class="layui-icon">&#xe654;</i>添加</button>
                     </div>
                 </div>
-            </div>
-
-            <table id="tableAuth"></table>
+            </form>
+            <!-- 数据表格 -->
+            <table id="dataTable"></table>
         </div>
     </div>
 </div>
@@ -36,15 +52,22 @@
 </script>
 <!-- 表单弹窗 -->
 <script type="text/html" id="modelAuth">
-    <form id="modelAuthForm" lay-filter="modelAuthForm" class="layui-form model-form">
+    <form id="dataForm" lay-filter="dataForm" class="layui-form model-form">
         <input name="id" type="hidden"/>
+<!--        <div class="layui-form-item">-->
+<!--            <label class="layui-form-label layui-form-required">所属上级</label>-->
+<!--            <div class="layui-input-block">-->
+<!--                <select id="pid" name="pid" lay-search>-->
+<!--                    <option value="">请选择上级菜单</option>-->
+<!--                    <option value="0" selected>主菜单</option>-->
+<!--                </select>-->
+<!--                <ul id="treeDemo" class="ztree"  style=" overflow:auto;margin-left: 20px"></ul>-->
+<!--            </div>-->
+<!--        </div>-->
         <div class="layui-form-item">
             <label class="layui-form-label layui-form-required">所属上级</label>
             <div class="layui-input-block">
-                <select id="pid" name="pid" lay-search>
-                    <option value="">请选择上级菜单</option>
-                    <option value="0" selected>主菜单</option>
-                </select>
+                <div id="selectTree" class="ew-xmselect-tree"></div>
             </div>
         </div>
         <div class="layui-form-item">
@@ -102,37 +125,41 @@
         </div>
         <div class="layui-form-item text-right">
             <button class="layui-btn layui-btn-primary" type="button" ew-event="closePageDialog">取消</button>
-            <button class="layui-btn" lay-filter="modelSubmitAuth" lay-submit>保存</button>
+            <button class="layui-btn" lay-filter="saveBtn" lay-submit>保存</button>
         </div>
     </form>
 </script>
 <!-- js部分 -->
 <div th:replace="common/scripts :: common"></div>
 <script>
-    layui.use(['layer', 'form', 'admin', 'treeTable', 'util'], function () {
+    layui.use(['layer', 'form', 'admin', 'treeTable', 'util', 'xmSelect'], function () {
         var $ = layui.jquery;
         var layer = layui.layer;
         var form = layui.form;
         var admin = layui.admin;
         var treeTable = layui.treeTable;
         var util = layui.util;
+        var xmSelect = layui.xmSelect;
+        var tbDataList = [];
 
         // 渲染表格
         var insTb = treeTable.render({
-            elem: '#tableAuth',
+            elem: '#dataTable',
             tree: {
                 iconIndex: 1,  // 折叠图标显示在第几列
                 idName: 'id',  // 自定义id字段的名称
                 pidName: 'pid',  // 自定义标识是否还有子节点的字段名称
-                isPidData: true  // 是否是pid形式数据
+                isPidData: true,  // 是否是pid形式数据
             },
             cellMinWidth: 100,
+            height: "full-98",
             cols: [
                 {type: 'numbers'},
                 {field: 'name', title: '权限名称', width: 260},
+                {field: 'icon', title: '菜单图标', templet: '<p><i class="{{d.icon}}"></i></p>', align: 'center', width: 100},
                 {field: 'link', title: '菜单URL'},
                 {field: 'flag', title: '权限标识'},
-                {field: 'sortNumber', title: '排序', align: 'center', width: 100},
+                {field: 'sortNumber', title: '排序', align: 'center', width: 80},
                 {
                     title: '类型', templet: function (d) {
                         var strs = [
@@ -150,29 +177,35 @@
                 {templet: '#tableBarAuth', title: '操作', align: 'center', width: 160}
             ],
             reqData: function (data, callback) {
-                $.get('right/page', function (res) {
+                $.get('right/list', function (res) {
+                    tbDataList = res.data ? res.data : [];
                     callback(res.data);
+                    insTb.expandAll();
                 });
             }
         });
 
-        // 搜索
-        $('#btnSearchAuth').click(function () {
-            var keyword = $('#edtSearchAuth').val();
-            if (keyword) {
-                insTb.filterData(keyword);
-            } else {
-                insTb.clearFilter();
-            }
+        /* 表格搜索 */
+        form.on('submit(searchBtn)', function (data) {
+            doTbSearch(data.field, 'id');
+            return false;
         });
 
         // 添加按钮点击事件
-        $('#btnAddAuth').click(function () {
+        $('#addBtn').click(function () {
             showEditModel();
+        });
+        // 展开所有
+        $('#expandAllBtn').click(function () {
+            insTb.expandAll();
+        });
+        // 关闭所有
+        $('#foldAllBtn').click(function () {
+            insTb.foldAll();
         });
 
         // 工具条点击事件
-        treeTable.on('tool(tableAuth)', function (obj) {
+        treeTable.on('tool(dataTable)', function (obj) {
             var data = obj.data;
             var layEvent = obj.event;
             if (layEvent === 'edit') { // 修改
@@ -183,28 +216,23 @@
         });
 
         // 显示表单弹窗
-        function showEditModel(mAuth) {
-            getParents(mAuth)
+        function showEditModel(mData) {
+            getParents(mData)
             admin.open({
                 type: 1,
-                title: (mAuth ? '修改' : '添加') + '权限',
+                title: (mData ? '修改' : '添加') + '权限',
                 content: $('#modelAuth').html(),
                 success: function (layero, dIndex) {
-                    $(layero).children('.layui-layer-content').css('overflow', 'visible');
-                    var url = 'right/saveOrUpdate';
-                    if (mAuth && mAuth.isMenu == '1') {
-                        $('#modelAuthForm input[name="isMenu"][value="1"]').prop("checked", true);
-                    }
-                    form.val('modelAuthForm', mAuth);  // 回显数据
+                    // 回显表单数据
+                    form.val('dataForm', mData);
                     // 表单提交事件
-                    form.on('submit(modelSubmitAuth)', function (data) {
-                        if (data.field.pid == '') {
-                            data.field.pid = '0';
-                        }
-                        layer.load(2);
+                    var url = 'right/saveOrUpdate';
+                    form.on('submit(saveBtn)', function (data) {
+                        data.field.pid = insXmSel.getValue('valueStr');
+                        var loadIndex = layer.load(2);
                         $.post(url, data.field, function (res) {
-                            layer.closeAll('loading');
-                            if (res.code == 0) {
+                            layer.close(loadIndex);
+                            if (res.code === 0) {
                                 layer.close(dIndex);
                                 layer.msg(res.msg, {icon: 1});
                                 insTb.refresh();
@@ -214,6 +242,29 @@
                         }, 'json');
                         return false;
                     });
+                    // 渲染下拉树
+                    var insXmSel = xmSelect.render({
+                        el: '#selectTree',
+                        height: '250px',
+                        data: insTb.options.data,
+                        initValue: mData ? [mData.pid] : [],
+                        model: {label: {type: 'text'}},
+                        prop: {
+                            name: 'name',
+                            value: 'id'
+                        },
+                        radio: true,
+                        clickClose: true,
+                        tree: {
+                            show: true,
+                            indent: 15,
+                            strict: false,
+                            expandedKeys: true
+                        }
+                    });
+                    // 弹窗不出现滚动条
+                    $(layero).children('.layui-layer-content').css('overflow', 'visible');
+
                 }
             });
         }
@@ -259,6 +310,28 @@
             }, 'json');
         }
 
+        /* 搜索表格数据 */
+        function doTbSearch(field, idName) {
+            var ids = [], isClear = true;
+            for (var i = 0; i < tbDataList.length; i++) {
+                var item = tbDataList[i], flag = true;
+                for (var f in field) {
+                    if (!field.hasOwnProperty(f)) continue;
+                    if (!field[f]) continue;
+                    isClear = false;
+                    if (!item[f] || item[f].indexOf(field[f]) === -1) {
+                        flag = false;
+                        break;
+                    }
+                }
+                if (flag) ids.push(item[idName]);
+            }
+            if (isClear) {
+                insTb.clearFilter();
+            } else {
+                insTb.filterData(ids);
+            }
+        }
     });
 </script>
 </body>

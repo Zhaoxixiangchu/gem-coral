@@ -26,9 +26,15 @@ public class ViewController {
 		return "modules/" + url;
 	}
 
+
 	@GetMapping("login")
 	public String login(){
 		return "login";
+	}
+
+	@GetMapping("login1")
+	public String login1(){
+		return "login1";
 	}
 
 	@GetMapping({"/", "index"})

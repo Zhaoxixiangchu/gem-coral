@@ -51,6 +51,18 @@ public class RightController {
     }
 
     /**
+     * 获取列表分页
+     * @return
+     */
+    @GetMapping("/list")
+    public BaseResultData list() {
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.orderByAsc("sort_number");
+        List list = rightService.list(queryWrapper);
+        return BaseResultData.SUCCESS(list);
+    }
+
+    /**
      * 获取列表
      * @return
      */
@@ -102,6 +114,7 @@ public class RightController {
 
         return BaseResultData.SUCCESS(toTree(voList));
     }
+
 
 
     /**

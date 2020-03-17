@@ -1,3 +1,7 @@
+/**
+ * 省市区选择器
+ * date:2020-03-11   License By http://easyweb.vip
+ */
 .city-picker-input {
     opacity: 0 !important;
     top: -9999px;
@@ -52,7 +56,7 @@
 }
 
 .city-picker-span > .title > span:hover {
-    background-color: #f1f8ff;
+    background-color: #EEF7F1;
 }
 
 .city-picker-dropdown {
@@ -96,7 +100,7 @@
 .city-select-tab > a.active {
     background: #fff;
     border-bottom: 1px solid #fff;
-    color: #46A4FF;
+    color: #5FB878;
 }
 
 .city-select-tab > a:first-child {
@@ -157,13 +161,13 @@
 
 .city-select a:hover,
 .city-select a:focus {
-    background-color: #f1f8ff;
+    background-color: #EEF7F1;
     border-radius: 2px;
-    color: #46A4FF;
+    color: #5FB878;
 }
 
 .city-select a.active {
-    background-color: #46A4FF;
+    background-color: #5FB878;
     color: #fff;
     border-radius: 2px;
 }

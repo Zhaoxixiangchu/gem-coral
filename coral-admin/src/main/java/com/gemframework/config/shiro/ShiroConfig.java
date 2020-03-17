@@ -30,6 +30,8 @@ public class ShiroConfig {
         // authc:所有url都必须认证通过才可以访问;
         // anon:所有url都都可以匿名访问;
         filterChainDefinitionMap.put("/login", "anon");
+        filterChainDefinitionMap.put("/login1", "anon");
+        filterChainDefinitionMap.put("/coral/**", "anon");
         filterChainDefinitionMap.put("/assets/**", "anon");
         filterChainDefinitionMap.put("/katcha/code", "anon");
 
