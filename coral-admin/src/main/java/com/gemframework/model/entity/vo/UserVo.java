@@ -38,4 +38,6 @@ public class UserVo extends BaseEntityVo {
     private String tel;
     private String email;
     private String qq;
+    //0正常 1禁用
+    private Integer status;
 }

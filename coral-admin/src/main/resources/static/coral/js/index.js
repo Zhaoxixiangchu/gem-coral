@@ -11,7 +11,7 @@
             return reval;
         },
         makeHtml: function (datas) {
-            alert(_html+"=data.child===>"+_html)
+            // alert(_html+"=data.child===>"+_html)
             return _html;
         },
         loadMenu: function () {
@@ -85,7 +85,7 @@
                 }
             })
 
-            console.log("==="+_html)
+            // console.log("==="+_html)
             $("#sidebar-menu").append(_html);
         }
     };

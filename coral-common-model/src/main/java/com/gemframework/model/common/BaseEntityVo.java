@@ -18,7 +18,7 @@ import java.util.Date;
  */
 
 @Data
-public class BaseEntityVo implements Serializable {
+public abstract class BaseEntityVo implements Serializable {
 
     private Long id;
     //排序

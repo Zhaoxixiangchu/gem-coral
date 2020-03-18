@@ -1,6 +1,6 @@
 package com.gemframework.model.entity.vo;
 
-import com.gemframework.model.common.BaseEntityPo;
+import com.gemframework.model.common.BaseEntityVo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class RoleVo extends BaseEntityPo {
+public class RoleVo extends BaseEntityVo {
 
     @NotBlank(message = "名称不能为空")
     private String name;

@@ -1,6 +1,6 @@
 package com.gemframework.model.entity.vo;
 
-import com.gemframework.model.common.BaseEntityPo;
+import com.gemframework.model.common.BaseEntityVo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class DeptVo extends BaseEntityPo {
+public class DeptVo extends BaseEntityVo {
 
     @NotNull(message = "父级ID不能为空")
     private Long pid;

@@ -1,6 +1,6 @@
 package com.gemframework.model.entity.vo;
 
-import com.gemframework.model.common.BaseEntityPo;
+import com.gemframework.model.common.BaseEntityVo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -10,7 +10,7 @@ import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class RightVo extends BaseEntityPo {
+public class RightVo extends BaseEntityVo {
 
     //父级ID 默认是0根节点
     @NotNull(message = "父级ID不能为空")

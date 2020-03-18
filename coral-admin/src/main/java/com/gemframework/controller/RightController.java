@@ -1,10 +1,10 @@
 package com.gemframework.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gemframework.common.utils.GemBeanUtils;
 import com.gemframework.model.common.BaseResultData;
+import com.gemframework.model.common.PageInfo;
 import com.gemframework.model.entity.po.Right;
 import com.gemframework.model.entity.vo.RightVo;
 import com.gemframework.model.enums.MenuType;
@@ -13,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.security.PermitAll;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +29,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/right")
-public class RightController {
+public class RightController extends BaseController{
 
     @Autowired
     private RightService rightService;
@@ -40,13 +39,8 @@ public class RightController {
      * @return
      */
     @GetMapping("/page")
-    public BaseResultData page(Page page) {
-        OrderItem orderItem = new OrderItem();
-        orderItem.setColumn("sort_number");
-        List orders = new ArrayList();
-        orders.add(orderItem);
-        page.setOrders(orders);
-        page = rightService.page(page);
+    public BaseResultData page(PageInfo pageInfo) {
+        Page page = rightService.page(setOrderPage(pageInfo));
         return BaseResultData.SUCCESS(page.getRecords(),page.getTotal());
     }
 
@@ -81,8 +75,8 @@ public class RightController {
      */
     @PostMapping("/saveOrUpdate")
     public BaseResultData saveOrUpdate(RightVo vo) {
-        Right right = GemBeanUtils.copyProperties(vo,Right.class);
-        return BaseResultData.SUCCESS(rightService.saveOrUpdate(right));
+        Right entity = GemBeanUtils.copyProperties(vo,Right.class);
+        return BaseResultData.SUCCESS(rightService.saveOrUpdate(entity));
     }
 
     /**

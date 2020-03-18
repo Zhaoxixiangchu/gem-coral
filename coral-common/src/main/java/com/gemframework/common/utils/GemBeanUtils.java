@@ -1,13 +1,12 @@
 package com.gemframework.common.utils;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 
-import java.lang.reflect.Field;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -23,26 +22,17 @@ import java.util.stream.Collectors;
  */
 public class GemBeanUtils {
 
-    public static String[] getNullPropertyNames (Object source) {
-        final BeanWrapper src = new BeanWrapperImpl(source);
-        java.beans.PropertyDescriptor[] pds = src.getPropertyDescriptors();
-
-        Set<String> emptyNames = new HashSet<String>();
-        for(java.beans.PropertyDescriptor pd : pds) {
-            Object srcValue = src.getPropertyValue(pd.getName());
-            if (srcValue == null) emptyNames.add(pd.getName());
-        }
-        String[] result = new String[emptyNames.size()];
-        return emptyNames.toArray(result);
-    }
-
+    /**
+     * 单个对象属性复制
+     * @param src
+     * @param target
+     */
     public static void copyProperties(Object src, Object target) {
         BeanUtils.copyProperties(src, target, getNullPropertyNames(src));
     }
 
-
     /**
-     * 单个对象属性复制
+     * 单个对象属性复制，并返回目标对象
      *
      * @param source 复制源
      * @param clazz  目标对象class
@@ -80,5 +70,32 @@ public class GemBeanUtils {
                 .orElse(new ArrayList<>())
                 .stream().map(m -> copyProperties(m, clazz))
                 .collect(Collectors.toList());
+    }
+
+    public static Map<String,Object> ObjectToMap(Object obj) {
+        Map<String,Object> map = JSONObject.parseObject(JSON.toJSONString(obj));
+        return map;
+    }
+
+
+
+
+
+    /**
+     * 获取为null的属性名
+     * @param source
+     * @return
+     */
+    private static String[] getNullPropertyNames (Object source) {
+        final BeanWrapper src = new BeanWrapperImpl(source);
+        java.beans.PropertyDescriptor[] pds = src.getPropertyDescriptors();
+
+        Set<String> emptyNames = new HashSet<String>();
+        for(java.beans.PropertyDescriptor pd : pds) {
+            Object srcValue = src.getPropertyValue(pd.getName());
+            if (srcValue == null) emptyNames.add(pd.getName());
+        }
+        String[] result = new String[emptyNames.size()];
+        return emptyNames.toArray(result);
     }
 }
