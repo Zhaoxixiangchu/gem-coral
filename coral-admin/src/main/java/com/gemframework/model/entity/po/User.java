@@ -11,7 +11,7 @@ import java.util.Date;
 @Data
 public class User extends BaseEntityPo {
 
-    private Long dept_id;
+    private Long deptId;
     private String username;
     private String password;
     private String realname;

@@ -11,6 +11,7 @@ public class Dept extends BaseEntityPo {
 
     private Long pid;
     private String name;
+    private String fullname;
     private Integer type;
     private Integer level;
 }

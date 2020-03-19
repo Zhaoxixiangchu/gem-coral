@@ -14,7 +14,7 @@ import java.util.Date;
 public class UserVo extends BaseEntityVo {
 
     @NotNull(message = "部门ID不能为空")
-    private Long dept_id;
+    private Long deptId;
 
     @NotBlank(message = "用户名不能为空")
     private String username;

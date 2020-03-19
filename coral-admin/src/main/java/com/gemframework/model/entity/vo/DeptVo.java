@@ -17,6 +17,8 @@ public class DeptVo extends BaseEntityVo {
 
     @NotBlank(message = "名称不能为空")
     private String name;
+    @NotBlank(message = "全称不能为空")
+    private String fullname;
     private Integer type;
     private Integer level;
 }

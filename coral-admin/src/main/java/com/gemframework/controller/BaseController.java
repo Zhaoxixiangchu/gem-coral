@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gemframework.common.utils.GemBeanUtils;
+import com.gemframework.common.utils.GemStringUtils;
 import com.gemframework.model.common.BaseEntityVo;
 import com.gemframework.model.common.PageInfo;
 import com.gemframework.model.enums.SortType;
@@ -39,7 +40,7 @@ public class BaseController {
         QueryWrapper queryWrapper = new QueryWrapper();
         Map<String,Object> map = GemBeanUtils.ObjectToMap(vo);
         for (Map.Entry<String, Object> entry : map.entrySet()) {
-            String fieldName = entry.getKey();
+            String fieldName = GemStringUtils.humpToLine(entry.getKey());
             Object paramVal = entry.getValue();
             log.info("key= " + fieldName + " and value= "+paramVal);
             if(paramVal != null && StringUtils.isNotBlank(String.valueOf(paramVal))){

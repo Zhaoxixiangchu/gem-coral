@@ -129,6 +129,5 @@ function get_html(datas) {
         if(data.pid == '0'){
             _html += '</li>';
         }
-        console.log(data.name+"=="+_html)
     }
 }
