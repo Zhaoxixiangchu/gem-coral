@@ -54,16 +54,6 @@
 <script type="text/html" id="modelAuth">
     <form id="dataForm" lay-filter="dataForm" class="layui-form model-form">
         <input name="id" type="hidden"/>
-<!--        <div class="layui-form-item">-->
-<!--            <label class="layui-form-label layui-form-required">所属上级</label>-->
-<!--            <div class="layui-input-block">-->
-<!--                <select id="pid" name="pid" lay-search>-->
-<!--                    <option value="">请选择上级菜单</option>-->
-<!--                    <option value="0" selected>主菜单</option>-->
-<!--                </select>-->
-<!--                <ul id="treeDemo" class="ztree"  style=" overflow:auto;margin-left: 20px"></ul>-->
-<!--            </div>-->
-<!--        </div>-->
         <div class="layui-form-item">
             <label class="layui-form-label layui-form-required">所属上级</label>
             <div class="layui-input-block">
@@ -217,9 +207,9 @@
 
         // 显示表单弹窗
         function showEditModel(mData) {
-            getParents(mData)
             admin.open({
                 type: 1,
+                area: '800px',
                 title: (mData ? '修改' : '添加') + '权限',
                 content: $('#modelAuth').html(),
                 success: function (layero, dIndex) {
@@ -291,24 +281,6 @@
             });
         }
 
-
-        //获取上级菜单并填充下拉框
-        function getParents(mAuth) {
-            console.log(mAuth)
-            var data = {type:'MENU'};
-            $.get('right/listByType', data , function (res) {
-                layer.closeAll('loading');
-                if (res.code == 0) {
-                    var option = "";
-                    for(var i=0;i<res.data.length;i++){
-                        option += "<option value='"+res.data[i].id+"' "+(mAuth && res.data[i].id == mAuth.pid ? 'selected': '')+">"+res.data[i].name+"</option>";
-                    }
-                    $("#pid").append(option);
-                } else {
-                }
-                form.render();
-            }, 'json');
-        }
 
         /* 搜索表格数据 */
         function doTbSearch(field, idName) {

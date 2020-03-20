@@ -3,6 +3,7 @@ package com.gemframework.model.common;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gemframework.model.enums.ErrorCode;
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
@@ -20,6 +21,7 @@ import java.util.List;
  */
 
 @Data
+@Builder
 public class BaseResultData {
 
     // 定义jackson对象

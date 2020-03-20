@@ -12,10 +12,7 @@ import com.gemframework.service.DeptService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,29 +32,18 @@ public class DeptController extends BaseController{
      * 加载当前权限用户的部门树
      * @return
      */
-    @GetMapping("/findAllDeptTree")
-    public BaseResultData findAllDeptTree(){
-        QueryWrapper queryWrapper = new QueryWrapper();
-        queryWrapper.orderByAsc("sort_number");
+    @GetMapping("/tree")
+    public BaseResultData tree(){
+        QueryWrapper queryWrapper = setSort();
         List<Dept> list = deptService.list(queryWrapper);
-        List<ZtreeEntity> ztreeEntities = new ArrayList<>();
-        ZtreeEntity ztreeEntity = ZtreeEntity.builder()
-                .id(0L)
-                .pid(-1L)
-                .name("公司总部")
-                .title("公司总部")
-                .level(0)
-                .open(true)
-                .nocheck(true)
-                .build();
-        ztreeEntities.add(ztreeEntity);
-        for(Dept dept:list){
-            ztreeEntity = ZtreeEntity.builder()
-                    .id(dept.getId())
-                    .pid(dept.getPid())
-                    .name(dept.getName())
-                    .title(dept.getName())
-                    .level(dept.getLevel())
+        List<ZtreeEntity> ztreeEntities = initRootTree();
+        for(Dept entity:list){
+            ZtreeEntity ztreeEntity = ZtreeEntity.builder()
+                    .id(entity.getId())
+                    .pid(entity.getPid())
+                    .name(entity.getName())
+                    .title(entity.getName())
+                    .level(entity.getLevel())
                     .open(true)
                     .nocheck(false)
                     .build();
@@ -67,30 +53,6 @@ public class DeptController extends BaseController{
     }
 
 
-
-
-    /**
-     * 将list格式是权限数据，转化成tree格式的权限数据。
-     * @param treeNodes 传入的树节点列表
-     * @return
-     */
-    public static List<ZtreeEntity> toTree(List<ZtreeEntity> treeNodes) {
-        List<ZtreeEntity> trees = new ArrayList<ZtreeEntity>();
-        for (ZtreeEntity treeNode : treeNodes) {
-            if (-1 == (treeNode.getPid())) {
-                trees.add(treeNode);
-            }
-            for (ZtreeEntity it : treeNodes) {
-                if (it.getPid() == treeNode.getId()) {
-                    if (treeNode.getChildren() == null) {
-                        treeNode.setChildren(new ArrayList<ZtreeEntity>());
-                    }
-                    treeNode.getChildren().add(it);
-                }
-            }
-        }
-        return trees;
-    }
 
     /**
      * 获取列表分页
@@ -126,10 +88,21 @@ public class DeptController extends BaseController{
         dept.setName("集团总部");
         dept.setFullname("集团总部");
 
-        QueryWrapper queryWrapper = new QueryWrapper();
-        queryWrapper.orderByAsc("sort_number");
+        QueryWrapper queryWrapper = setSort();
         List<Dept> list = deptService.list(queryWrapper);
         list.add(dept);
+        return BaseResultData.SUCCESS(list);
+    }
+
+
+    /**
+     * 获取列表
+     * @return
+     */
+    @GetMapping("/listByParams")
+    public BaseResultData listByParams(DeptVo vo) {
+        QueryWrapper queryWrapper = makeQueryMaps(vo);
+        List list = deptService.list(queryWrapper);
         return BaseResultData.SUCCESS(list);
     }
 

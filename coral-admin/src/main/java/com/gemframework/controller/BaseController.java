@@ -7,6 +7,8 @@ import com.gemframework.common.utils.GemBeanUtils;
 import com.gemframework.common.utils.GemStringUtils;
 import com.gemframework.model.common.BaseEntityVo;
 import com.gemframework.model.common.PageInfo;
+import com.gemframework.model.common.ZtreeEntity;
+import com.gemframework.model.entity.vo.RightVo;
 import com.gemframework.model.enums.SortType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -36,8 +38,14 @@ public class BaseController {
         return page;
     }
 
-    static QueryWrapper makeQueryMaps(BaseEntityVo vo) {
+    static QueryWrapper setSort() {
         QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.orderByAsc("sort_number");
+        return queryWrapper;
+    }
+
+    static QueryWrapper makeQueryMaps(BaseEntityVo vo) {
+        QueryWrapper queryWrapper = setSort();
         Map<String,Object> map = GemBeanUtils.ObjectToMap(vo);
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             String fieldName = GemStringUtils.humpToLine(entry.getKey());
@@ -48,6 +56,48 @@ public class BaseController {
             }
         }
         return queryWrapper;
+    }
+
+
+
+    /**
+     * 将list格式是权限数据，转化成tree格式的权限数据。
+     * @param treeNodes 传入的树节点列表
+     * @return
+     */
+    static List<ZtreeEntity> toTree(List<ZtreeEntity> treeNodes) {
+        List<ZtreeEntity> trees = new ArrayList<ZtreeEntity>();
+        for (ZtreeEntity treeNode : treeNodes) {
+            if (-1 == (treeNode.getPid())) {
+                trees.add(treeNode);
+            }
+            for (ZtreeEntity it : treeNodes) {
+                if (it.getPid() == treeNode.getId()) {
+                    if (treeNode.getChildren() == null) {
+                        treeNode.setChildren(new ArrayList<ZtreeEntity>());
+                    }
+                    treeNode.getChildren().add(it);
+                }
+            }
+        }
+        return trees;
+    }
+
+
+    static List<ZtreeEntity> initRootTree() {
+        List<ZtreeEntity> ztreeEntities = new ArrayList<>();
+        ZtreeEntity ztreeEntity = ZtreeEntity.builder()
+                .id(0L)
+                .pid(-1L)
+                .name("顶层目录|全选/全消")
+                .title("顶层目录|全选/全消")
+                .level(0)
+                .open(true)
+                .nocheck(true)
+                .build();
+        ztreeEntities.add(ztreeEntity);
+
+        return ztreeEntities;
     }
 
 }

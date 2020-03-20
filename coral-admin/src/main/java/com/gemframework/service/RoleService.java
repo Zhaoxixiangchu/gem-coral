@@ -5,4 +5,6 @@ import com.gemframework.model.entity.po.Role;
 
 public interface RoleService extends IService<Role> {
 
+    boolean delete(Long id,String ids);
+
 }

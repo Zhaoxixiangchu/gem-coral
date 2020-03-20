@@ -33,6 +33,7 @@ public enum ErrorCode {
     VERIFY_CODE_ERROR(1004,"验证验证码失败"),
     MODULE_ATTR_ERROR(1005,"请完善模块属性（字段）信息"),
     FILE_NOT_EXIST(1006,"文件不存在,请检查"),
+    SAVE_OR_UPDATE_FAIL(1007,"保存或更新失败"),
 
     //业务错误码 10000-99999
     USER_EXIST(10000,"用户已存在"),

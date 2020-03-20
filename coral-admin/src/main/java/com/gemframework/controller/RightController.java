@@ -5,8 +5,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gemframework.common.utils.GemBeanUtils;
 import com.gemframework.model.common.BaseResultData;
 import com.gemframework.model.common.PageInfo;
+import com.gemframework.model.common.ZtreeEntity;
 import com.gemframework.model.entity.po.Right;
 import com.gemframework.model.entity.vo.RightVo;
+import com.gemframework.model.enums.ErrorCode;
 import com.gemframework.model.enums.MenuType;
 import com.gemframework.service.RightService;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +36,31 @@ public class RightController extends BaseController{
     @Autowired
     private RightService rightService;
 
+
+    /***
+     * 加载当前权限用户的部门树
+     * @return
+     */
+    @GetMapping("/tree")
+    public BaseResultData tree(){
+        QueryWrapper queryWrapper = setSort();
+        List<Right> list = rightService.list(queryWrapper);
+        List<ZtreeEntity> ztreeEntities = initRootTree();
+        for(Right entity:list){
+            ZtreeEntity ztreeEntity = ZtreeEntity.builder()
+                    .id(entity.getId())
+                    .pid(entity.getPid())
+                    .name(entity.getName())
+                    .title(entity.getName())
+                    .level(entity.getLevel())
+                    .open(true)
+                    .nocheck(false)
+                    .build();
+            ztreeEntities.add(ztreeEntity);
+        }
+        return BaseResultData.SUCCESS(toTree(ztreeEntities));
+    }
+
     /**
      * 获取列表分页
      * @return
@@ -50,8 +77,7 @@ public class RightController extends BaseController{
      */
     @GetMapping("/list")
     public BaseResultData list() {
-        QueryWrapper queryWrapper = new QueryWrapper();
-        queryWrapper.orderByAsc("sort_number");
+        QueryWrapper queryWrapper = setSort();
         List list = rightService.list(queryWrapper);
         return BaseResultData.SUCCESS(list);
     }
@@ -60,11 +86,9 @@ public class RightController extends BaseController{
      * 获取列表
      * @return
      */
-    @GetMapping("/listByType")
-    public BaseResultData list(@RequestParam("type") MenuType type) {
-        QueryWrapper queryWrapper = new QueryWrapper();
-        queryWrapper.eq("type",type.getCode());
-        queryWrapper.orderByAsc("sort_number");
+    @GetMapping("/listByParams")
+    public BaseResultData listByParams(RightVo vo) {
+        QueryWrapper queryWrapper = makeQueryMaps(vo);
         List list = rightService.list(queryWrapper);
         return BaseResultData.SUCCESS(list);
     }
@@ -76,7 +100,10 @@ public class RightController extends BaseController{
     @PostMapping("/saveOrUpdate")
     public BaseResultData saveOrUpdate(RightVo vo) {
         Right entity = GemBeanUtils.copyProperties(vo,Right.class);
-        return BaseResultData.SUCCESS(rightService.saveOrUpdate(entity));
+        if(!rightService.saveOrUpdate(entity)){
+            return BaseResultData.ERROR(ErrorCode.SAVE_OR_UPDATE_FAIL);
+        }
+        return BaseResultData.SUCCESS(entity);
     }
 
     /**
@@ -99,14 +126,13 @@ public class RightController extends BaseController{
     @ResponseBody
     public BaseResultData leftSidebar() {
         //判断用户角色，如果是超级管理员，返回所有
-        QueryWrapper queryWrapper = new QueryWrapper();
+        QueryWrapper queryWrapper = setSort();
         queryWrapper.eq("type", MenuType.MENU.getCode());
-        queryWrapper.orderByAsc("sort_number");
         List<Right> list = rightService.list(queryWrapper);
         List<RightVo> voList = GemBeanUtils.copyCollections(list,RightVo.class);
         //TODO: 如果不是超级管理员，根据角色查询菜单权限
 
-        return BaseResultData.SUCCESS(toTree(voList));
+        return BaseResultData.SUCCESS(rightTree(voList));
     }
 
 
@@ -118,7 +144,7 @@ public class RightController extends BaseController{
      * @Description:
      * @Date: 2019/12/15 13:24
      */
-    public static List<RightVo> toTree(List<RightVo> list){
+    public static List<RightVo> rightTree(List<RightVo> list){
         List<RightVo> rightTree = new ArrayList<>();
         for (RightVo parent : list) {
             if (0 == (parent.getPid())) {
@@ -184,7 +210,7 @@ public class RightController extends BaseController{
         list.add(r2);
         list.add(r3);
         List<RightVo> voList = GemBeanUtils.copyCollections(list,RightVo.class);
-        log.info(JSONObject.toJSONString(toTree(voList)));
+        log.info(JSONObject.toJSONString(rightTree(voList)));
     }
 
 }
