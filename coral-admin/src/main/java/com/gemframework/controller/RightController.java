@@ -1,5 +1,4 @@
 package com.gemframework.controller;
-import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gemframework.common.utils.GemBeanUtils;
@@ -12,9 +11,12 @@ import com.gemframework.model.enums.ErrorCode;
 import com.gemframework.model.enums.MenuType;
 import com.gemframework.service.RightService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,57 +39,25 @@ public class RightController extends BaseController{
     private RightService rightService;
 
 
-    /***
-     * 加载当前权限用户的部门树
-     * @return
-     */
-    @GetMapping("/tree")
-    public BaseResultData tree(){
-        QueryWrapper queryWrapper = setSort();
-        List<Right> list = rightService.list(queryWrapper);
-        List<ZtreeEntity> ztreeEntities = initRootTree();
-        for(Right entity:list){
-            ZtreeEntity ztreeEntity = ZtreeEntity.builder()
-                    .id(entity.getId())
-                    .pid(entity.getPid())
-                    .name(entity.getName())
-                    .title(entity.getName())
-                    .level(entity.getLevel())
-                    .open(true)
-                    .nocheck(false)
-                    .build();
-            ztreeEntities.add(ztreeEntity);
-        }
-        return BaseResultData.SUCCESS(toTree(ztreeEntities));
-    }
-
     /**
      * 获取列表分页
      * @return
      */
     @GetMapping("/page")
-    public BaseResultData page(PageInfo pageInfo) {
-        Page page = rightService.page(setOrderPage(pageInfo));
+    @RequiresPermissions("right:page")
+    public BaseResultData page(PageInfo pageInfo, RightVo vo) {
+        QueryWrapper queryWrapper = makeQueryMaps(vo);
+        Page page = rightService.page(setOrderPage(pageInfo),queryWrapper);
         return BaseResultData.SUCCESS(page.getRecords(),page.getTotal());
-    }
-
-    /**
-     * 获取列表分页
-     * @return
-     */
-    @GetMapping("/list")
-    public BaseResultData list() {
-        QueryWrapper queryWrapper = setSort();
-        List list = rightService.list(queryWrapper);
-        return BaseResultData.SUCCESS(list);
     }
 
     /**
      * 获取列表
      * @return
      */
-    @GetMapping("/listByParams")
-    public BaseResultData listByParams(RightVo vo) {
+    @GetMapping("/list")
+    @RequiresPermissions("right:list")
+    public BaseResultData list(RightVo vo) {
         QueryWrapper queryWrapper = makeQueryMaps(vo);
         List list = rightService.list(queryWrapper);
         return BaseResultData.SUCCESS(list);
@@ -97,24 +67,72 @@ public class RightController extends BaseController{
      * 添加或编辑
      * @return
      */
-    @PostMapping("/saveOrUpdate")
-    public BaseResultData saveOrUpdate(RightVo vo) {
+    @PostMapping("/save")
+    @RequiresPermissions("right:save")
+    public BaseResultData save(@Valid @RequestBody RightVo vo, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()){
+            return BaseResultData.ERROR(ErrorCode.PARAM_EXCEPTION.getCode(),bindingResult.getFieldError().getDefaultMessage());
+        }
         Right entity = GemBeanUtils.copyProperties(vo,Right.class);
-        if(!rightService.saveOrUpdate(entity)){
+        if(!rightService.save(entity)){
             return BaseResultData.ERROR(ErrorCode.SAVE_OR_UPDATE_FAIL);
         }
         return BaseResultData.SUCCESS(entity);
     }
 
     /**
-     * 删除
+     * 编辑
+     * @return
+     */
+    @PostMapping("/update")
+    @RequiresPermissions("right:update")
+    public BaseResultData update(@Valid @RequestBody RightVo vo, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()){
+            return BaseResultData.ERROR(ErrorCode.PARAM_EXCEPTION.getCode(),bindingResult.getFieldError().getDefaultMessage());
+        }
+        Right entity = GemBeanUtils.copyProperties(vo,Right.class);
+        if(!rightService.updateById(entity)){
+            return BaseResultData.ERROR(ErrorCode.SAVE_OR_UPDATE_FAIL);
+        }
+        return BaseResultData.SUCCESS(entity);
+    }
+
+    /**
+     * 删除 & 批量删除
      * @return
      */
     @PostMapping("/delete")
+    @RequiresPermissions("right:delete")
     public BaseResultData delete(Long id) {
         return BaseResultData.SUCCESS(rightService.removeById(id));
     }
 
+
+
+    /***
+     * 获取权限数据树
+     * @return
+     */
+    @GetMapping("/tree")
+    @RequiresPermissions("right:tree")
+    public BaseResultData tree(){
+        QueryWrapper queryWrapper = setSort();
+        List<Right> list = rightService.list(queryWrapper);
+        List<ZtreeEntity> ztreeEntities = initRootTree();
+        for(Right entity:list){
+            ZtreeEntity ztreeEntity = ZtreeEntity.builder()
+                    .id(entity.getId())
+                    .pid(entity.getPid())
+                    .name(entity.getName()+" "+entity.getFlag())
+                    .title(entity.getName())
+                    .level(entity.getLevel())
+                    .open(true)
+                    .nocheck(false)
+                    .build();
+            ztreeEntities.add(ztreeEntity);
+        }
+        return BaseResultData.SUCCESS(toTree(ztreeEntities));
+    }
 
     /**
      * 获取左侧菜单
@@ -136,7 +154,6 @@ public class RightController extends BaseController{
     }
 
 
-
     /**
      * @Title: 将list格式是权限数据，转化成tree格式的权限数据。
      * @Param: [vos]
@@ -144,7 +161,7 @@ public class RightController extends BaseController{
      * @Description:
      * @Date: 2019/12/15 13:24
      */
-    public static List<RightVo> rightTree(List<RightVo> list){
+    private static List<RightVo> rightTree(List<RightVo> list){
         List<RightVo> rightTree = new ArrayList<>();
         for (RightVo parent : list) {
             if (0 == (parent.getPid())) {
@@ -161,56 +178,4 @@ public class RightController extends BaseController{
         }
         return rightTree;
     }
-
-
-    public static void main(String[] args) {
-        Right r1 = new Right();
-        r1.setId(1L);
-        r1.setPid(0L);
-        r1.setName("系统管理");
-        r1.setFlag("sys");
-        r1.setIcon("layui-icon-unlink");
-        r1.setLevel(1);
-        r1.setLink("");
-        r1.setType(0);//菜单
-
-        Right r2 = new Right();
-        r2.setId(2L);
-        r2.setPid(1L);
-        r2.setName("权限管理");
-        r2.setFlag("right");
-        r2.setIcon("layui-icon-gift");
-        r2.setLevel(2);
-        r2.setLink("right/list");
-        r2.setType(0);//菜单
-
-        Right r3 = new Right();
-        r3.setId(3L);
-        r3.setPid(2L);
-        r3.setName("添加权限");
-        r3.setFlag("right:add");
-        r3.setIcon("layui-icon-bluetooth");
-        r3.setLevel(3);
-        r3.setLink("right/list");
-        r3.setType(1);//按钮
-
-        Right r4 = new Right();
-        r4.setId(5L);
-        r4.setPid(0L);
-        r4.setName("控制台");
-        r4.setFlag("right:add");
-        r4.setIcon("layui-icon-bluetooth");
-        r4.setLevel(3);
-        r4.setLink("home");
-        r4.setType(1);//按钮
-
-        List<Right> list = new ArrayList<>();
-        list.add(r4);
-        list.add(r1);
-        list.add(r2);
-        list.add(r3);
-        List<RightVo> voList = GemBeanUtils.copyCollections(list,RightVo.class);
-        log.info(JSONObject.toJSONString(rightTree(voList)));
-    }
-
 }

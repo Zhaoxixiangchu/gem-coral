@@ -291,13 +291,12 @@
                         insTb.reload({
                             where: {deptId: obj.data.id},
                             page: {curr: 1},
-                            url: 'user/pageByParams'
+                            url: 'user/page'
                         });
                     }
                 });
                 $('#organizationTree').find('.layui-tree-entry:first>.layui-tree-main>.layui-tree-txt').trigger('click');
             });
-            console.log("treeData1="+treeData)
         }
 
         renderTree();
@@ -335,7 +334,7 @@
                     form.on('submit(saveBtn)', function (data) {
                         data.field.pid = insXmSel.getValue('valueStr');
                         var loadIndex = layer.load(2);
-                        $.post('dept/saveOrUpdate', data.field, function (res) {
+                        $.post(mData?'dept/update':'dept/save', data.field, function (res) {
                             layer.close(loadIndex);
                             if (0 === res.code) {
                                 layer.close(dIndex);
@@ -482,7 +481,7 @@
                         // data.field.deptId = selObj ? selObj.data.id : 1;
                         data.field.deptId = insDeptXmSel.getValue('valueStr');
                         var loadIndex = layer.load(2);
-                        $.post('user/saveOrUpdate', data.field, function (res) {
+                        $.post(mData?'user/update':'user/save', data.field, function (res) {
                             layer.close(loadIndex);
                             if (res.code === 0) {
                                 layer.close(dIndex);

@@ -8,23 +8,22 @@ import com.gemframework.common.utils.GemStringUtils;
 import com.gemframework.model.common.BaseEntityVo;
 import com.gemframework.model.common.PageInfo;
 import com.gemframework.model.common.ZtreeEntity;
-import com.gemframework.model.entity.vo.RightVo;
+import com.gemframework.model.entity.po.User;
 import com.gemframework.model.enums.SortType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Slf4j
 public class BaseController {
 
     @NotNull
-    static Page setOrderPage(PageInfo pageInfo) {
+    public static Page setOrderPage(PageInfo pageInfo) {
         OrderItem orderItem = new OrderItem();
         orderItem.setColumn("sort_number").setAsc(SortType.asc.getCode() == 0);
         orderItem.setColumn(pageInfo.getSort()).setAsc(pageInfo.getOrder().asc.getCode() == 0);
@@ -38,26 +37,24 @@ public class BaseController {
         return page;
     }
 
-    static QueryWrapper setSort() {
+    public static QueryWrapper setSort() {
         QueryWrapper queryWrapper = new QueryWrapper();
         queryWrapper.orderByAsc("sort_number");
         return queryWrapper;
     }
 
-    static QueryWrapper makeQueryMaps(BaseEntityVo vo) {
+    public static QueryWrapper makeQueryMaps(BaseEntityVo vo) {
         QueryWrapper queryWrapper = setSort();
+        queryWrapper.eq("deleted",0);
         Map<String,Object> map = GemBeanUtils.ObjectToMap(vo);
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             String fieldName = GemStringUtils.humpToLine(entry.getKey());
             Object paramVal = entry.getValue();
             log.info("key= " + fieldName + " and value= "+paramVal);
-            if(paramVal != null && StringUtils.isNotBlank(String.valueOf(paramVal))){
-                queryWrapper.like(fieldName,paramVal);
-            }
+            queryWrapper.like(paramVal != null && StringUtils.isNotBlank(String.valueOf(paramVal)),fieldName,paramVal);
         }
         return queryWrapper;
     }
-
 
 
     /**
@@ -65,7 +62,7 @@ public class BaseController {
      * @param treeNodes 传入的树节点列表
      * @return
      */
-    static List<ZtreeEntity> toTree(List<ZtreeEntity> treeNodes) {
+    public static List<ZtreeEntity> toTree(List<ZtreeEntity> treeNodes) {
         List<ZtreeEntity> trees = new ArrayList<ZtreeEntity>();
         for (ZtreeEntity treeNode : treeNodes) {
             if (-1 == (treeNode.getPid())) {
@@ -84,7 +81,7 @@ public class BaseController {
     }
 
 
-    static List<ZtreeEntity> initRootTree() {
+    public static List<ZtreeEntity> initRootTree() {
         List<ZtreeEntity> ztreeEntities = new ArrayList<>();
         ZtreeEntity ztreeEntity = ZtreeEntity.builder()
                 .id(0L)
@@ -98,6 +95,11 @@ public class BaseController {
         ztreeEntities.add(ztreeEntity);
 
         return ztreeEntities;
+    }
+
+
+    protected User getUser() {
+        return (User) SecurityUtils.getSubject().getPrincipal();
     }
 
 }

@@ -1,7 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh-cn" class="fullscreen-bg" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="common/links :: common_header(~{::title},~{},~{})">
+<head th:replace="common/links :: common_header(~{::title},~{::style},~{})">
 <title>权限管理</title>
+    <style>
+        .hide {
+            display: none;
+        }
+    </style>
 </head>
 <body>
 <!-- 正文开始 -->
@@ -67,39 +72,49 @@
                        lay-verType="tips" lay-verify="required" required/>
             </div>
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label layui-form-required">权限类型</label>
-            <div class="layui-input-block">
-                <input name="type" type="radio" value="0" title="菜单" checked/>
-                <input name="type" type="radio" value="1" title="按钮"/>
+        <div class="layui-col-md6">
+            <div class="layui-form-item">
+                <label class="layui-form-label layui-form-required">权限类型</label>
+                <div class="layui-input-block">
+                    <input name="type" type="radio" value="0" title="菜单" checked/>
+                    <input name="type" type="radio" value="1" title="按钮"/>
+                </div>
             </div>
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">权限标识</label>
-            <div class="layui-input-block">
-                <input name="flag" placeholder="请输入权限标识" type="text" class="layui-input"/>
+        <div class="layui-col-md6">
+            <div class="layui-form-item">
+                <label class="layui-form-label">权限标识</label>
+                <div class="layui-input-block">
+                    <input name="flag" placeholder="请输入权限标识" type="text" class="layui-input"/>
+                </div>
             </div>
         </div>
+        <div class="layui-col-md6">
+            <div class="layui-form-item">
+                <label class="layui-form-label">权限图标</label>
+                <div class="layui-input-block">
+                    <input type="text" id="iconPicker" name="icon" placeholder="请输入菜单图标"  lay-filter="iconPicker" class="hide">
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md6">
+            <div class="layui-form-item">
+                <label class="layui-form-label">菜单位置</label>
+                <div class="layui-input-block">
+                    <select name="position" lay-search>
+                        <option value="0" selected>左侧</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
         <div class="layui-form-item">
             <label class="layui-form-label">菜单URL</label>
             <div class="layui-input-block">
                 <input name="link" placeholder="请输入URL" type="text" class="layui-input"/>
             </div>
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">菜单位置</label>
-            <div class="layui-input-block">
-                <select name="position" lay-search>
-                    <option value="0" selected>左侧</option>
-                </select>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">菜单图标</label>
-            <div class="layui-input-block">
-                <input name="icon" placeholder="请输入菜单图标" type="text" class="layui-input"/>
-            </div>
-        </div>
+
         <div class="layui-form-item">
             <label class="layui-form-label layui-form-required">排序序号</label>
             <div class="layui-input-block">
@@ -122,7 +137,7 @@
 <!-- js部分 -->
 <div th:replace="common/scripts :: common"></div>
 <script>
-    layui.use(['layer', 'form', 'admin', 'treeTable', 'util', 'xmSelect'], function () {
+    layui.use(['layer', 'form', 'admin', 'treeTable', 'util', 'xmSelect','iconPicker'], function () {
         var $ = layui.jquery;
         var layer = layui.layer;
         var form = layui.form;
@@ -130,6 +145,7 @@
         var treeTable = layui.treeTable;
         var util = layui.util;
         var xmSelect = layui.xmSelect;
+        var iconPicker = layui.iconPicker;
         var tbDataList = [];
 
         // 渲染表格
@@ -215,12 +231,32 @@
                 success: function (layero, dIndex) {
                     // 回显表单数据
                     form.val('dataForm', mData);
+                    //渲染图标选择
+                    iconPicker.render({
+                        // 选择器，推荐使用input
+                        elem: '#iconPicker',
+                        // 数据类型：fontClass/unicode，推荐使用fontClass
+                        type: 'fontClass',
+                        // 是否开启搜索：true/false，默认true
+                        search: true,
+                        // 是否开启分页：true/false，默认true
+                        page: true,
+                        // 每页显示数量，默认12
+                        limit: 12,
+                        // 点击回调
+                        click: function (data) {
+                            $('#iconPicker').val("layui-icon "+data.icon)
+                        },
+                        // 渲染成功后的回调
+                        success: function(d) {
+                            console.log("d="+d);
+                        }
+                    });
                     // 表单提交事件
-                    var url = 'right/saveOrUpdate';
                     form.on('submit(saveBtn)', function (data) {
                         data.field.pid = insXmSel.getValue('valueStr');
                         var loadIndex = layer.load(2);
-                        $.post(url, data.field, function (res) {
+                        $.post(mData?'right/update':'right/save', data.field, function (res) {
                             layer.close(loadIndex);
                             if (res.code === 0) {
                                 layer.close(dIndex);

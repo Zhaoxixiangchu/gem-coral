@@ -75,6 +75,12 @@
             </div>
         </div>
         <div class="layui-form-item">
+            <label class="layui-form-label layui-form-required">角色授权:</label>
+            <div class="layui-input-block">
+                <div id="userEditRoleSel"></div>
+            </div>
+        </div>
+        <div class="layui-form-item">
             <label class="layui-form-label layui-form-required">用&nbsp;&nbsp;户&nbsp;&nbsp;名:</label>
             <div class="layui-input-block">
                 <input name="username" placeholder="请输入账号" class="layui-input"
@@ -116,12 +122,6 @@
                        lay-verType="tips" lay-verify="email" required/>
             </div>
         </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label layui-form-required">角色授权:</label>
-            <div class="layui-input-block">
-                <div id="userEditRoleSel"></div>
-            </div>
-        </div>
         <div class="layui-form-item text-right">
             <button class="layui-btn" lay-filter="saveBtn" lay-submit>保存</button>
             <button class="layui-btn layui-btn-primary" type="button" ew-event="closeDialog">取消</button>
@@ -141,20 +141,7 @@
         var util = layui.util;
         var admin = layui.admin;
         var xmSelect = layui.xmSelect;
-        var treeData;  // 机构树
 
-        // /* 初始化机构树数据 */
-        function initTreeData() {
-            $.get('dept/list', function (res) {
-                for (var i = 0; i < res.data.length; i++) {
-                    res.data[i].title = res.data[i].name;
-                    res.data[i].id = res.data[i].id;
-                    res.data[i].spread = true;
-                }
-                treeData = layui.treeTable.pidToChildren(res.data, 'id', 'pid');
-            });
-        }
-        initTreeData()
 
         /* 渲染表格 */
         var cols = [
@@ -163,13 +150,13 @@
             {field: 'username', title: '账号', sort: true},
             {field: 'realname', title: '用户名', sort: true},
             {field: 'phone', title: '手机号', sort: true},
-            // {
-            //     field: 'roleName', title: '角色', templet: function (d) {
-            //         return d.roles.map(function (item) {
-            //             return '<span class="layui-badge layui-badge-gray">' + item.roleName + '</span>';
-            //         }).join('&nbsp;&nbsp;');
-            //     }, sort: true, width: 150
-            // },
+            {
+                field: 'roles', title: '角色', templet: function (d) {
+                    return d.roles.map(function (item) {
+                        return '<span class="layui-badge layui-badge-gray">' + item.name + '</span>';
+                    }).join('&nbsp;&nbsp;');
+                }, sort: true, width: 150
+            },
             {
                 field: 'createTime', title: '创建时间', templet: function (d) {
                     return util.toDateString(d.createTime);
@@ -180,7 +167,7 @@
         ]
         var insTb = table.render({
             elem: '#dataTable',
-            url: 'user/pageByParams',
+            url: 'user/page',
             page: true,
             toolbar: ['<p>',
                 '<button lay-event="add" class="layui-btn layui-btn-sm icon-btn"><i class="layui-icon">&#xe654;</i>添加</button>&nbsp;',
@@ -255,7 +242,7 @@
                         data.field.roleIds = insRoleSel.getValue('valueStr');
                         data.field.deptId = insDeptXmSel.getValue('valueStr');
                         var loadIndex = layer.load(2);
-                        $.post('user/saveOrUpdate', data.field, function (res) {
+                        $.post(mData?'user/update':'user/save', data.field, function (res) {
                             layer.close(loadIndex);
                             if (res.code === 0) {
                                 layer.close(dIndex);
@@ -268,53 +255,90 @@
                         return false;
                     });
 
-                    console.log("treeDataUser="+treeData)
-                    var initVal = mData ? mData.deptId: 1;
-                    // 渲染下拉树
-                    var insDeptXmSel = layui.xmSelect.render({
-                        el: '#selectTree',
-                        height: '250px',
-                        data: treeData,
-                        initValue: [initVal],
-                        model: {label: {type: 'text'}},
-                        prop: {
-                            name: 'name',
-                            value: 'id'
-                        },
-                        radio: true,
-                        clickClose: true,
-                        tree: {
-                            show: true,
-                            indent: 15,
-                            strict: false,
-                            expandedKeys: true
+                    var insDeptXmSel;
+                    $.get('dept/list', function (res) {
+                        if (res.code === 0) {
+                            for (var i = 0; i < res.data.length; i++) {
+                                res.data[i].title = res.data[i].name;
+                                res.data[i].id = res.data[i].id;
+                                res.data[i].spread = true;
+                            }
+                            treeData = layui.treeTable.pidToChildren(res.data, 'id', 'pid');
+                            // 渲染下拉树
+                            insDeptXmSel = layui.xmSelect.render({
+                                el: '#selectTree',
+                                height: '250px',
+                                data: treeData,
+                                initValue: [mData ? mData.deptId: 1],
+                                model: {label: {type: 'text'}},
+                                prop: {
+                                    name: 'name',
+                                    value: 'id'
+                                },
+                                radio: true,
+                                clickClose: true,
+                                tree: {
+                                    show: true,
+                                    indent: 15,
+                                    strict: false,
+                                    expandedKeys: true
+                                }
+                            });
+                        }else {
+                            layer.msg(res.msg, {icon: 2});
                         }
-                    });
+                    },'json');
 
 
-                    // 渲染多选下拉框
-                    var insRoleSel = xmSelect.render({
-                        el: '#userEditRoleSel',
-                        name: 'userEditRoleSel',
-                        layVerify: 'required',
-                        layVerType: 'tips',
-                        data: [{
-                            name: '管理员',
-                            value: 1
-                        }, {
-                            name: '普通用户',
-                            value: 2
-                        }, {
-                            name: '游客',
-                            value: 3
-                        }]
-                    });
-                    // 回显选中角色
-                    if (mData && mData.roles) {
-                        insRoleSel.setValue(mData.roles.map(function (item) {
-                            return item.roleId;
-                        }));
-                    }
+                    //查询角色list
+                    var insRoleSel;
+                    $.get('role/list', {}, function (res) {
+                        if (res.code === 0) {
+                            // 渲染多选下拉框
+                            insRoleSel = xmSelect.render({
+                                el: '#userEditRoleSel',
+                                name: 'userEditRoleSel',
+                                tips:'请授权角色',
+                                layVerify: 'required',
+                                layVerType: 'tips',
+                                direction: 'auto',
+                                filterable: true,
+                                paging: true,
+                                pageSize: 5,
+                                model: {
+                                    label: {
+                                        type: 'block',
+                                        block: {
+                                            //最大显示数量, 0:不限制
+                                            showCount: 5,
+                                            //是否显示删除图标
+                                            showIcon: true,
+                                        }
+                                    }
+                                },
+                                toolbar: {
+                                    show: true,
+                                },
+                                prop: {
+                                    name: 'name',
+                                    value: 'id',
+                                },
+                                data: res.data,
+                            });
+                            insRoleSel.set
+                        } else {
+                            layer.msg(res.msg, {icon: 2});
+                        }
+                        // 回显选中角色
+                        if (mData && mData.roles) {
+                            // insRoleSel.setValue([{name:"a",id:"1"},{name:"a2",id:"2"}].map(function (item) {
+                            insRoleSel.setValue(mData.roles.map(function (item) {
+                                return item.id;
+                            }));
+                        }
+                    }, 'json');
+
+
                     // 禁止弹窗出现滚动条
                     $(layero).children('.layui-layer-content').css('overflow', 'visible');
                 }
@@ -347,7 +371,7 @@
         /* 修改用户状态 */
         form.on('switch(editStateBtn)', function (obj) {
             var loadIndex = layer.load(2);
-            $.post('user/saveOrUpdate', {
+            $.post('user/update', {
                 id: obj.elem.value,
                 status: obj.elem.checked ? 0 : 1
             }, function (res) {
@@ -370,7 +394,7 @@
             }, function (i) {
                 layer.close(i);
                 var loadIndex = layer.load(2);
-                $.post('user/saveOrUpdate', {
+                $.post('user/update', {
                     id: obj.data.id,
                     password: '123456'
                 }, function (res) {

@@ -28,5 +28,4 @@ public class User extends BaseEntityPo {
     private String email;
     private String qq;
     private Integer status;
-
 }

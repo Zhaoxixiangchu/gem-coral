@@ -10,12 +10,12 @@ import com.gemframework.model.entity.vo.RoleVo;
 import com.gemframework.model.enums.ErrorCode;
 import com.gemframework.service.RoleService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
@@ -32,54 +32,56 @@ public class RoleController extends BaseController{
      * @return
      */
     @GetMapping("/page")
-    public BaseResultData page(PageInfo pageInfo) {
-        Page page = roleService.page(setOrderPage(pageInfo));
-        return BaseResultData.SUCCESS(page.getRecords(),page.getTotal());
-    }
-
-
-    /**
-     * 获取列表分页
-     * @return
-     */
-    @GetMapping("/pageByParams")
-    public BaseResultData pageByParams(PageInfo pageInfo,RoleVo vo) {
+    @RequiresPermissions("role:page")
+    public BaseResultData page(PageInfo pageInfo,RoleVo vo) {
         QueryWrapper queryWrapper = makeQueryMaps(vo);
         Page page = roleService.page(setOrderPage(pageInfo),queryWrapper);
         return BaseResultData.SUCCESS(page.getRecords(),page.getTotal());
     }
 
     /**
-     * 获取列表分页
-     * @return
-     */
-    @GetMapping("/list")
-    public BaseResultData list() {
-        QueryWrapper queryWrapper = setSort();
-        List list = roleService.list(queryWrapper);
-        return BaseResultData.SUCCESS(list);
-    }
-
-    /**
      * 获取列表
      * @return
      */
-    @GetMapping("/listByParams")
-    public BaseResultData listByParams(RoleVo vo) {
+    @GetMapping("/list")
+    @RequiresPermissions("role:list")
+    public BaseResultData list(RoleVo vo) {
         QueryWrapper queryWrapper = makeQueryMaps(vo);
         List list = roleService.list(queryWrapper);
         return BaseResultData.SUCCESS(list);
     }
 
     /**
-     * 添加或编辑
+     * 添加
      * @return
      */
-    @PostMapping("/saveOrUpdate")
-    public BaseResultData saveOrUpdate(RoleVo vo) {
+    @PostMapping("/save")
+    @RequiresPermissions("role:save")
+    public BaseResultData save(@Valid @RequestBody RoleVo vo, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()){
+            return BaseResultData.ERROR(ErrorCode.PARAM_EXCEPTION.getCode(),bindingResult.getFieldError().getDefaultMessage());
+        }
         BaseResultData baseResultData = BaseResultData.builder().build();
         Role entity = GemBeanUtils.copyProperties(vo, Role.class);
-        if(!roleService.saveOrUpdate(entity)){
+        if(!roleService.save(entity)){
+            return BaseResultData.ERROR(ErrorCode.SAVE_OR_UPDATE_FAIL);
+        }
+        return BaseResultData.SUCCESS(entity);
+    }
+
+    /**
+     * 编辑
+     * @return
+     */
+    @PostMapping("/update")
+    @RequiresPermissions("role:update")
+    public BaseResultData update(@Valid @RequestBody RoleVo vo, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()){
+            return BaseResultData.ERROR(ErrorCode.PARAM_EXCEPTION.getCode(),bindingResult.getFieldError().getDefaultMessage());
+        }
+        BaseResultData baseResultData = BaseResultData.builder().build();
+        Role entity = GemBeanUtils.copyProperties(vo, Role.class);
+        if(!roleService.updateById(entity)){
             return BaseResultData.ERROR(ErrorCode.SAVE_OR_UPDATE_FAIL);
         }
         return BaseResultData.SUCCESS(entity);
@@ -90,6 +92,7 @@ public class RoleController extends BaseController{
      * @return
      */
     @PostMapping("/delete")
+    @RequiresPermissions("role:delete")
     public BaseResultData delete(Long id,String ids) {
         roleService.delete(id,ids);
         return BaseResultData.SUCCESS();

@@ -214,7 +214,7 @@
         // 渲染表格
         var insTb = table.render({
             elem: '#dataTable',
-            url: 'role/pageByParams',
+            url: 'role/page',
             page: true,
             toolbar: ['<p>',
                 '<button lay-event="add" class="layui-btn layui-btn-sm icon-btn"><i class="layui-icon">&#xe654;</i>添加</button>&nbsp;',
@@ -296,11 +296,10 @@
                 title: (mRole ? '修改' : '添加') + '&设置角色',
                 content: $('#formDialog').html(),
                 success: function (layero, dIndex) {
-                    var url = 'role/saveOrUpdate';
                     form.val('dataForm1', mRole);  // 回显数据
                     // 添加权限信息
                     form.on('submit(stepFormSubmit1)', function (data) {
-                        $.post(url, data.field, function (res) {
+                        $.post(mData?'role/update':'role/save', data.field, function (res) {
                             if (res.code == 0) {
                                 form.val('dataForm1', mRole ? mRole:res.data);  // 回显数据
                                 form.val('dataForm2', mRole ? mRole:res.data);  // 回显数据
@@ -402,7 +401,7 @@
                                     }
                                 }
                             }, res.data);
-                            $.get('roleDepts/listByParams', {roleId:roleId}, function (res) {
+                            $.get('roleDepts/list', {roleId:roleId}, function (res) {
                                 var depts = res.data;
                                 for(var i = 0; i < depts.length; i++) {
                                     // 回显选中的数据　　　
@@ -446,6 +445,7 @@
                 content: '<ul id="rightTree" class="ztree"></ul>',
                 success: function (layero, dIndex) {
                     var loadIndex = layer.load(2);
+                    //查询权限树
                     $.get('right/tree', {}, function (res) {
                         layer.close(loadIndex);
                         if (0 === res.code) {
@@ -476,7 +476,7 @@
                                     }
                                 }
                             }, res.data);
-                            $.get('roleRights/listByParams', {roleId:roleId}, function (res) {
+                            $.get('roleRights/list', {roleId:roleId}, function (res) {
                                 var rights = res.data;
                                 for(var i = 0; i < rights.length; i++) {
                                     // 回显选中的数据　　　
@@ -498,6 +498,7 @@
                         ids.push(checkedRows[i].id);
                     }
                     var loadIndex = layer.load(2);
+                    //保存角色权限关联关系
                     $.post('roleRights/save', {roleId: roleId, rightIds: ids.join(',')}, function (res) {
                         layer.close(loadIndex);
                         if (0 === res.code) {

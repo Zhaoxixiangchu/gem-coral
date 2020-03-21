@@ -2,12 +2,14 @@ package com.gemframework.model.entity.vo;
 
 import com.gemframework.model.annotation.ValidMoblie;
 import com.gemframework.model.common.BaseEntityVo;
+import com.gemframework.model.entity.po.Role;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -40,4 +42,8 @@ public class UserVo extends BaseEntityVo {
     private String qq;
     //0正常 1禁用
     private Integer status;
+    //角色ID
+    private String roleIds;
+    //角色ID
+    private List<RoleVo> roles;
 }

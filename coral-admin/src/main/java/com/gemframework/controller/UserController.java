@@ -2,23 +2,21 @@ package com.gemframework.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.gemframework.common.utils.GemBeanUtils;
 import com.gemframework.model.common.BaseResultData;
 import com.gemframework.model.common.PageInfo;
-import com.gemframework.model.entity.po.User;
-import com.gemframework.model.entity.vo.RoleVo;
 import com.gemframework.model.entity.vo.UserVo;
 import com.gemframework.model.enums.ErrorCode;
 import com.gemframework.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -29,61 +27,55 @@ public class UserController extends BaseController{
     @Autowired
     private UserService userService;
 
-
-    /**
-     * 获取列表分页
-     * @return
-     */
-    @GetMapping("/page")
-    public BaseResultData page(PageInfo pageInfo) {
-        Page page = userService.page(setOrderPage(pageInfo));
-        return BaseResultData.SUCCESS(page.getRecords(),page.getTotal());
-    }
-
     /**
      * 根据参数获取列表分页
      * @return
      */
-    @GetMapping("/pageByParams")
-    public BaseResultData pageByParams(PageInfo pageInfo, UserVo vo) {
+    @GetMapping("/page")
+    @RequiresPermissions("user:page")
+    public BaseResultData page(PageInfo pageInfo, UserVo vo) {
         QueryWrapper queryWrapper = makeQueryMaps(vo);
-        Page page = userService.page(setOrderPage(pageInfo),queryWrapper);
-        return BaseResultData.SUCCESS(page.getRecords(),page.getTotal());
-    }
-
-    /**
-     * 获取列表分页
-     * @return
-     */
-    @GetMapping("/list")
-    public BaseResultData list() {
-        QueryWrapper queryWrapper = setSort();
-        List list = userService.list(queryWrapper);
-        return BaseResultData.SUCCESS(list);
+        Page page = setOrderPage(pageInfo);
+        List<UserVo> userVos = userService.pageByParams(page,queryWrapper);
+        return BaseResultData.SUCCESS(userVos,page.getTotal());
     }
 
     /**
      * 获取列表
      * @return
      */
-    @GetMapping("/listByParams")
-    public BaseResultData listByParams(UserVo vo) {
+    @GetMapping("/list")
+    @RequiresPermissions("user:list")
+    public BaseResultData list(UserVo vo) {
         QueryWrapper queryWrapper = makeQueryMaps(vo);
         List list = userService.list(queryWrapper);
         return BaseResultData.SUCCESS(list);
     }
 
     /**
+     * 添加
+     * @return
+     */
+    @PostMapping("/save")
+    @RequiresPermissions("user:save")
+    public BaseResultData save(@Valid @RequestBody UserVo vo, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()){
+            return BaseResultData.ERROR(ErrorCode.PARAM_EXCEPTION.getCode(),bindingResult.getFieldError().getDefaultMessage());
+        }
+        return BaseResultData.SUCCESS(userService.save(vo));
+    }
+
+    /**
      * 添加或编辑
      * @return
      */
-    @PostMapping("/saveOrUpdate")
-    public BaseResultData saveOrUpdate(UserVo vo) {
-        User entity = GemBeanUtils.copyProperties(vo,User.class);
-        if(!userService.saveOrUpdate(entity)){
-            return BaseResultData.ERROR(ErrorCode.SAVE_OR_UPDATE_FAIL);
+    @PostMapping("/update")
+    @RequiresPermissions("user:update")
+    public BaseResultData update(@Valid @RequestBody UserVo vo, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()){
+            return BaseResultData.ERROR(ErrorCode.PARAM_EXCEPTION.getCode(),bindingResult.getFieldError().getDefaultMessage());
         }
-        return BaseResultData.SUCCESS(entity);
+        return BaseResultData.SUCCESS(userService.update(vo));
     }
 
     /**
@@ -91,6 +83,7 @@ public class UserController extends BaseController{
      * @return
      */
     @PostMapping("/delete")
+    @RequiresPermissions("user:delete")
     public BaseResultData delete(Long id,String ids) {
         if(id!=null) userService.removeById(id);
         if(StringUtils.isNotBlank(ids)){

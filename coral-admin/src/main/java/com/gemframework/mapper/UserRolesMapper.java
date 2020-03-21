@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.gemframework.model.entity.po.UserRoles;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * @Title: UserRolesMapper
  * @Package: com.gemframework.mapper
@@ -17,4 +19,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRolesMapper extends BaseMapper<UserRoles> {
+
+    List<Long> findIdsByUserId(Long userId);
 }

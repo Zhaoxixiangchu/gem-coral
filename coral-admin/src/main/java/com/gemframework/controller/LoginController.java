@@ -1,6 +1,5 @@
 package com.gemframework.controller;
 
-import com.gemframework.common.exception.GemException;
 import com.gemframework.model.common.BaseResultData;
 import com.gemframework.model.enums.ErrorCode;
 import com.gemframework.model.request.UserLoginRequest;
@@ -27,9 +26,8 @@ public class LoginController {
         if(!VerifyCodeUtil.checkVerifyCode(request)){
             return BaseResultData.ERROR(ErrorCode.VERIFY_CODE_ERROR);
         }else{
-            log.info("验证成功~~~~~~~");
+            log.info("验证码验证通过...");
         }
-
         // 创建主体
         Subject subject = SecurityUtils.getSubject();
         // 准备token
@@ -50,6 +48,7 @@ public class LoginController {
             log.info("用户名或密码不正确");
         }
         if (subject.isAuthenticated()) {
+            log.info("登录成功...");
             return BaseResultData.SUCCESS("登录成功");
         } else {
             token.clear();

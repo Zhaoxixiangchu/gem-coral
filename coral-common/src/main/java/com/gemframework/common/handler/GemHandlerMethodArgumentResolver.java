@@ -1,5 +1,6 @@
 package com.gemframework.common.handler;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -10,6 +11,9 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestResponseBody
 import org.springframework.web.servlet.mvc.method.annotation.ServletModelAttributeMethodProcessor;
 
 import javax.servlet.http.HttpServletRequest;
+
+import static com.gemframework.common.constant.GemConstant.MediaType.APPLICATION_XWWW_FORM_URLENCODED;
+import static com.gemframework.common.constant.GemConstant.MediaType.APPLICATION_XWWW_FORM_URLENCODED_UTF_8;
 
 /**
  * @Title: MyHandlerMethodArgumentResolver.java
@@ -28,6 +32,7 @@ import javax.servlet.http.HttpServletRequest;
  * @Copyright: Copyright (c) 2019 GemStudio
  * @Company: www.gemframework.com
  */
+@Slf4j
 public class GemHandlerMethodArgumentResolver implements HandlerMethodArgumentResolver {
 
     /**
@@ -65,19 +70,18 @@ public class GemHandlerMethodArgumentResolver implements HandlerMethodArgumentRe
     public Object resolveArgument(MethodParameter methodParameter, ModelAndViewContainer modelAndViewContainer,
                                   NativeWebRequest nativeWebRequest, WebDataBinderFactory webDataBinderFactory)
             throws Exception {
-        final String applicationXwwwFormUrlencoded = "application/x-www-form-urlencoded";
         HttpServletRequest request = nativeWebRequest.getNativeRequest(HttpServletRequest.class);
 
         if (request == null) {
             throw new RuntimeException(" request must not be null!");
         }
-        String contentType = request.getContentType();
+        String contentType = request.getContentType().replace(" ", "").trim();
         /*
          * 如果ContentType是application/x-www-form-urlencoded，那么使用ServletModelAttributeMethodProcessor解析器
          * 注:其实默认的，当系统识别到参数前有@RequestBody注解时，就会走RequestResponseBodyMethodProcessor解析器;这里就
          *    相当于在走默认的解析器前走了个判断而已。
          */
-        if (applicationXwwwFormUrlencoded.equals(contentType)) {
+        if (APPLICATION_XWWW_FORM_URLENCODED_UTF_8.equals(contentType)||APPLICATION_XWWW_FORM_URLENCODED.equals(contentType)) {
             return servletModelAttributeMethodProcessor.resolveArgument(methodParameter,
                     modelAndViewContainer, nativeWebRequest, webDataBinderFactory);
         }

@@ -20,11 +20,20 @@ public class RoleRightServiceImpl extends ServiceImpl<RoleRightsMapper, RoleRigh
     @Autowired
     RoleRightsMapper roleRightsMapper;
 
+    @Override
+    public boolean deleteByRoleId(Long roleId) {
+        List roleRightIds = roleRightsMapper.findIdsByRoleId(roleId);
+        if(roleRightIds!=null && !roleRightIds.isEmpty()){
+            roleRightsMapper.deleteBatchIds(roleRightIds);
+        }
+        return true;
+    }
+
+    @Override
     @Transactional
     public boolean save(RoleRightsVo vo) {
         //先删除
-        List ids = roleRightsMapper.findIdsByRoleId(vo.getRoleId());
-        this.removeByIds(ids);
+        deleteByRoleId(vo.getRoleId());
 
         List<RoleRights> list = new ArrayList<>();
         List<Long> rightIds = Arrays.asList(vo.getRightIds().split(",")).stream().map(s ->Long.parseLong(s.trim())).collect(Collectors.toList());
@@ -35,15 +44,6 @@ public class RoleRightServiceImpl extends ServiceImpl<RoleRightsMapper, RoleRigh
             list.add(entity);
         }
         this.saveBatch(list);
-        return true;
-    }
-
-    @Override
-    public boolean deleteByRoleId(Long roleId) {
-        List roleRightIds = roleRightsMapper.findIdsByRoleId(roleId);
-        if(roleRightIds!=null && !roleRightIds.isEmpty()){
-            roleRightsMapper.deleteBatchIds(roleRightIds);
-        }
         return true;
     }
 }

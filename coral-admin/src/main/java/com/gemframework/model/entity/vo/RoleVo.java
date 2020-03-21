@@ -1,6 +1,7 @@
 package com.gemframework.model.entity.vo;
 
 import com.gemframework.model.common.BaseEntityVo;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
