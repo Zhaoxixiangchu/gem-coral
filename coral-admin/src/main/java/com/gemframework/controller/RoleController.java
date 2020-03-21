@@ -88,7 +88,7 @@ public class RoleController extends BaseController{
     }
 
     /**
-     * 删除
+     * 删除 & 批量删除
      * @return
      */
     @PostMapping("/delete")
