@@ -66,7 +66,7 @@ public class UserController extends BaseController{
     }
 
     /**
-     * 添加或编辑
+     * 编辑
      * @return
      */
     @PostMapping("/update")
@@ -79,7 +79,7 @@ public class UserController extends BaseController{
     }
 
     /**
-     * 删除
+     * 删除 & 批量删除
      * @return
      */
     @PostMapping("/delete")
