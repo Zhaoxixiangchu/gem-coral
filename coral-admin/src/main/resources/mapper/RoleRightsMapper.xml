@@ -3,11 +3,6 @@
 
 <mapper namespace="com.gemframework.mapper.RoleRightsMapper">
 
-    <!-- 通用查询结果列-->
-    <sql id="Base_Column_List">
-        id, name, age
-    </sql>
-
     <select id="findIdsByRoleId" resultType="java.lang.Long">
         SELECT id FROM gem_role_rights where role_id = #{roleId}
     </select>

@@ -31,10 +31,9 @@ public class LoginController {
         // 创建主体
         Subject subject = SecurityUtils.getSubject();
         // 准备token
-        UsernamePasswordToken token = new UsernamePasswordToken(loginRequest.getUsername(),loginRequest.getPassword());
-        token.setRememberMe(loginRequest.isRememberMe());
-        // 提交认证
+        UsernamePasswordToken token = new UsernamePasswordToken(loginRequest.getUsername(),loginRequest.getPassword(),loginRequest.isRememberMe());
         try {
+        // 提交认证
             subject.login(token);
         } catch (UnknownAccountException uae) {
             log.info("未知账户");

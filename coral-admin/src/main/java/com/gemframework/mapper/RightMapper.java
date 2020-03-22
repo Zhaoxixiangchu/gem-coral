@@ -1,9 +1,15 @@
 package com.gemframework.mapper;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.gemframework.model.entity.po.Right;
+import com.gemframework.model.entity.po.Role;
 import com.gemframework.model.entity.po.User;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @Title: RightMapper
@@ -18,4 +24,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RightMapper extends BaseMapper<Right> {
+
+    List<Right> findRightsByRoleAndType(Map<Object,Object> map);
 }

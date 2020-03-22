@@ -19,19 +19,21 @@
         <dependency>
             <groupId>com.gemframework</groupId>
             <artifactId>coral-common</artifactId>
-            <version>${parent.version}</version>
         </dependency>
         <!--service模块-->
         <dependency>
             <groupId>com.gemframework</groupId>
             <artifactId>coral-common-service</artifactId>
-            <version>${parent.version}</version>
         </dependency>
 
         <!--shiro-->
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-spring</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-core</artifactId>
         </dependency>
 
         <!--Thymeleaf模版引擎-->

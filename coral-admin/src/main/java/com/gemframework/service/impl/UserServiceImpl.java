@@ -1,6 +1,5 @@
 package com.gemframework.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -23,9 +22,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -109,14 +106,5 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         queryWrapper.eq("username",username);
         User user = userMapper.selectOne(queryWrapper);
         return user;
-    }
-
-    @Override
-    public Set<String> getRoles(String username) {
-        return null;
-    }
-    @Override
-    public Set<String> getRights(String username) {
-        return null;
     }
 }

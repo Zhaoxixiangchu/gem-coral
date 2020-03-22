@@ -1,6 +1,7 @@
 package com.gemframework.controller.prekit;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.gemframework.common.constant.GemConstant;
 import com.gemframework.common.utils.GemBeanUtils;
 import com.gemframework.constant.GemModules;
 import com.gemframework.model.common.BaseResultData;
@@ -9,6 +10,7 @@ import com.gemframework.model.common.ZtreeEntity;
 import com.gemframework.model.common.validator.StatusValidator;
 import com.gemframework.model.common.validator.UpdateValidator;
 import com.gemframework.model.entity.po.Right;
+import com.gemframework.model.entity.po.Role;
 import com.gemframework.model.entity.vo.RightVo;
 import com.gemframework.model.enums.ErrorCode;
 import com.gemframework.model.enums.MenuType;
@@ -18,8 +20,8 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.annotation.security.PermitAll;
+import java.util.*;
 
 /**
  * @Title: RightController
@@ -135,18 +137,31 @@ public class RightController extends BaseController {
      * 获取左侧菜单
      * @return
      */
-//    @RequiresPermissions("right:add")
-//    @PermitAll
+    @PermitAll
     @RequestMapping("/leftSidebar")
     @ResponseBody
     public BaseResultData leftSidebar() {
-        //判断用户角色，如果是超级管理员，返回所有
+        Set<String> rolesFlag = getRolesFlag();
+        Set<Role> roles = getRoles();
         QueryWrapper queryWrapper = setSort();
         queryWrapper.eq("type", MenuType.MENU.getCode());
-        List<Right> list = rightService.list(queryWrapper);
+        //判断用户角色，如果是超级管理员，返回所有
+        List<Right> list;
+        if(rolesFlag!=null && !rolesFlag.isEmpty()){
+            log.info("rolesFlag==============="+rolesFlag);
+            if(rolesFlag.contains(GemConstant.Auth.ADMIN_ROLE_FLAG)){
+                list = rightService.list(queryWrapper);
+            }else{
+                //TODO: 如果不是超级管理员，根据角色查询菜单权限
+                Map map = new HashMap();
+                map.put("type",MenuType.MENU.getCode());
+                list = rightService.findRightsByRolesAndType(roles,map);
+            }
+        }else{
+            list = rightService.list(queryWrapper);
+        }
         List<RightVo> voList = GemBeanUtils.copyCollections(list,RightVo.class);
-        //TODO: 如果不是超级管理员，根据角色查询菜单权限
-
+        log.info("voList==============="+voList);
         return BaseResultData.SUCCESS(rightTree(voList));
     }
 

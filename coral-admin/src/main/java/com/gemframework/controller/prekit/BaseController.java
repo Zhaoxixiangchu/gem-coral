@@ -9,6 +9,7 @@ import com.gemframework.common.utils.GemStringUtils;
 import com.gemframework.model.common.BaseEntityVo;
 import com.gemframework.model.common.PageInfo;
 import com.gemframework.model.common.ZtreeEntity;
+import com.gemframework.model.entity.po.Role;
 import com.gemframework.model.entity.po.User;
 import com.gemframework.model.enums.ErrorCode;
 import com.gemframework.model.enums.SortType;
@@ -114,6 +115,14 @@ public class BaseController {
 
     protected User getUser() {
         return (User) SecurityUtils.getSubject().getSession().getAttribute("user");
+    }
+
+    protected Set<String> getRolesFlag() {
+        return (Set) SecurityUtils.getSubject().getSession().getAttribute("roleFlags");
+    }
+
+    protected Set<Role> getRoles() {
+        return (Set) SecurityUtils.getSubject().getSession().getAttribute("roles");
     }
 
 }

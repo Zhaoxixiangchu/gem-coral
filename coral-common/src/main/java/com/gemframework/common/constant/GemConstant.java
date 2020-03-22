@@ -15,18 +15,20 @@ public interface GemConstant {
 
 	//公共常量
 	interface Auth{
-		String CLIENT_ID_NAME = "client_id_name";
-		String CLIENT_ID_PASS = "client_id_pass";
+		//OAuth2认证 Header token参数
 		String HEADER_AUTHOR = "Authorization";
 
-		String ROLE_PREFIX = "ROLE_";
-
-		// 匿名的字符出
-		String ANONY_MOUS_USER = "anonymousUser";
-
+		//OAuth2认证 Header token参数
 		String COOKIES_TOKEN_NAME = "access_token";
 
-		String SESSION_USERKEY = "SPRING_SECURITY_CONTEXT";
+		//ROLE角色前缀 SpringSecurity中规则
+		String ROLE_PREFIX = "ROLE_";
+
+		// 匿名的字符串 SpringSecurity中规则
+		String ANONY_MOUS_USER = "anonymousUser";
+
+		// 超级管理员角色标识
+		String ADMIN_ROLE_FLAG = "admin";
 	}
 
 
@@ -91,16 +93,6 @@ public interface GemConstant {
 
 		String TEXT_HTML = "text/html";
 		String TEXT_HTML_UTF_8 = "text/html; charset=UTF-8";
-
-	}
-
-	//媒体类型
-	interface DBOperType{
-
-		Integer INSERT = 1;
-		Integer DELETE = 2;
-		Integer UPDATE = 3;
-		Integer SELECT = 4;
 	}
 
 }
