@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
-public class VerifyCodeUtil {
+public class VerifyCodeUtils {
     /**
      * 将获取到的前端参数转为string类型
      * @param request
@@ -36,7 +36,7 @@ public class VerifyCodeUtil {
         String verifyCodeExpected = (String) request.getSession().getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
         log.info("生成的验证码："+verifyCodeExpected);
         //获取用户输入的验证码
-        String verifyCodeActual = VerifyCodeUtil.getString(request, "validCode");
+        String verifyCodeActual = VerifyCodeUtils.getString(request, "validCode");
         log.info("输入的验证码："+verifyCodeActual);
         if(verifyCodeActual == null ||!verifyCodeActual.equalsIgnoreCase(verifyCodeExpected)) {
             return false;

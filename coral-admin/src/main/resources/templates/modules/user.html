@@ -184,6 +184,9 @@
                         showEditModel(d);
                     }
                 }, {
+                    icon: 'layui-icon layui-icon-home',
+                    name: '<span lay-filter="editStateBtn" >禁用用户</span>'
+                }, {
                     icon: 'layui-icon layui-icon-close text-danger',
                     name: '<span class="text-danger">删除用户</span>',
                     click: function (d) {
@@ -371,7 +374,7 @@
         /* 修改用户状态 */
         form.on('switch(editStateBtn)', function (obj) {
             var loadIndex = layer.load(2);
-            $.post('user/update', {
+            $.post('user/status', {
                 id: obj.elem.value,
                 status: obj.elem.checked ? 0 : 1
             }, function (res) {
@@ -394,7 +397,7 @@
             }, function (i) {
                 layer.close(i);
                 var loadIndex = layer.load(2);
-                $.post('user/update', {
+                $.post('user/password', {
                     id: obj.data.id,
                     password: '123456'
                 }, function (res) {

@@ -5,6 +5,8 @@ import com.gemframework.common.utils.GemBeanUtils;
 import com.gemframework.model.common.BaseResultData;
 import com.gemframework.model.common.PageInfo;
 import com.gemframework.model.common.ZtreeEntity;
+import com.gemframework.model.common.validator.StatusValidator;
+import com.gemframework.model.common.validator.UpdateValidator;
 import com.gemframework.model.entity.po.Right;
 import com.gemframework.model.entity.vo.RightVo;
 import com.gemframework.model.enums.ErrorCode;
@@ -13,10 +15,8 @@ import com.gemframework.service.RightService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,10 +69,8 @@ public class RightController extends BaseController{
      */
     @PostMapping("/save")
     @RequiresPermissions("right:save")
-    public BaseResultData save(@Valid @RequestBody RightVo vo, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()){
-            return BaseResultData.ERROR(ErrorCode.PARAM_EXCEPTION.getCode(),bindingResult.getFieldError().getDefaultMessage());
-        }
+    public BaseResultData save(@RequestBody RightVo vo) {
+        GemValidate(vo, StatusValidator.class);
         Right entity = GemBeanUtils.copyProperties(vo,Right.class);
         if(!rightService.save(entity)){
             return BaseResultData.ERROR(ErrorCode.SAVE_OR_UPDATE_FAIL);
@@ -86,10 +84,8 @@ public class RightController extends BaseController{
      */
     @PostMapping("/update")
     @RequiresPermissions("right:update")
-    public BaseResultData update(@Valid @RequestBody RightVo vo, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()){
-            return BaseResultData.ERROR(ErrorCode.PARAM_EXCEPTION.getCode(),bindingResult.getFieldError().getDefaultMessage());
-        }
+    public BaseResultData update(@RequestBody RightVo vo) {
+        GemValidate(vo, UpdateValidator.class);
         Right entity = GemBeanUtils.copyProperties(vo,Right.class);
         if(!rightService.updateById(entity)){
             return BaseResultData.ERROR(ErrorCode.SAVE_OR_UPDATE_FAIL);

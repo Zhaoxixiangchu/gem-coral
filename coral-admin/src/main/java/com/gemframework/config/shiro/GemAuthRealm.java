@@ -1,13 +1,17 @@
 package com.gemframework.config.shiro;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.gemframework.model.entity.po.User;
 import com.gemframework.service.UserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
+import org.apache.shiro.authc.credential.CredentialsMatcher;
+import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
+import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -51,15 +55,27 @@ public class GemAuthRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         String username = (String) authenticationToken.getPrincipal();
-        UsernamePasswordToken token = new UsernamePasswordToken();
         User user = userService.getByUserName(username);
         if(user != null) {
+            //账号锁定
+            if(user.getStatus() == 1){
+                throw new LockedAccountException("账号被锁定,请联系管理员");
+            }
             // 把当前用户存到 Session 中
             SecurityUtils.getSubject().getSession().setAttribute("user", user);
-            AuthenticationInfo authc = new SimpleAuthenticationInfo(user.getUsername(), user.getPassword(), "gemRealm");
+            AuthenticationInfo authc = new SimpleAuthenticationInfo(user.getUsername(), user.getPassword(), ByteSource.Util.bytes(user.getSalt()),"gemRealm");
+//            AuthenticationInfo authc = new SimpleAuthenticationInfo(user.getUsername(), user.getPassword(),"gemRealm");
             return authc;
         } else {
-            return null;
+            throw new UnknownAccountException("用户名或密码错误");
         }
+    }
+
+    @Override
+    public void setCredentialsMatcher(CredentialsMatcher credentialsMatcher) {
+        HashedCredentialsMatcher shaCredentialsMatcher = new HashedCredentialsMatcher();
+        shaCredentialsMatcher.setHashAlgorithmName(ShiroUtils.hashAlgorithmName);
+        shaCredentialsMatcher.setHashIterations(ShiroUtils.hashIterations);
+        super.setCredentialsMatcher(shaCredentialsMatcher);
     }
 }

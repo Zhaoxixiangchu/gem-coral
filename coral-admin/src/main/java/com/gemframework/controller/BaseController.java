@@ -3,21 +3,27 @@ package com.gemframework.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.gemframework.common.exception.GemException;
 import com.gemframework.common.utils.GemBeanUtils;
 import com.gemframework.common.utils.GemStringUtils;
 import com.gemframework.model.common.BaseEntityVo;
 import com.gemframework.model.common.PageInfo;
 import com.gemframework.model.common.ZtreeEntity;
 import com.gemframework.model.entity.po.User;
+import com.gemframework.model.enums.ErrorCode;
 import com.gemframework.model.enums.SortType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.jetbrains.annotations.NotNull;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Slf4j
 public class BaseController {
@@ -97,6 +103,14 @@ public class BaseController {
         return ztreeEntities;
     }
 
+    public static void GemValidate(Object object, Class<?>... groups){
+        Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+        Set<ConstraintViolation<Object>> constraintViolations = validator.validate(object, groups);
+        if (!constraintViolations.isEmpty()) {
+            ConstraintViolation<Object> constraint = (ConstraintViolation<Object>)constraintViolations.iterator().next();
+            throw new GemException(ErrorCode.PARAM_EXCEPTION.getCode(),constraint.getMessage());
+        }
+    }
 
     protected User getUser() {
         return (User) SecurityUtils.getSubject().getPrincipal();

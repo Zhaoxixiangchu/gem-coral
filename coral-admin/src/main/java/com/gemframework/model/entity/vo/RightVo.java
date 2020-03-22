@@ -1,6 +1,7 @@
 package com.gemframework.model.entity.vo;
 
 import com.gemframework.model.common.BaseEntityVo;
+import com.gemframework.model.common.validator.SuperValidator;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -13,13 +14,12 @@ import java.util.List;
 public class RightVo extends BaseEntityVo {
 
     //父级ID 默认是0根节点
-    @NotNull(message = "父级ID不能为空")
     private Long pid;
     //名称
-    @NotBlank(message = "名称不能为空")
+    @NotBlank(message = "名称不能为空",groups = SuperValidator.class)
     private String name;
     //标识
-    @NotBlank(message = "标识不能为空")
+    @NotBlank(message = "标识不能为空",groups = SuperValidator.class)
     private String flag;
     //图标
     private String icon;

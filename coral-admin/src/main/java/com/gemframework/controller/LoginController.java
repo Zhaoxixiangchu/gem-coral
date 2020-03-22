@@ -3,7 +3,7 @@ package com.gemframework.controller;
 import com.gemframework.model.common.BaseResultData;
 import com.gemframework.model.enums.ErrorCode;
 import com.gemframework.model.request.UserLoginRequest;
-import com.gemframework.utils.VerifyCodeUtil;
+import com.gemframework.utils.VerifyCodeUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
@@ -23,7 +23,7 @@ public class LoginController {
     @ResponseBody
     public BaseResultData login(UserLoginRequest loginRequest, HttpServletRequest request) {
         //验证码校验
-        if(!VerifyCodeUtil.checkVerifyCode(request)){
+        if(!VerifyCodeUtils.checkVerifyCode(request)){
             return BaseResultData.ERROR(ErrorCode.VERIFY_CODE_ERROR);
         }else{
             log.info("验证码验证通过...");

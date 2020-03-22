@@ -4,17 +4,17 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gemframework.model.common.BaseResultData;
 import com.gemframework.model.common.PageInfo;
+import com.gemframework.model.common.validator.PasswordValidator;
+import com.gemframework.model.common.validator.StatusValidator;
+import com.gemframework.model.common.validator.UpdateValidator;
 import com.gemframework.model.entity.vo.UserVo;
-import com.gemframework.model.enums.ErrorCode;
 import com.gemframework.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -58,10 +58,8 @@ public class UserController extends BaseController{
      */
     @PostMapping("/save")
     @RequiresPermissions("user:save")
-    public BaseResultData save(@Valid @RequestBody UserVo vo, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()){
-            return BaseResultData.ERROR(ErrorCode.PARAM_EXCEPTION.getCode(),bindingResult.getFieldError().getDefaultMessage());
-        }
+    public BaseResultData save(@RequestBody UserVo vo) {
+        GemValidate(vo, StatusValidator.class);
         return BaseResultData.SUCCESS(userService.save(vo));
     }
 
@@ -71,10 +69,30 @@ public class UserController extends BaseController{
      */
     @PostMapping("/update")
     @RequiresPermissions("user:update")
-    public BaseResultData update(@Valid @RequestBody UserVo vo, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()){
-            return BaseResultData.ERROR(ErrorCode.PARAM_EXCEPTION.getCode(),bindingResult.getFieldError().getDefaultMessage());
-        }
+    public BaseResultData update(@RequestBody UserVo vo) {
+        GemValidate(vo, UpdateValidator.class);
+        return BaseResultData.SUCCESS(userService.update(vo));
+    }
+
+    /**
+     * 重置密码
+     * @return
+     */
+    @PostMapping("/password")
+    @RequiresPermissions("user:password")
+    public BaseResultData password(@RequestBody UserVo vo) {
+        GemValidate(vo, PasswordValidator.class);
+        return BaseResultData.SUCCESS(userService.update(vo));
+    }
+
+    /**
+     * 修改用户状态
+     * @return
+     */
+    @PostMapping("/status")
+    @RequiresPermissions("user:status")
+    public BaseResultData status(@RequestBody UserVo vo) {
+        GemValidate(vo, StatusValidator.class);
         return BaseResultData.SUCCESS(userService.update(vo));
     }
 

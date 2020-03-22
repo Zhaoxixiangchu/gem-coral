@@ -14,6 +14,7 @@ public class User extends BaseEntityPo {
     private Long deptId;
     private String username;
     private String password;
+    private String salt;
     private String realname;
     private Integer jobnumber;
     private String post;
@@ -27,5 +28,6 @@ public class User extends BaseEntityPo {
     private String tel;
     private String email;
     private String qq;
+    //用户状态 0 正常 1禁用
     private Integer status;
 }

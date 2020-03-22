@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gemframework.common.utils.GemBeanUtils;
+import com.gemframework.config.shiro.ShiroUtils;
 import com.gemframework.mapper.UserMapper;
 import com.gemframework.model.entity.po.Role;
 import com.gemframework.model.entity.po.User;
@@ -17,6 +18,8 @@ import com.gemframework.service.RoleService;
 import com.gemframework.service.UserRolesService;
 import com.gemframework.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,13 +43,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public UserVo save(UserVo vo) {
         //1、 saveOrUpdate
         User user = GemBeanUtils.copyProperties(vo,User.class);
+        //sha256加密
+        String salt = RandomStringUtils.randomAlphanumeric(32);
+        user.setSalt(salt);
+        user.setPassword(ShiroUtils.passwordSHA256(user.getPassword(), user.getSalt()));
         if(super.saveOrUpdate(user)){
             vo.setId(user.getId());
-            //2、 保存用户关联角色信息
-            UserRolesVo userRolesVo = new UserRolesVo();
-            userRolesVo.setUserId(vo.getId());
-            userRolesVo.setRoleIds(vo.getRoleIds());
-            userRolesService.save(userRolesVo);
+            if(StringUtils.isNotBlank(vo.getRoleIds())){
+                //2、 保存用户关联角色信息
+                UserRolesVo userRolesVo = new UserRolesVo();
+                userRolesVo.setUserId(vo.getId());
+                userRolesVo.setRoleIds(vo.getRoleIds());
+                userRolesService.save(userRolesVo);
+            }
         }
         return vo;
     }
@@ -55,15 +64,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public UserVo update(UserVo vo) {
         //1、 saveOrUpdate
         User user = GemBeanUtils.copyProperties(vo,User.class);
+        if(StringUtils.isNotBlank(user.getPassword())){
+            //sha256加密
+            String salt = RandomStringUtils.randomAlphanumeric(32);
+            user.setSalt(salt);
+            user.setPassword(ShiroUtils.passwordSHA256(user.getPassword(), user.getSalt()));
+        }
         if(super.updateById(user)){
-            log.info("=============="+ JSON.toJSONString(user));
             vo.setId(user.getId());
-            log.info("VO=============="+ JSON.toJSONString(vo));
             //2、 保存用户关联角色信息
-            UserRolesVo userRolesVo = new UserRolesVo();
-            userRolesVo.setUserId(vo.getId());
-            userRolesVo.setRoleIds(vo.getRoleIds());
-            userRolesService.save(userRolesVo);
+            if(StringUtils.isNotBlank(vo.getRoleIds())){
+                UserRolesVo userRolesVo = new UserRolesVo();
+                userRolesVo.setUserId(vo.getId());
+                userRolesVo.setRoleIds(vo.getRoleIds());
+                userRolesService.save(userRolesVo);
+            }
         }
         return vo;
     }
