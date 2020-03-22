@@ -91,7 +91,7 @@
             <label class="layui-form-label layui-form-required">设置密码:</label>
             <div class="layui-input-block">
                 <input name="password" placeholder="默认123456" class="layui-input" type="password"
-                       lay-verType="tips" lay-verify="required" required value="123456"/>
+                       lay-verType="tips" value="123456"/>
             </div>
         </div>
         <div class="layui-form-item">
@@ -183,10 +183,7 @@
                     click: function (d) {
                         showEditModel(d);
                     }
-                }, {
-                    icon: 'layui-icon layui-icon-home',
-                    name: '<span lay-filter="editStateBtn" >禁用用户</span>'
-                }, {
+                },{
                     icon: 'layui-icon layui-icon-close text-danger',
                     name: '<span class="text-danger">删除用户</span>',
                     click: function (d) {
@@ -245,6 +242,9 @@
                         data.field.roleIds = insRoleSel.getValue('valueStr');
                         data.field.deptId = insDeptXmSel.getValue('valueStr');
                         var loadIndex = layer.load(2);
+                        if(data.field.password === ""){
+                            delete data.field.password;
+                        }
                         $.post(mData?'user/update':'user/save', data.field, function (res) {
                             layer.close(loadIndex);
                             if (res.code === 0) {
@@ -350,6 +350,10 @@
 
         /* 删除 */
         function doDel(obj) {
+            //管理员不让删除
+            if(obj.id === 1 || obj.ids.indexOf(1) > -1){
+                return layer.msg('包含系统预设数据，禁止删除', {icon: 4});
+            }
             layer.confirm('确定要删除选中数据吗？', {
                 skin: 'layui-layer-admin',
                 shade: .1
@@ -397,7 +401,7 @@
             }, function (i) {
                 layer.close(i);
                 var loadIndex = layer.load(2);
-                $.post('user/password', {
+                $.post('user/resetPass', {
                     id: obj.data.id,
                     password: '123456'
                 }, function (res) {

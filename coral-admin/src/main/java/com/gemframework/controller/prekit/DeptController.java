@@ -1,8 +1,9 @@
-package com.gemframework.controller;
+package com.gemframework.controller.prekit;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gemframework.common.utils.GemBeanUtils;
+import com.gemframework.constant.GemModules;
 import com.gemframework.model.common.BaseResultData;
 import com.gemframework.model.common.PageInfo;
 import com.gemframework.model.common.ZtreeEntity;
@@ -24,8 +25,8 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
-@RequestMapping("/dept")
-public class DeptController extends BaseController{
+@RequestMapping(GemModules.PreKit.PATH_SYSTEM+"/dept")
+public class DeptController extends BaseController {
 
     @Autowired
     private DeptService deptService;

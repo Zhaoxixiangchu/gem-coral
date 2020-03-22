@@ -6,6 +6,7 @@ import com.gemframework.mapper.RoleDeptsMapper;
 import com.gemframework.model.entity.po.RoleDepts;
 import com.gemframework.model.entity.vo.RoleDeptsVo;
 import com.gemframework.service.RoleDeptsService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,21 +23,24 @@ public class RoleDeptsServiceImpl extends ServiceImpl<RoleDeptsMapper, RoleDepts
     @Autowired
     RoleDeptsMapper roleDeptsMapper;
 
+    @Override
     @Transactional
     public boolean save(RoleDeptsVo vo) {
         //先删除
-        List ids = roleDeptsMapper.findIdsByRoleId(vo.getRoleId());
-        this.removeByIds(ids);
+        deleteByRoleId(vo.getRoleId());
 
-        List<RoleDepts> list = new ArrayList<>();
-        List<Long> deptIds = Arrays.asList(vo.getDeptIds().split(",")).stream().map(s ->Long.parseLong(s.trim())).collect(Collectors.toList());
-        for(Long deptId : deptIds){
-            RoleDepts entity = new RoleDepts();
-            entity.setRoleId(vo.getRoleId());
-            entity.setDeptId(deptId);
-            list.add(entity);
+        //重新保存
+        if(StringUtils.isNotBlank(vo.getDeptIds())){
+            List<RoleDepts> list = new ArrayList<>();
+            List<Long> deptIds = Arrays.asList(vo.getDeptIds().split(",")).stream().map(s ->Long.parseLong(s.trim())).collect(Collectors.toList());
+            for(Long deptId : deptIds){
+                RoleDepts entity = new RoleDepts();
+                entity.setRoleId(vo.getRoleId());
+                entity.setDeptId(deptId);
+                list.add(entity);
+            }
+            this.saveBatch(list);
         }
-        this.saveBatch(list);
         return true;
     }
 

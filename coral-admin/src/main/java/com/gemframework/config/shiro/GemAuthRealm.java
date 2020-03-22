@@ -64,7 +64,6 @@ public class GemAuthRealm extends AuthorizingRealm {
             // 把当前用户存到 Session 中
             SecurityUtils.getSubject().getSession().setAttribute("user", user);
             AuthenticationInfo authc = new SimpleAuthenticationInfo(user.getUsername(), user.getPassword(), ByteSource.Util.bytes(user.getSalt()),"gemRealm");
-//            AuthenticationInfo authc = new SimpleAuthenticationInfo(user.getUsername(), user.getPassword(),"gemRealm");
             return authc;
         } else {
             throw new UnknownAccountException("用户名或密码错误");
@@ -74,8 +73,8 @@ public class GemAuthRealm extends AuthorizingRealm {
     @Override
     public void setCredentialsMatcher(CredentialsMatcher credentialsMatcher) {
         HashedCredentialsMatcher shaCredentialsMatcher = new HashedCredentialsMatcher();
-        shaCredentialsMatcher.setHashAlgorithmName(ShiroUtils.hashAlgorithmName);
-        shaCredentialsMatcher.setHashIterations(ShiroUtils.hashIterations);
+        shaCredentialsMatcher.setHashAlgorithmName(ShiroUtils.HASH_ALGORITHM_NAME);
+        shaCredentialsMatcher.setHashIterations(ShiroUtils.HASH_ITERATIONS);
         super.setCredentialsMatcher(shaCredentialsMatcher);
     }
 }

@@ -47,10 +47,12 @@
                 <li class="layui-nav-item" lay-unselect>
                     <a>
                         <img th:src="@{/assets/images/avatar/user3-160x160.jpg}" class="layui-nav-img">
-                        <cite>管理员</cite>
+                        <cite>
+                            <span th:text="${session.user.username}"></span>
+                        </cite>
                     </a>
                     <dl class="layui-nav-child">
-                        <dd lay-unselect><a ew-href="page/template/user-info.html">个人中心</a></dd>
+                        <dd lay-unselect><a ew-href="prekit/sys/userinfo.html">个人中心</a></dd>
                         <dd lay-unselect><a ew-event="psw">修改密码</a></dd>
                         <hr>
                         <dd lay-unselect><a ew-event="logout" data-url="logout">退出</a></dd>

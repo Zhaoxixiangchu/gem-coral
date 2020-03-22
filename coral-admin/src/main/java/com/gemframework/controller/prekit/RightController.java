@@ -1,7 +1,8 @@
-package com.gemframework.controller;
+package com.gemframework.controller.prekit;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gemframework.common.utils.GemBeanUtils;
+import com.gemframework.constant.GemModules;
 import com.gemframework.model.common.BaseResultData;
 import com.gemframework.model.common.PageInfo;
 import com.gemframework.model.common.ZtreeEntity;
@@ -32,8 +33,8 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@RequestMapping("/right")
-public class RightController extends BaseController{
+@RequestMapping(GemModules.PreKit.PATH_SYSTEM+"/right")
+public class RightController extends BaseController {
 
     @Autowired
     private RightService rightService;

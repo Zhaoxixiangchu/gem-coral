@@ -1,8 +1,9 @@
-package com.gemframework.controller;
+package com.gemframework.controller.prekit;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gemframework.common.utils.GemBeanUtils;
+import com.gemframework.constant.GemModules;
 import com.gemframework.model.common.BaseResultData;
 import com.gemframework.model.common.PageInfo;
 import com.gemframework.model.common.validator.StatusValidator;
@@ -20,8 +21,8 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/role")
-public class RoleController extends BaseController{
+@RequestMapping(GemModules.PreKit.PATH_SYSTEM+"/role")
+public class RoleController extends BaseController {
 
     @Autowired
     private RoleService roleService;

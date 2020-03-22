@@ -1,4 +1,4 @@
-package com.gemframework.controller;
+package com.gemframework.controller.prekit;
 
 import com.gemframework.common.exception.GemException;
 import com.gemframework.model.enums.ErrorCode;

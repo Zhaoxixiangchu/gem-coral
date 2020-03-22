@@ -213,7 +213,7 @@
             <label class="layui-form-label layui-form-required">设置密码:</label>
             <div class="layui-input-block">
                 <input name="password" placeholder="默认123456" class="layui-input" type="password"
-                       lay-verType="tips" lay-verify="required" required value="123456"/>
+                       lay-verType="tips" lay-verify="required" value="123456"/>
             </div>
         </div>
         <div class="layui-form-item">
@@ -374,6 +374,10 @@
 
         /* 删除 */
         function doDel(obj) {
+            //系统数据不让删除
+            if(obj.id === 1){
+                return layer.msg('包含系统预设数据，禁止删除', {icon: 4});
+            }
             layer.confirm('确定要删除此机构吗？', {
                 skin: 'layui-layer-admin',
                 shade: .1

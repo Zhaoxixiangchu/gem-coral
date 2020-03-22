@@ -1,8 +1,11 @@
 package com.gemframework.model.common;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.gemframework.model.common.validator.SuperValidator;
+import com.gemframework.model.common.validator.UpdateValidator;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -20,6 +23,7 @@ import java.util.Date;
 @Data
 public abstract class BaseEntityVo implements Serializable {
 
+    @NotNull(message = "ID不能为空",groups = {UpdateValidator.class})
     private Long id;
     //排序
     private Integer sortNumber;

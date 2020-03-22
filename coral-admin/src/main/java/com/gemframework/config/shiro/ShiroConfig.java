@@ -1,10 +1,13 @@
 package com.gemframework.config.shiro;
+import io.netty.handler.codec.base64.Base64;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.servlet.SimpleCookie;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -56,6 +59,7 @@ public class ShiroConfig {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         //注册自定义realm
         securityManager.setRealm(gemAuthRealm());
+        securityManager.setRememberMeManager(cookieRememberMeManager());
         log.info("====SecurityManager注册完成====");
         return securityManager;
     }
@@ -66,6 +70,17 @@ public class ShiroConfig {
     public GemAuthRealm gemAuthRealm() {
         GemAuthRealm gemAuthRealm = new GemAuthRealm();
         return gemAuthRealm;
+    }
+
+    //记住我管理器
+    @Bean
+    public CookieRememberMeManager cookieRememberMeManager() {
+        CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
+        SimpleCookie simpleCookie = new SimpleCookie(ShiroUtils.REMEMBERME_COOKIE_NAME);
+        simpleCookie.setMaxAge(ShiroUtils.REMEMBERME_COOKIE_MAXAGE);
+        cookieRememberMeManager.setCookie(simpleCookie);
+        cookieRememberMeManager.setCipherKey(ShiroUtils.REMEMBERME_CIPHERKEY.getBytes());
+        return cookieRememberMeManager;
     }
 
     //开启注解

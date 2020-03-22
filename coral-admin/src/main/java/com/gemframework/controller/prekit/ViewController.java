@@ -1,4 +1,4 @@
-package com.gemframework.controller;
+package com.gemframework.controller.prekit;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -20,10 +20,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class ViewController {
 	
-	@RequestMapping("{url}.html")
-	public String module(@PathVariable("url") String url){
-		log.info("访问="+"modules/" + url);
-		return "modules/" + url;
+	@RequestMapping("prekit/{module}/{url}.html")
+	public String prekit(@PathVariable("module") String module,@PathVariable("url") String url){
+		return "modules/prekit/"+module+"/" + url;
+	}
+
+	@RequestMapping("extend/{module}/{url}.html")
+	public String extend(@PathVariable("module") String module,@PathVariable("url") String url){
+		return "modules/extend/"+module+"/" + url;
 	}
 
 

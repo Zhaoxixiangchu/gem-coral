@@ -1,13 +1,15 @@
-package com.gemframework.controller;
+package com.gemframework.controller.prekit;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.gemframework.config.shiro.ShiroUtils;
+import com.gemframework.constant.GemModules;
 import com.gemframework.model.common.BaseResultData;
 import com.gemframework.model.common.PageInfo;
-import com.gemframework.model.common.validator.PasswordValidator;
-import com.gemframework.model.common.validator.StatusValidator;
-import com.gemframework.model.common.validator.UpdateValidator;
+import com.gemframework.model.common.validator.*;
+import com.gemframework.model.entity.po.User;
 import com.gemframework.model.entity.vo.UserVo;
+import com.gemframework.model.enums.ErrorCode;
 import com.gemframework.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -21,8 +23,8 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
-@RequestMapping("/user")
-public class UserController extends BaseController{
+@RequestMapping(GemModules.PreKit.PATH_SYSTEM+"/user")
+public class UserController extends BaseController {
 
     @Autowired
     private UserService userService;
@@ -59,7 +61,7 @@ public class UserController extends BaseController{
     @PostMapping("/save")
     @RequiresPermissions("user:save")
     public BaseResultData save(@RequestBody UserVo vo) {
-        GemValidate(vo, StatusValidator.class);
+        GemValidate(vo, SaveValidator.class);
         return BaseResultData.SUCCESS(userService.save(vo));
     }
 
@@ -78,10 +80,34 @@ public class UserController extends BaseController{
      * 重置密码
      * @return
      */
-    @PostMapping("/password")
-    @RequiresPermissions("user:password")
-    public BaseResultData password(@RequestBody UserVo vo) {
-        GemValidate(vo, PasswordValidator.class);
+    @PostMapping("/updatePass")
+    @RequiresPermissions("user:updatePass")
+    public BaseResultData updatePass(@RequestBody UserVo vo) {
+        GemValidate(vo,PasswordEditValidator.class);
+        Long userId = vo.getId();
+        //ID为空从session取
+        if(userId == null){
+            userId = getUser().getId();
+            vo.setId(userId);
+        }
+        User user = userService.getById(userId);
+        //密码校验一致
+        if(ShiroUtils.passwordSHA256(vo.getOldPass(),user.getSalt()).equals(user.getPassword())){
+            userService.update(vo);
+        }else {
+            return BaseResultData.ERROR(ErrorCode.ORIGINAL_PASSWORD_ERROR);
+        }
+        return BaseResultData.SUCCESS();
+    }
+
+    /**
+     * 重置密码
+     * @return
+     */
+    @PostMapping("/resetPass")
+    @RequiresPermissions("user:resetPass")
+    public BaseResultData resetPass(@RequestBody UserVo vo) {
+        GemValidate(vo,UpdateValidator.class,PasswordResetValidator.class);
         return BaseResultData.SUCCESS(userService.update(vo));
     }
 
@@ -94,6 +120,17 @@ public class UserController extends BaseController{
     public BaseResultData status(@RequestBody UserVo vo) {
         GemValidate(vo, StatusValidator.class);
         return BaseResultData.SUCCESS(userService.update(vo));
+    }
+
+    /**
+     * 获取用户信息ById
+     * @return
+     */
+    @GetMapping("/info")
+    @RequiresPermissions("user:info")
+    public BaseResultData info(Long id) {
+        User user = userService.getById(id);
+        return BaseResultData.SUCCESS(user);
     }
 
     /**

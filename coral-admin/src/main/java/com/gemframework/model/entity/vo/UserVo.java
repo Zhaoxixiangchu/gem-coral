@@ -2,10 +2,7 @@ package com.gemframework.model.entity.vo;
 
 import com.gemframework.model.annotation.ValidMoblie;
 import com.gemframework.model.common.BaseEntityVo;
-import com.gemframework.model.common.validator.PasswordValidator;
-import com.gemframework.model.common.validator.SaveValidator;
-import com.gemframework.model.common.validator.StatusValidator;
-import com.gemframework.model.common.validator.SuperValidator;
+import com.gemframework.model.common.validator.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -24,7 +21,10 @@ public class UserVo extends BaseEntityVo {
     @NotBlank(message = "用户名不能为空",groups = SuperValidator.class)
     private String username;
 
-    @NotBlank(message = "密码不能为空",groups = {SaveValidator.class, PasswordValidator.class})
+    @NotBlank(message = "原密码不能为空",groups = {PasswordEditValidator.class})
+    private String oldPass;
+
+    @NotBlank(message = "密码不能为空",groups = {SaveValidator.class, PasswordResetValidator.class,PasswordEditValidator.class})
     private String password;
 
     private String realname;

@@ -1,4 +1,4 @@
-package com.gemframework.controller;
+package com.gemframework.controller.prekit;
 
 import com.gemframework.model.common.BaseResultData;
 import com.gemframework.model.enums.ErrorCode;

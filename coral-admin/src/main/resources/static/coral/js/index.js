@@ -18,7 +18,7 @@
             var mdata  ="";
             $.ajax({
                 type: "get",
-                url: "right/leftSidebar",
+                url: "prekit/sys/right/leftSidebar",
                 data: {
                 },
                 async:false, // 异步请求

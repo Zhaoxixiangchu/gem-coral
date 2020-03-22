@@ -1,12 +1,13 @@
-package com.gemframework.controller;
+package com.gemframework.controller.prekit;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.gemframework.constant.GemModules;
 import com.gemframework.model.common.BaseResultData;
 import com.gemframework.model.common.PageInfo;
 import com.gemframework.model.common.validator.StatusValidator;
-import com.gemframework.model.entity.vo.RoleRightsVo;
-import com.gemframework.service.RoleRightsService;
+import com.gemframework.model.entity.vo.RoleDeptsVo;
+import com.gemframework.service.RoleDeptsService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -19,11 +20,12 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
-@RequestMapping("/roleRights")
-public class RoleRightsController extends BaseController{
+@RequestMapping(GemModules.PreKit.PATH_SYSTEM+"/roleDepts")
+public class RoleDeptsController extends BaseController {
 
     @Autowired
-    private RoleRightsService roleRightsService;
+    private RoleDeptsService roleDeptsService;
+
 
 
     /**
@@ -31,23 +33,22 @@ public class RoleRightsController extends BaseController{
      * @return
      */
     @GetMapping("/page")
-    @RequiresPermissions("roleRights:page")
-    public BaseResultData page(PageInfo pageInfo, RoleRightsVo vo) {
+    @RequiresPermissions("roleDepts:page")
+    public BaseResultData page(PageInfo pageInfo, RoleDeptsVo vo) {
         QueryWrapper queryWrapper = makeQueryMaps(vo);
-        Page page = roleRightsService.page(setOrderPage(pageInfo),queryWrapper);
+        Page page = roleDeptsService.page(setOrderPage(pageInfo),queryWrapper);
         return BaseResultData.SUCCESS(page.getRecords(),page.getTotal());
     }
-
 
     /**
      * 获取列表
      * @return
      */
     @GetMapping("/list")
-    @RequiresPermissions("roleRights:list")
-    public BaseResultData list(RoleRightsVo vo) {
+    @RequiresPermissions("roleDepts:list")
+    public BaseResultData list(RoleDeptsVo vo) {
         QueryWrapper queryWrapper = makeQueryMaps(vo);
-        List list = roleRightsService.list(queryWrapper);
+        List list = roleDeptsService.list(queryWrapper);
         return BaseResultData.SUCCESS(list);
     }
 
@@ -56,24 +57,25 @@ public class RoleRightsController extends BaseController{
      * @return
      */
     @PostMapping("/save")
-    @RequiresPermissions("roleRights:save")
-    public BaseResultData save(@RequestBody RoleRightsVo vo) {
+    @RequiresPermissions("roleDepts:save")
+    public BaseResultData save(@RequestBody RoleDeptsVo vo) {
         GemValidate(vo, StatusValidator.class);
-        return BaseResultData.SUCCESS(roleRightsService.save(vo));
+        return BaseResultData.SUCCESS(roleDeptsService.save(vo));
     }
 
+
     /**
-     * 删除 & 批量删除
+     * 删除
      * @return
      */
     @PostMapping("/delete")
-    @RequiresPermissions("roleRights:delete")
+    @RequiresPermissions("roleDepts:delete")
     public BaseResultData delete(Long id,String ids) {
-        if(id!=null) roleRightsService.removeById(id);
+        if(id!=null) roleDeptsService.removeById(id);
         if(StringUtils.isNotBlank(ids)){
             List<Long> listIds = Arrays.asList(ids.split(",")).stream().map(s ->Long.parseLong(s.trim())).collect(Collectors.toList());
             if(listIds!=null && !listIds.isEmpty()){
-                roleRightsService.removeByIds(listIds);
+                roleDeptsService.removeByIds(listIds);
             }
         }
         return BaseResultData.SUCCESS();

@@ -201,13 +201,7 @@
             {type: 'numbers'},
             {field: 'name', sort: true, title: '角色名'},
             {field: 'flag', sort: true, title: '角色标识'},
-            // {field: 'sortNumber', sort: true, title: '排序序号'},
             {field: 'remark', sort: true, title: '备注信息'},
-            {
-                field: 'createTime', title: '创建时间', templet: function (d) {
-                    return util.toDateString(d.createTime);
-                }, sort: true
-            },
             {title: '操作', toolbar: '#tableBar', align: 'center', width: 200, minWidth: 200}
         ]
 
@@ -267,6 +261,10 @@
 
         /* 删除 */
         function doDel(obj) {
+            //系统数据不让删除
+            if(obj.id === 1 || obj.ids.indexOf(1) > -1){
+                return layer.msg('包含系统预设数据，禁止删除', {icon: 4});
+            }
             layer.confirm('确定要删除选中数据吗？', {
                 skin: 'layui-layer-admin',
                 shade: .1

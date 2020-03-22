@@ -97,6 +97,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
                 roles.add(GemBeanUtils.copyProperties(role,RoleVo.class));
             }
             userVo.setRoles(roles);
+            //回显时密码不显示
+            userVo.setPassword("");
         }
         return userVos;
     }

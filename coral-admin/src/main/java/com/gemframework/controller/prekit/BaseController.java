@@ -1,4 +1,4 @@
-package com.gemframework.controller;
+package com.gemframework.controller.prekit;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
@@ -113,7 +113,7 @@ public class BaseController {
     }
 
     protected User getUser() {
-        return (User) SecurityUtils.getSubject().getPrincipal();
+        return (User) SecurityUtils.getSubject().getSession().getAttribute("user");
     }
 
 }
