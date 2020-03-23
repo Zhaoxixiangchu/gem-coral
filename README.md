@@ -39,6 +39,27 @@ Coral 企业快速开发框架，基于SpringBoot2.2x，MyBatis，Shiro等主流
 精细化权限管理，自定义菜单配置，安全身份认证，系统监控，代码生成，示例演示等。官方提供完善的API文档、部署文档、架构介绍文档以及视频教程帮助您快速学习入门，快速上手使用。
 
 
+### 系统截图
+
+![登录页1](https://images.gitee.com/uploads/images/2020/0323/160959_c3adaa64_2671379.png "login.png")
+
+![登录页2](https://images.gitee.com/uploads/images/2020/0323/161006_b95bab17_2671379.png "login2.png")
+
+![首页](https://images.gitee.com/uploads/images/2020/0323/161024_9c700a8c_2671379.png "home.png")
+
+![主机监控](https://images.gitee.com/uploads/images/2020/0323/161038_9cc4392f_2671379.png "host.png")
+
+![工作台](https://images.gitee.com/uploads/images/2020/0323/161047_a5ab5c69_2671379.png "index.png")
+
+![权限](https://images.gitee.com/uploads/images/2020/0323/161108_e2160759_2671379.png "right.png")
+
+![部门](https://images.gitee.com/uploads/images/2020/0323/161121_bb64141a_2671379.png "dept.png")
+
+![角色](https://images.gitee.com/uploads/images/2020/0323/161130_dd791d74_2671379.png "role.png")
+
+![用户](https://images.gitee.com/uploads/images/2020/0323/161138_ea7119a3_2671379.png "user.png")
+
+
 ### 官方社区
 
 [http://bbs.gemframework.com](http://www.gemframework.com/bbs) _推荐单机鼠标右键选择新页面打开_ 
