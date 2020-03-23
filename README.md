@@ -45,19 +45,27 @@ Coral 企业快速开发框架，基于SpringBoot2.2x，MyBatis，Shiro等主流
 
 ![登录页2](https://images.gitee.com/uploads/images/2020/0323/161006_b95bab17_2671379.png "login2.png")
 
+![工作台](https://images.gitee.com/uploads/images/2020/0323/161047_a5ab5c69_2671379.png "index.png")
+
 ![首页](https://images.gitee.com/uploads/images/2020/0323/161024_9c700a8c_2671379.png "home.png")
 
 ![主机监控](https://images.gitee.com/uploads/images/2020/0323/161038_9cc4392f_2671379.png "host.png")
 
-![工作台](https://images.gitee.com/uploads/images/2020/0323/161047_a5ab5c69_2671379.png "index.png")
+![权限new](https://images.gitee.com/uploads/images/2020/0323/162147_5dcd422d_2671379.png "right.png")
 
-![权限](https://images.gitee.com/uploads/images/2020/0323/161108_e2160759_2671379.png "right.png")
+![权限add](https://images.gitee.com/uploads/images/2020/0323/162210_b2aca277_2671379.png "right-add.png")
+
+![用户-add](https://images.gitee.com/uploads/images/2020/0323/162430_ee396a4e_2671379.png "user-add.png")
+
+![用户](https://images.gitee.com/uploads/images/2020/0323/161138_ea7119a3_2671379.png "user.png")
+
+![用户new](https://images.gitee.com/uploads/images/2020/0323/162422_3608148f_2671379.png "user.png")
 
 ![部门](https://images.gitee.com/uploads/images/2020/0323/161121_bb64141a_2671379.png "dept.png")
 
-![角色](https://images.gitee.com/uploads/images/2020/0323/161130_dd791d74_2671379.png "role.png")
+![角色new](https://images.gitee.com/uploads/images/2020/0323/162408_ba28cdce_2671379.png "role.png")
 
-![用户](https://images.gitee.com/uploads/images/2020/0323/161138_ea7119a3_2671379.png "user.png")
+![userinfo](https://images.gitee.com/uploads/images/2020/0323/162457_c3cb16be_2671379.png "userinfo.png")
 
 
 ### 官方社区
