@@ -74,12 +74,6 @@ Coral 企业快速开发框架，基于SpringBoot2.2x，MyBatis，Shiro等主流
 ![userinfo](https://images.gitee.com/uploads/images/2020/0323/162457_c3cb16be_2671379.png "userinfo.png")
 
 
-### 官方社区
-
-[http://bbs.gemframework.com](http://www.gemframework.com/bbs) _推荐单机鼠标右键选择新页面打开_ 
-
-支持我就帮忙在上方依次Watch、Star一波再离开，感激支持！
-
 ### 代码结构
 
 #### 模块结构
@@ -139,13 +133,11 @@ resource
 
 ```
 
+### 官方社区
 
-### 参与贡献
+[http://bbs.gemframework.com](http://www.gemframework.com/bbs) _推荐单机鼠标右键选择新页面打开_ 
 
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
+支持我就帮忙在上方依次Watch、Star一波再离开，感激支持！
 
 ### 问题反馈
 
@@ -156,9 +148,12 @@ resource
 5.  github：https://github.com/gem-team/gem-pearl
 6.  官方网站：http://www.gemframework.com
 7.  官方QQ群：72940788、446017307
-8.  如需关注项目最新动态，#### 演示地址
+8.  如需关注项目最新动态，同时也是对项目最好的支持 技术讨论、二次开发等咨询、问题和建议，请移步到官方社区，我会在第一时间进行解答和回复！
 
-[http://demo.gemframework.com](http://113.59.224.167:9040/admin/index)
-用户名：admin
-密码：123
-，同时也是对项目最好的支持 技术讨论、二次开发等咨询、问题和建议，请移步到官方社区，我会在第一时间进行解答和回复！
+### 参与贡献
+
+1.  Fork 本仓库
+2.  新建 Feat_xxx 分支
+3.  提交代码
+4.  新建 Pull Request
+
