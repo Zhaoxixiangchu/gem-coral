@@ -2,6 +2,9 @@
 **支持我就帮忙在上方依次Watch、Star一波再离开，感激支持！**  
 :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345: :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345: :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345: :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345: :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345: :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345: :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345: :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345: 
 
+![GitHub](https://img.shields.io/github/license/zysh/gem)
+![Custom badge](https://img.shields.io/endpoint?color=blue&label=SpringBoot&logo=2.2&logoColor=2&url=https%3A%2F%2Fgitee.com%2Fgemteam%2Fcoral%2F)
+
 ### 项目介绍
 
 > Coral是Gem家族成员之一，英文发音[ˈkɒrəl] 释义“珊瑚”。2020年首次与大家见面。她美如其名，不但外在美，内在更美...
