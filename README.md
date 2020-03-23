@@ -1,3 +1,7 @@
+:tw-1f1ec:  :tw-1f1ea:  :tw-1f1f2:  :tw-1f1eb:  :tw-1f1f7:  :tw-1f1e6:   :tw-1f1f2:  :tw-1f1ea:     
+**支持我就帮忙在上方依次Watch、Star一波再离开，感激支持！**  
+:tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345: :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345: :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345: :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345: :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345: :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345: :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345: :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345: 
+
 ### 项目介绍
 
 > Coral是Gem家族成员之一，英文发音[ˈkɒrəl] 释义“珊瑚”。2020年首次与大家见面。她美如其名，不但外在美，内在更美...
@@ -35,13 +39,15 @@ Coral 企业快速开发框架，基于SpringBoot2.2x，MyBatis，Shiro等主流
 精细化权限管理，自定义菜单配置，安全身份认证，系统监控，代码生成，示例演示等。官方提供完善的API文档、部署文档、架构介绍文档以及视频教程帮助您快速学习入门，快速上手使用。
 
 
-#### 官方社区
+### 官方社区
 
 [http://bbs.gemframework.com](http://www.gemframework.com/bbs) _推荐单机鼠标右键选择新页面打开_ 
 
 支持我就帮忙在上方依次Watch、Star一波再离开，感激支持！
 
-#### 代码结构
+### 代码结构
+
+#### 模块结构
 ```
 coral 
  |--coral-apirest 为前后端分离提供RESTful API
@@ -99,11 +105,25 @@ resource
 ```
 
 
-#### 参与贡献
+### 参与贡献
 
 1.  Fork 本仓库
 2.  新建 Feat_xxx 分支
 3.  提交代码
 4.  新建 Pull Request
 
+### 问题反馈
 
+1.  开发文档：暂无
+2.  项目文档：http://pearl.mydoc.io/
+3.  官方社区：http://www.gemframework.com/bbs
+4.  gitee：https://gitee.com/zzimo/gem
+5.  github：https://github.com/gem-team/gem-pearl
+6.  官方网站：http://www.gemframework.com
+7.  官方QQ群：72940788、446017307
+8.  如需关注项目最新动态，#### 演示地址
+
+[http://demo.gemframework.com](http://113.59.224.167:9040/admin/index)
+用户名：admin
+密码：123
+，同时也是对项目最好的支持 技术讨论、二次开发等咨询、问题和建议，请移步到官方社区，我会在第一时间进行解答和回复！
