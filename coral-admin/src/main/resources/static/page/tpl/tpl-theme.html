@@ -86,6 +86,7 @@
             var themeName = $(this).attr("data-theme");
             if(themeName == 'theme-white' || themeName == 'theme-colorful' || themeName == 'theme-pink'){
             }
+            console.log("=="+$(this).data('theme'))
             admin.changeTheme($(this).data('theme'));
         });
         var theme = $body.data('theme');

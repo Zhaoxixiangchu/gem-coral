@@ -26,6 +26,7 @@
 <div th:replace="common/scripts :: jquery"></div>
 <div th:replace="common/scripts :: common"></div>
 <div th:replace="common/scripts :: index"></div>
+<div th:replace="common/scripts :: custom"></div>
 <script>
     layui.use(['index'], function () {
         var $ = layui.jquery;
@@ -35,6 +36,10 @@
             menuPath: 'prekit/desk/board.html',
             menuName: '<i class="layui-icon layui-icon-theme"></i>  仪表盘'
         });
+
+        if(top.location.href.indexOf("127.0.0.1") == -1){
+            helloGem();
+        }
     });
 </script>
 </body>
