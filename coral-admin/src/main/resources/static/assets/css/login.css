@@ -1,9 +1,9 @@
 /** 登录页面样式 */
 
 body {
-    background-image: url("../../assets/images/bg_login.png");
+    background-image: url("../../coral/images/bg_login5.png");
     background-position: center 0px;
-    /*background-size: 100%;*/
+    background-size: 100%;
     /*background-repeat: no-repeat;*/
     background-color: #f0f2f5;
 }
@@ -150,16 +150,16 @@ body {
 
 .login-header {
     /*color: rgba(0, 0, 0, 0.85) !important;*/
-    color: rgba(255, 255, 255, 0.85) !important;
+    color: rgba(4, 38, 72, 0.85) !important;
 }
 
 .login-footer {
     /*color: rgba(4, 38, 72, 0.85) !important;*/
-    color: rgba(255, 255, 255, 0.85) !important;
+    color: rgba(4, 38, 72, 0.85) !important;
 }
 
 .login-footer a {
-    color: rgba(255, 255, 255, 0.85) !important;
+    color: rgba(4, 38, 72, 0.85) !important;
 }
 
 .login-footer a:hover {
