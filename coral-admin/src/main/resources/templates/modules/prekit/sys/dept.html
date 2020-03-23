@@ -258,7 +258,7 @@
 </script>
 <!-- js部分 -->
 <div th:replace="common/scripts :: common"></div>
-<script>
+<script th:inline="javascript">
     layui.use(['layer', 'form', 'table','tableX','util', 'admin', 'tree', 'dropdown', 'xmSelect', 'treeTable'], function () {
         var $ = layui.jquery;
         var layer = layui.layer;
@@ -317,7 +317,7 @@
         $('#delBtn').click(function () {
             if (!selObj) return layer.msg('未选择机构', {icon: 2});
             if (selObj.data.id === 0) return layer.msg('系统预设数据，禁止删除', {icon: 4});
-            doDel(selObj);
+            doDel(selObj.data);
         });
 
         /* 显示表单弹窗 */
@@ -374,10 +374,6 @@
 
         /* 删除 */
         function doDel(obj) {
-            //系统数据不让删除
-            if(obj.id === 1){
-                return layer.msg('包含系统预设数据，禁止删除', {icon: 4});
-            }
             layer.confirm('确定要删除此机构吗？', {
                 skin: 'layui-layer-admin',
                 shade: .1
@@ -385,7 +381,7 @@
                 layer.close(i);
                 var loadIndex = layer.load(2);
                 $.post('dept/delete', {
-                    id: obj.data.id,
+                    id: obj.id,
                 }, function (res) {
                     layer.close(loadIndex);
                     if (0 === res.code) {
@@ -449,7 +445,7 @@
             if (obj.event === 'edit') { // 修改
                 showEditModel2(obj.data);
             } else if (obj.event === 'del') { // 删除
-                doDel2(obj);
+                doDel2(obj.data);
             }
         });
 
@@ -553,6 +549,10 @@
 
         /* 删除2 */
         function doDel2(obj) {
+            //管理员不让删除
+            if(obj.id === 1 || obj.ids.indexOf(1) > -1){
+                return layer.msg('包含系统预设数据，禁止删除', {icon: 4});
+            }
             layer.confirm('确定要删除选中用户吗？', {
                 skin: 'layui-layer-admin',
                 shade: .1

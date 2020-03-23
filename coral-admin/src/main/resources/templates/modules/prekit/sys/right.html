@@ -252,22 +252,7 @@
                             console.log("d="+d);
                         }
                     });
-                    // 表单提交事件
-                    form.on('submit(saveBtn)', function (data) {
-                        data.field.pid = insXmSel.getValue('valueStr');
-                        var loadIndex = layer.load(2);
-                        $.post(mData?'right/update':'right/save', data.field, function (res) {
-                            layer.close(loadIndex);
-                            if (res.code === 0) {
-                                layer.close(dIndex);
-                                layer.msg(res.msg, {icon: 1});
-                                insTb.refresh();
-                            } else {
-                                layer.msg(res.msg, {icon: 2});
-                            }
-                        }, 'json');
-                        return false;
-                    });
+
                     // 渲染下拉树
                     var insXmSel = xmSelect.render({
                         el: '#selectTree',
@@ -288,6 +273,26 @@
                             expandedKeys: true
                         }
                     });
+
+                    if(mData){
+                        if ([[${session.session_runtime}]] == 'demo') return layer.msg('演示环境不允许操作，请联系管理员', {icon: 4});
+                    }
+                    // 表单提交事件
+                    form.on('submit(saveBtn)', function (data) {
+                        data.field.pid = insXmSel.getValue('valueStr');
+                        var loadIndex = layer.load(2);
+                        $.post(mData?'right/update':'right/save', data.field, function (res) {
+                            layer.close(loadIndex);
+                            if (res.code === 0) {
+                                layer.close(dIndex);
+                                layer.msg(res.msg, {icon: 1});
+                                insTb.refresh();
+                            } else {
+                                layer.msg(res.msg, {icon: 2});
+                            }
+                        }, 'json');
+                        return false;
+                    });
                     // 弹窗不出现滚动条
                     $(layero).children('.layui-layer-content').css('overflow', 'visible');
 
@@ -297,6 +302,7 @@
 
         // 删除
         function doDel(authorityId, authorityName) {
+            if ([[${session.session_runtime}]] == 'demo') return layer.msg('演示环境不允许操作，请联系管理员', {icon: 4});
             layer.confirm('确定要删除“' + authorityName + '”吗？', {
                 skin: 'layui-layer-admin',
                 shade: .1

@@ -1,6 +1,7 @@
 package com.gemframework.config.shiro;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.gemframework.common.config.GemSystemProperties;
 import com.gemframework.common.constant.GemConstant;
 import com.gemframework.model.entity.po.Right;
 import com.gemframework.model.entity.po.Role;
@@ -46,6 +47,9 @@ public class GemAuthRealm extends AuthorizingRealm {
 
     @Autowired
     private RightService rightService;
+
+    @Autowired
+    private GemSystemProperties gemSystemProperties;
 
     /**
      * 实现授权
@@ -104,6 +108,7 @@ public class GemAuthRealm extends AuthorizingRealm {
             }
             // 把当前用户存到 Session 中
             SecurityUtils.getSubject().getSession().setAttribute("user", user);
+            SecurityUtils.getSubject().getSession().setAttribute("session_runtime",gemSystemProperties.getRuntime());
             AuthenticationInfo authc = new SimpleAuthenticationInfo(user.getUsername(), user.getPassword(), ByteSource.Util.bytes(user.getSalt()),"gemRealm");
             //认证成功就授权
             doGetAuthorizationInfo(authc.getPrincipals());

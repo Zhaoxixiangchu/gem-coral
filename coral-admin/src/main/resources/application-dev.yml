@@ -85,3 +85,25 @@ mybatis-plus:
 
 
 
+gem:
+  security:
+    open: true
+    login-page: /login
+    error-page: /error
+    denied-page: /403
+    nofound-page: /404
+    index-page: /index
+
+  redis:
+    open: true
+
+  swagger:
+    web-package-path: com.gemframework.controller
+
+  system:
+    min: 2
+    max: 22
+    desc: xxdd
+    generate-code-server-path: /app
+    #运行环境 test 测试、demo演示、dev开发、prod生产
+    runtime: demo

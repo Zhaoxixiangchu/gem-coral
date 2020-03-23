@@ -184,7 +184,7 @@
 <!-- js部分 -->
 <div th:replace="common/scripts :: common"></div>
 <div th:replace="common/scripts :: jquery"></div>
-<script>
+<script th:inline="javascript">
     layui.use(['layer', 'form', 'table', 'util', 'admin', 'zTree','tree','steps','formX'], function () {
         var $ = layui.jquery;
         var layer = layui.layer;
@@ -254,7 +254,7 @@
             if (layEvent === 'edit') { // 修改
                 showEditModel(data);
             } else if (layEvent === 'del') { // 删除
-                doDel(obj);
+                doDel(data);
             } else if (layEvent === 'auth') {  // 权限管理
                 showRightModel(data.id);
             }
@@ -298,7 +298,7 @@
                     form.val('dataForm1', mRole);  // 回显数据
                     // 添加权限信息
                     form.on('submit(stepFormSubmit1)', function (data) {
-                        $.post(mData?'role/update':'role/save', data.field, function (res) {
+                        $.post(mRole?'role/update':'role/save', data.field, function (res) {
                             if (res.code == 0) {
                                 form.val('dataForm1', mRole ? mRole:res.data);  // 回显数据
                                 form.val('dataForm2', mRole ? mRole:res.data);  // 回显数据
@@ -327,7 +327,7 @@
 
                     // 设置数据权限
                     form.on('submit(stepFormSubmit2)', function (data) {
-                        $.post(url, data.field, function (res) {
+                        $.post(mRole?'role/update':'role/save', data.field, function (res) {
                             if (res.code == 0) {
                                 admin.btnLoading('[lay-filter="stepFormSubmit2"]');
                                 setTimeout(function () {

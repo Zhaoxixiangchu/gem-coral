@@ -58,6 +58,7 @@ public class DeptController extends BaseController {
         dept.setFullname("集团总部");
         QueryWrapper queryWrapper = makeQueryMaps(vo);
         List list = deptService.list(queryWrapper);
+        list.add(dept);
         return BaseResultData.SUCCESS(list);
     }
 

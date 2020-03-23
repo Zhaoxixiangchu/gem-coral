@@ -1,6 +1,4 @@
-﻿/** EasyWeb iframe v3.1.7 date:2020-03-11 License By http://easyweb.vip */
-
-// 以下代码是配置layui扩展模块的目录，每个页面都需要引入
+﻿// 以下代码是配置layui扩展模块的目录，每个页面都需要引入
 layui.config({
     version: '317',
     base: getProjectUrl() + 'assets/module/'

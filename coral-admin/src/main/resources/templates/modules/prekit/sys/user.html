@@ -131,7 +131,7 @@
 
 <!-- js部分 -->
 <div th:replace="common/scripts :: common"></div>
-<script>
+<script th:inline="javascript">
     layui.use(['layer', 'form', 'table','tableX', 'util', 'admin', 'xmSelect', 'treeTable'], function () {
         var $ = layui.jquery;
         var layer = layui.layer;
