@@ -6,9 +6,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @MapperScan("com.gemframework.mapper")
-public class GemApplication {
+public class GemAdminApplication {
     public static void main(String[] args) {
-        SpringApplication.run(GemApplication.class, args);
+        SpringApplication.run(GemAdminApplication.class, args);
     }
 
 }
