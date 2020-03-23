@@ -4,6 +4,12 @@
 
 ***
 
+### 演示站点
+演示地址：[http://fs.yxsdcti.com:8088/admin/index](http://fs.yxsdcti.com:8088/admin/index)
+演示帐号：admin
+演示密码：123456
+
+***
 ### 项目介绍
 
 > Coral是Gem家族成员之一，英文发音[ˈkɒrəl] 释义“珊瑚”。2020年首次与大家见面。她美如其名，不但外在美，内在更美...
