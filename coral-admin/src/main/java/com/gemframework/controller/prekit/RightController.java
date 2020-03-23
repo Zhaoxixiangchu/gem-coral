@@ -148,7 +148,6 @@ public class RightController extends BaseController {
         //判断用户角色，如果是超级管理员，返回所有
         List<Right> list;
         if(rolesFlag!=null && !rolesFlag.isEmpty()){
-            log.info("rolesFlag==============="+rolesFlag);
             if(rolesFlag.contains(GemConstant.Auth.ADMIN_ROLE_FLAG)){
                 list = rightService.list(queryWrapper);
             }else{
@@ -161,7 +160,6 @@ public class RightController extends BaseController {
             list = rightService.list(queryWrapper);
         }
         List<RightVo> voList = GemBeanUtils.copyCollections(list,RightVo.class);
-        log.info("voList==============="+voList);
         return BaseResultData.SUCCESS(rightTree(voList));
     }
 
