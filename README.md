@@ -170,8 +170,8 @@ resource
 3.  提交代码
 4.  新建 Pull Request
 
-### 请作者喝咖啡（赞赏请备注您的联系方式）
+### 请作者喝杯咖啡
 
-![微信支付](https://images.gitee.com/uploads/images/2020/0324/225514_e980e3d0_2671379.png "微信支付.png")![支付宝](https://images.gitee.com/uploads/images/2020/0324/225522_cb4dd187_2671379.png "支付宝支付.png")
-
-非常感谢您的赞赏，我一直再努力！
+![微信支付](https://images.gitee.com/uploads/images/2020/0324/225514_e980e3d0_2671379.png "微信支付.png")                                        ![支付宝](https://images.gitee.com/uploads/images/2020/0324/225522_cb4dd187_2671379.png "支付宝支付.png")
+ **赞赏请务必备注您的联系方式** 
+ **非常感谢您的赞赏，我一直再努力!**
