@@ -8,6 +8,11 @@
 
 ***
 
+### 扫码进微信群
+---
+![微信名片](https://images.gitee.com/uploads/images/2020/0324/224805_05b27001_2671379.png "1585061251.png")
+
+
 ### 演示站点
 演示地址：[http://fs.yxsdcti.com:8088/admin/index](http://fs.yxsdcti.com:8088/admin/index)
 演示帐号：admin
