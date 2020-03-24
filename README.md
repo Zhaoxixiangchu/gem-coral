@@ -3,6 +3,12 @@
 :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345: :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345: :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345: :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345: :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345: :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345: :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345: :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345: 
 
 ***
+[![QQ1群](https://img.shields.io/badge/QQ%E2%91%A0%E7%BE%A4-72940788-green "QQ1群")](https://shang.qq.com/wpa/qunwpa?idkey=c39908fa28cb73b3e85d697436a52ca91e66b8870d020fcf4f555c51dca13b9a)
+
+[![QQ1群](https://img.shields.io/badge/QQ%E2%91%A0%E7%BE%A4-72940788-green "QQ1群")](https://shang.qq.com/wpa/qunwpa?idkey=c39908fa28cb73b3e85d697436a52ca91e66b8870d020fcf4f555c51dca13b9a)
+
+[![QQ1群](https://img.shields.io/badge/QQ%E2%91%A0%E7%BE%A4-72940788-green "QQ1群")](https://shang.qq.com/wpa/qunwpa?idkey=c39908fa28cb73b3e85d697436a52ca91e66b8870d020fcf4f555c51dca13b9a)
+***
 
 ### 演示站点
 演示地址：[http://fs.yxsdcti.com:8088/admin/index](http://fs.yxsdcti.com:8088/admin/index)
