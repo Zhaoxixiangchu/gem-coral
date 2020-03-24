@@ -8,15 +8,13 @@
 
 ***
 
-### 扫码进微信群
----
-![微信名片](https://images.gitee.com/uploads/images/2020/0324/224805_05b27001_2671379.png "1585061251.png")
-
-
 ### 演示站点
 演示地址：[http://fs.yxsdcti.com:8088/admin/index](http://fs.yxsdcti.com:8088/admin/index)
 演示帐号：admin
 演示密码：123456
+
+### 扫码进微信群
+![微信名片](https://images.gitee.com/uploads/images/2020/0324/224805_05b27001_2671379.png "1585061251.png")
 
 ***
 ### 项目介绍
@@ -172,3 +170,8 @@ resource
 3.  提交代码
 4.  新建 Pull Request
 
+### 请作者喝咖啡（赞赏请备注您的联系方式）
+
+![微信支付](https://images.gitee.com/uploads/images/2020/0324/225514_e980e3d0_2671379.png "微信支付.png")![支付宝](https://images.gitee.com/uploads/images/2020/0324/225522_cb4dd187_2671379.png "支付宝支付.png")
+
+非常感谢您的赞赏，我一直再努力！
