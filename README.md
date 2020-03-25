@@ -6,6 +6,21 @@
 
 [![License](https://img.shields.io/badge/License-MIT-blue)](http://www.gemframework.com) [![SpringBoot](https://img.shields.io/badge/SpringBoot-v2.2.x-blue)](https://spring.io/projects/spring-boot/)  [![MyBatis-Plus](https://img.shields.io/badge/MyBatisPlus-v3.3.x-yellow)](https://spring.io/projects/spring-boot/)  [![Shiro](https://img.shields.io/badge/Shiro-v1.4.x-brightgreen)](http://shiro.apache.org/) [![Layui](https://img.shields.io/badge/Layui-v2.5.6-orange)](http://www.layui.com/) [![Coral](https://img.shields.io/badge/Coral-v1.0.0-blue)](http://www.gemframework.com/) [![QQ1群](https://img.shields.io/badge/QQ%E7%BE%A4:72940788-%E6%BB%A1-red)](https://shang.qq.com/wpa/qunwpa?idkey=c39908fa28cb73b3e85d697436a52ca91e66b8870d020fcf4f555c51dca13b9a) [![QQ2群](https://img.shields.io/badge/QQ%E2%91%A1%E7%BE%A4-650255887-green)](https://shang.qq.com/wpa/qunwpa?idkey=c39908fa28cb73b3e85d697436a52ca91e66b8870d020fcf4f555c51dca13b9a)
 
+#### 最近更新内容如下 v1.0.2 (2020.3.25)
+1.将代码结构分层管理，独立不同作用的common模块其他模块按需引用，可以大大减少代码重复工作量。
+2.“权限标识”字段修改为“权限标识组”，方便对同一事务的权限进行组合授权，使授权机制更加灵活方便。
+3.优化“权限添加”表单字段布局，使操作更简洁，界面更清爽。
+4.权限列表增加“添加子节点”按钮，添加权限更便捷。
+5.权限列表增加“展开所有”，“关闭所有”按钮，方便了树形表格的数据查看
+6.增加保存，编辑的校验器，以及自定义参数校验器
+7.增加演示环境配置，防止误操作
+8.增加系统预设数据保护，防止误操作
+9.增加加密/解密工具类
+10.开启Shiro权限注解
+11.Shiro增加密码加密验证
+12.数据库user表增加salt值，密码采用SHA256算法加密
+13.数据库中完善了系统预设功能的权限数据
+
 ***
 
 ### 演示站点
