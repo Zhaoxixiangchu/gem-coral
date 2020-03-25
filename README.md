@@ -4,6 +4,19 @@
 
 ***
 
+[![License](https://img.shields.io/badge/License-MIT-blue)](http://www.gemframework.com) [![SpringBoot](https://img.shields.io/badge/SpringBoot-v2.2.x-blue)](https://spring.io/projects/spring-boot/)  [![MyBatis-Plus](https://img.shields.io/badge/MyBatisPlus-v3.3.x-yellow)](https://spring.io/projects/spring-boot/)  [![Shiro](https://img.shields.io/badge/Shiro-v1.4.x-brightgreen)](http://shiro.apache.org/) [![Layui](https://img.shields.io/badge/Layui-v2.5.6-orange)](http://www.layui.com/) [![Coral](https://img.shields.io/badge/Coral-v1.0.0-blue)](http://www.gemframework.com/) [![QQ1群](https://img.shields.io/badge/QQ%E7%BE%A4:72940788-%E6%BB%A1-red)](https://shang.qq.com/wpa/qunwpa?idkey=c39908fa28cb73b3e85d697436a52ca91e66b8870d020fcf4f555c51dca13b9a) [![QQ2群](https://img.shields.io/badge/QQ%E2%91%A1%E7%BE%A4-650255887-green)](https://shang.qq.com/wpa/qunwpa?idkey=c39908fa28cb73b3e85d697436a52ca91e66b8870d020fcf4f555c51dca13b9a)
+
+***
+
+### 演示站点
+演示地址：[http://fs.yxsdcti.com:8088/admin/index](http://fs.yxsdcti.com:8088/admin/index)
+演示帐号：admin
+演示密码：123456
+
+### 扫码进微信群
+![微信名片](https://images.gitee.com/uploads/images/2020/0324/224805_05b27001_2671379.png "1585061251.png")
+
+***
 ### 项目介绍
 
 > Coral是Gem家族成员之一，英文发音[ˈkɒrəl] 释义“珊瑚”。2020年首次与大家见面。她美如其名，不但外在美，内在更美...
@@ -38,7 +51,7 @@ Coral 企业快速开发框架，基于SpringBoot2.2x，MyBatis，Shiro等主流
 
 ### 项目理念
 
-这是一个技术栈爆炸的时代，我们不谈概念，不搞逼格，在我看来实际需求的技术选型和功能实现是最重要的，所以让我们一些化繁为简，返璞归真。技术没有好与坏，只有适不适合。我们从不以功能复杂（但无用）为豪，不绑架用户需求为基本原则，坚持开发出更多、更实用、更落地的功能/组件！
+这是一个技术栈爆炸的时代，我们不谈概念，不搞逼格，在我看来实际需求的技术选型和功能实现是最重要的，技术没有好与坏，只有适不适合，所以我们一起化繁为简，轻装上阵。我们从不以功能复杂（但无用）为豪，以不绑架用户需求为基本原则，坚持开发出更多、更实用、更落地的功能/组件！
 
 ### 基础能力
 
@@ -157,3 +170,8 @@ resource
 3.  提交代码
 4.  新建 Pull Request
 
+### 请作者喝杯咖啡
+
+![微信支付](https://images.gitee.com/uploads/images/2020/0324/225514_e980e3d0_2671379.png "微信支付.png")                                        ![支付宝](https://images.gitee.com/uploads/images/2020/0324/225522_cb4dd187_2671379.png "支付宝支付.png")
+##### 赞赏请务必备注您的联系方式
+ **非常感谢您的赞赏，我一直再努力!**
