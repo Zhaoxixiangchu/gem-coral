@@ -18,9 +18,9 @@ public class RightVo extends BaseEntityVo {
     //名称
     @NotBlank(message = "名称不能为空",groups = SuperValidator.class)
     private String name;
-    //标识
+    //标识组 多个以逗号隔开
     @NotBlank(message = "标识不能为空",groups = SuperValidator.class)
-    private String flag;
+    private String flags;
     //图标
     private String icon;
     //链接

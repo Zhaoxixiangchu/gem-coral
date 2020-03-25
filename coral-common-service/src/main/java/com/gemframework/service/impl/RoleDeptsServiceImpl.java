@@ -1,6 +1,5 @@
 package com.gemframework.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gemframework.mapper.RoleDeptsMapper;
 import com.gemframework.model.entity.po.RoleDepts;

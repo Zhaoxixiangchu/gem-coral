@@ -41,8 +41,9 @@ public class RightServiceImpl extends ServiceImpl<RightMapper, Right> implements
                         for(RoleRights roleRight:roleRights){
                             if(roleRight!=null && roleRight.getRightId()!=null){
                                 Right right = rightService.getById(roleRight.getRightId());
-                                if(right!=null && StringUtils.isNotBlank(right.getFlag())){
-                                    rightsSet.add(right.getFlag());
+                                if(right!=null && StringUtils.isNotBlank(right.getFlags())){
+//                                    rightsSet.add(right.getFlag());
+                                    rightsSet.addAll(Arrays.asList(right.getFlags().trim().split(",")));
                                 }
                             }
                         }

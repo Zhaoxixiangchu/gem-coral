@@ -1,6 +1,5 @@
 package com.gemframework.service.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gemframework.mapper.UserRolesMapper;

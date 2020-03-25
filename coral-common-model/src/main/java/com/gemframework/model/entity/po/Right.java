@@ -23,8 +23,8 @@ public class Right extends BaseEntityPo {
     private Long pid;
     //名称
     private String name;
-    //标识
-    private String flag;
+    //标识组 多个以逗号隔开
+    private String flags;
     //图标
     private String icon;
     //链接
