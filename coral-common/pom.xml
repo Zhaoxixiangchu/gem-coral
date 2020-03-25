@@ -7,7 +7,6 @@
         <artifactId>coral</artifactId>
         <groupId>com.gemframework</groupId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath/>
     </parent>
 
     <artifactId>coral-common</artifactId>

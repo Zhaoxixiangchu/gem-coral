@@ -19,6 +19,13 @@ public enum ErrorCode {
     SUCCESS(0,"返回成功"),
     NOT_LOGINED(100,"用户未登录"),
     LOGIN_FAIL(101,"登录验证失败"),
+    //登录失败具体原因
+    LOGIN_FAIL_UNKNOWNACCOUNT(102,"未知账号"),
+    LOGIN_FAIL_INCORRECTCREDENTIALS(103,"密码或用户名错误"),
+    LOGIN_FAIL_LOCKEDACCOUNT(104,"账号被锁定,请联系管理员"),
+    LOGIN_FAIL_EXCESSIVEATTEMPTS(105,"尝试次数过多账号有风险"),
+    LOGIN_FAIL_AUTHENTICATION(106,"认证失败"),
+
     UNKNOWN_REQUEST(404,"未知请求"),
     PERMISSION_DENIED(403,"权限不足"),
 

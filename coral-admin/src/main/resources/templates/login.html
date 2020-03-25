@@ -42,7 +42,7 @@
     <a href="http://www.gemframework.com" target="_blank" style="color: #FFF"> gemframework.com </a>版权所有</div>
 <style>
     body {
-        background-image: url("coral/images/bg-login.jpg");
+        background-image: url("coral/images/bg_login5.png");
         background-repeat: no-repeat;
         background-size: cover;
         min-height: 100vh;
@@ -204,7 +204,6 @@
                 async:true, // 异步请求
                 cache:false, // 设置为 false 将不缓存此页面
                 dataType: "json", // 返回对象
-                // contentType:"application/json;charset=UTF-8",
                 success: function(res) {
                     if (res.code == "0") {
                         layer.msg('登录成功', {icon: 1, time: 1500}, function () {
@@ -213,16 +212,11 @@
                     }else {
                         notice.error({
                             title: '登录失败',
-                            message: "错误码：["+res.code+"] 错误消息["+res.msg+"]",
+                            message: "错误码：["+res.code+"]    错误消息："+res.msg+"",
                             theme: "light",
                             displayMode: 2,
                             layout:2
                         });
-                        // notice.msg("错误码：["+res.code+"] 错误消息["+res.msg+"]", {
-                        //     icon: 2,
-                        //     displayMode: 2,
-                        //     layout:2
-                        // });
                     }
                 },
                 error: function(e) {

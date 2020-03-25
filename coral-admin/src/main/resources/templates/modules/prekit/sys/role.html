@@ -300,7 +300,6 @@
                     form.on('submit(stepFormSubmit1)', function (data) {
                         $.post(mRole?'role/update':'role/save', data.field, function (res) {
                             if (res.code == 0) {
-                                form.val('dataForm1', mRole ? mRole:res.data);  // 回显数据
                                 form.val('dataForm2', mRole ? mRole:res.data);  // 回显数据
                                 //设置数据权限按钮
                                 $("#setDeptsBtn").off("click");

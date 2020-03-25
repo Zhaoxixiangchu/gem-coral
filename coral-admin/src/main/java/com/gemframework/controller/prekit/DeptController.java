@@ -62,6 +62,32 @@ public class DeptController extends BaseController {
         return BaseResultData.SUCCESS(list);
     }
 
+
+    /***
+     * 获取部门树
+     * @return
+     */
+    @GetMapping("/tree")
+    @RequiresPermissions("dept:tree")
+    public BaseResultData tree(){
+        QueryWrapper queryWrapper = setSort();
+        List<Dept> list = deptService.list(queryWrapper);
+        List<ZtreeEntity> ztreeEntities = initRootTree();
+        for(Dept entity:list){
+            ZtreeEntity ztreeEntity = ZtreeEntity.builder()
+                    .id(entity.getId())
+                    .pid(entity.getPid())
+                    .name(entity.getName())
+                    .title(entity.getName())
+                    .level(entity.getLevel())
+                    .open(true)
+                    .nocheck(false)
+                    .build();
+            ztreeEntities.add(ztreeEntity);
+        }
+        return BaseResultData.SUCCESS(toTree(ztreeEntities));
+    }
+
     /**
      * 添加或编辑
      * @return
@@ -109,29 +135,4 @@ public class DeptController extends BaseController {
         return BaseResultData.SUCCESS();
     }
 
-
-    /***
-     * 获取部门树
-     * @return
-     */
-    @GetMapping("/tree")
-    @RequiresPermissions("dept:tree")
-    public BaseResultData tree(){
-        QueryWrapper queryWrapper = setSort();
-        List<Dept> list = deptService.list(queryWrapper);
-        List<ZtreeEntity> ztreeEntities = initRootTree();
-        for(Dept entity:list){
-            ZtreeEntity ztreeEntity = ZtreeEntity.builder()
-                    .id(entity.getId())
-                    .pid(entity.getPid())
-                    .name(entity.getName())
-                    .title(entity.getName())
-                    .level(entity.getLevel())
-                    .open(true)
-                    .nocheck(false)
-                    .build();
-            ztreeEntities.add(ztreeEntity);
-        }
-        return BaseResultData.SUCCESS(toTree(ztreeEntities));
-    }
 }

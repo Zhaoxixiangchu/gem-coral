@@ -6,6 +6,7 @@ import com.gemframework.common.constant.GemConstant;
 import com.gemframework.model.entity.po.Right;
 import com.gemframework.model.entity.po.Role;
 import com.gemframework.model.entity.po.User;
+import com.gemframework.model.enums.ErrorCode;
 import com.gemframework.service.RightService;
 import com.gemframework.service.RoleService;
 import com.gemframework.service.UserService;
@@ -22,6 +23,7 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -76,8 +78,8 @@ public class GemAuthRealm extends AuthorizingRealm {
             List<Right> rights = rightService.list();
             if(rights!=null && !rights.isEmpty()){
                 for(Right right:rights){
-                    if(right!=null && StringUtils.isNotBlank(right.getFlag())){
-                        rightsSet.add(right.getFlag());
+                    if(right!=null && StringUtils.isNotBlank(right.getFlags())){
+                        rightsSet.addAll(Arrays.asList(right.getFlags().trim().split(",")));
                     }
                 }
             }
@@ -104,7 +106,7 @@ public class GemAuthRealm extends AuthorizingRealm {
         if(user != null) {
             //账号锁定
             if(user.getStatus() == 1){
-                throw new LockedAccountException("账号被锁定,请联系管理员");
+                throw new LockedAccountException(ErrorCode.LOGIN_FAIL_LOCKEDACCOUNT.getMsg());
             }
             // 把当前用户存到 Session 中
             SecurityUtils.getSubject().getSession().setAttribute("user", user);

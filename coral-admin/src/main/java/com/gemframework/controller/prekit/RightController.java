@@ -122,7 +122,7 @@ public class RightController extends BaseController {
             ZtreeEntity ztreeEntity = ZtreeEntity.builder()
                     .id(entity.getId())
                     .pid(entity.getPid())
-                    .name(entity.getName()+" "+entity.getFlag())
+                    .name(entity.getName()+" "+entity.getFlags())
                     .title(entity.getName())
                     .level(entity.getLevel())
                     .open(true)

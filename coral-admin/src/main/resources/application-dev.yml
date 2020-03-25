@@ -106,4 +106,4 @@ gem:
     desc: xxdd
     generate-code-server-path: /app
     #运行环境 test 测试、demo演示、dev开发、prod生产
-    runtime: demo
+    runtime: dev

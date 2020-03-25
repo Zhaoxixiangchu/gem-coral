@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static com.gemframework.model.enums.ErrorCode.LOGIN_FAIL;
+import static com.gemframework.model.enums.ErrorCode.*;
 
 @Slf4j
 @Controller
@@ -36,15 +36,15 @@ public class LoginController {
         // 提交认证
             subject.login(token);
         } catch (UnknownAccountException uae) {
-            log.info("未知账户");
+            return BaseResultData.ERROR(LOGIN_FAIL_UNKNOWNACCOUNT);
         } catch (IncorrectCredentialsException ice) {
-            log.info("密码不正确");
+            return BaseResultData.ERROR(LOGIN_FAIL_INCORRECTCREDENTIALS);
         } catch (LockedAccountException lae) {
-            log.info("账户已锁定");
+            return BaseResultData.ERROR(LOGIN_FAIL_LOCKEDACCOUNT);
         } catch (ExcessiveAttemptsException eae) {
-            log.info("用户名或密码错误次数过多");
+            return BaseResultData.ERROR(LOGIN_FAIL_EXCESSIVEATTEMPTS);
         } catch (AuthenticationException ae) {
-            log.info("用户名或密码不正确");
+            return BaseResultData.ERROR(LOGIN_FAIL_AUTHENTICATION);
         }
         if (subject.isAuthenticated()) {
             log.info("登录成功...");
