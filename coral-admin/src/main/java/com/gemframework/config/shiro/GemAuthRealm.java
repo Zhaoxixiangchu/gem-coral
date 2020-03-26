@@ -1,6 +1,13 @@
+/**
+ * 开源版本请务必保留此注释头信息，若删除gemframe官方保留所有法律责任追究！
+ * 本软件受国家版权局以及国家计算机软件著作权保护（登记号：2018SR503328）
+ * 不得恶意分享产品源代码、二次转售等，违者必究。
+ * Copyright (c) 2020 gemframework all rights reserved.
+ * http://www.gemframework.com
+ * 版权所有，侵权必究！
+ */
 package com.gemframework.config.shiro;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.gemframework.common.config.GemSystemProperties;
 import com.gemframework.common.constant.GemConstant;
 import com.gemframework.model.entity.po.Right;
@@ -61,13 +68,13 @@ public class GemAuthRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         String username = (String) principalCollection.getPrimaryPrincipal();
-        log.info(username+"授权验证======================");
+        //授权验证
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
+        //获取拥有角色标识组
         Set<String> rolesFlagSet = roleService.findRolesFlagByUsername(username);
         authorizationInfo.setRoles(rolesFlagSet);
+        //获取拥有角色
         Set<Role> roles = roleService.findRolesByFlags(rolesFlagSet);
-        log.info(username+"拥有角色标识======================"+rolesFlagSet);
-        log.info(username+"拥有角色======================"+roles);
         // 把角色集合存到 Session 中
         SecurityUtils.getSubject().getSession().setAttribute("roleFlags", rolesFlagSet);
         SecurityUtils.getSubject().getSession().setAttribute("roles", roles);
