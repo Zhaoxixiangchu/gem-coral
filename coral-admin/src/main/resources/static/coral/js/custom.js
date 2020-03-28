@@ -20,7 +20,6 @@ function getWechat() {
     });
 }
 
-
 function helloGem() {
     /*layer弹出一个示例*/
     layer.open({
@@ -51,4 +50,43 @@ function helloGem() {
             });
         }
     });
+}
+
+function shiroToolbar(shiroSave,shiroDelete) {
+    //工具栏 按钮
+    var toolbarHtml ='<p>';
+    if(shiroSave){
+        toolbarHtml += '<button lay-event="add" class="layui-btn layui-btn-sm icon-btn">' +
+            '<i class="layui-icon">&#xe654;</i>添加</button>&nbsp;';
+    }
+    if(shiroDelete){
+        toolbarHtml += '<button lay-event="del" class="layui-btn layui-btn-sm layui-btn-danger icon-btn">' +
+            '<i class="layui-icon">&#xe640;</i>删除</button>';
+    }
+    toolbarHtml += '</p>';
+    return toolbarHtml;
+}
+
+function shiroBindCtxMenu(shiroDelete,shiroUpdate) {
+    //右键绑定按钮
+    var bindCtxMenu = [];
+    if(shiroDelete){
+        bindCtxMenu.push({
+            icon: 'layui-icon layui-icon-close text-danger',
+            name: '<span class="text-danger">删除</span>',
+            click: function (d) {
+                doDel(d);
+            }
+        })
+    }
+    if(shiroUpdate){
+        bindCtxMenu.push({
+            icon: 'layui-icon layui-icon-edit',
+            name: '修改',
+            click: function (d) {
+                showEditModel(d);
+            }
+        })
+    }
+    return bindCtxMenu;
 }

@@ -34,6 +34,7 @@
         <coral.version>${version}</coral.version>
         <baomidou.version>3.3.1.tmp</baomidou.version>
         <shiro.version>1.4.0</shiro.version>
+        <shiro.tag.version>2.0.0</shiro.tag.version>
         <commons.lang.version>2.6</commons.lang.version>
         <commons.io.version>2.5</commons.io.version>
         <commons.conf.version>1.10</commons.conf.version>
@@ -88,6 +89,12 @@
                 <version>${shiro.version}</version>
             </dependency>
 
+            <!--Thymeleaf模版引擎中使用shiro-->
+            <dependency>
+                <groupId>com.github.theborakompanioni</groupId>
+                <artifactId>thymeleaf-extras-shiro</artifactId>
+                <version>${shiro.tag.version}</version>
+            </dependency>
 
             <!--commons-->
             <dependency>

@@ -7,6 +7,7 @@
  * 版权所有，侵权必究！
  */
 package com.gemframework.config.shiro;
+import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
@@ -21,6 +22,16 @@ import org.springframework.context.annotation.Configuration;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * @Title: ShiroConfig
+ * @Package: com.gemframework.config.shiro
+ * @Date: 2020-03-27 13:16:03
+ * @Version: v1.0
+ * @Description: Shiro配置
+ * @Author: nine QQ 769990999
+ * @Copyright: Copyright (c) 2020 wanyong
+ * @Company: www.gemframework.com
+ */
 @Slf4j
 @Configuration
 public class ShiroConfig {
@@ -46,9 +57,6 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/coral/**", "anon");
         filterChainDefinitionMap.put("/assets/**", "anon");
         filterChainDefinitionMap.put("/katcha/code", "anon");
-
-//        filterChainDefinitionMap.put("/admin/**", "authc");
-//        filterChainDefinitionMap.put("/user/**", "authc");
 
         //注意：这行代码必须放在所有权限设置的最后，不然会导致所有 url 都被拦截
         filterChainDefinitionMap.put("/**", "authc");//剩余的都需要认证
@@ -88,6 +96,12 @@ public class ShiroConfig {
         cookieRememberMeManager.setCookie(simpleCookie);
         cookieRememberMeManager.setCipherKey(ShiroUtils.REMEMBERME_CIPHERKEY.getBytes());
         return cookieRememberMeManager;
+    }
+
+    //Shiro方言 用于页面标签/表达式
+    @Bean(name = "shiroDialect")
+    public ShiroDialect shiroDialect(){
+        return new ShiroDialect();
     }
 
     //开启注解

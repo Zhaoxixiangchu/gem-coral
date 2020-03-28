@@ -7,7 +7,7 @@
 * 版权所有，侵权必究！
 -->
 <!DOCTYPE html>
-<html lang="zh-cn" class="fullscreen-bg" xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-cn" class="fullscreen-bg" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head th:replace="common/links :: common_header(~{::title},~{::style},~{})">
 <title>权限管理</title>
     <style>
@@ -40,7 +40,7 @@
                         <button class="layui-btn icon-btn" lay-filter="searchBtn" lay-submit>
                             <i class="layui-icon">&#xe615;</i>搜索
                         </button>&nbsp;
-                        <button id="addBtn" class="layui-btn icon-btn" type="button">
+                        <button shiro:hasPermission="right:save" id="addBtn" class="layui-btn icon-btn" type="button">
                             <i class="layui-icon">&#xe654;</i>添加
                         </button>
                         <button id="expandAllBtn" class="layui-btn icon-btn" type="button">
@@ -60,9 +60,9 @@
 
 <!-- 表格操作列 -->
 <script type="text/html" id="tableBarAuth">
-    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-    <a class="layui-btn layui-btn-xs" lay-event="addChild">添加子节点</a>
+    <a shiro:hasPermission="right:update" class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
+    <a shiro:hasPermission="right:delete" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a shiro:hasPermission="right:addchild" class="layui-btn layui-btn-xs" lay-event="addChild">添加子节点</a>
 </script>
 <!-- 表单弹窗 -->
 <script type="text/html" id="modelAuth">
@@ -316,7 +316,7 @@
         }
 
         // 删除
-        function doDel(authorityId, authorityName) {
+        window.doDel = function(authorityId, authorityName){
             if ([[${session.session_runtime}]] == 'demo') return layer.msg('演示环境不允许操作，请联系管理员', {icon: 4});
             layer.confirm('确定要删除“' + authorityName + '”吗？', {
                 skin: 'layui-layer-admin',

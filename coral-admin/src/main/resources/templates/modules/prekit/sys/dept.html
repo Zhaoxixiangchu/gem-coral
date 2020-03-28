@@ -7,7 +7,7 @@
 * 版权所有，侵权必究！
 -->
 <!DOCTYPE html>
-<html lang="zh-cn" class="fullscreen-bg" xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-cn" class="fullscreen-bg" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head th:replace="common/links :: common_header(~{::title},~{},~{::style})">
     <title>机构管理</title>
     <style>
@@ -59,14 +59,13 @@
                 <div class="layui-card-body" style="padding: 10px;">
                     <!-- 树工具栏 -->
                     <div class="layui-form toolbar" id="organizationTreeBar">
-                        <button id="addBtn" class="layui-btn layui-btn-sm icon-btn">
+                        <button shiro:hasPermission="dept:save" id="addBtn" class="layui-btn layui-btn-sm icon-btn">
                             <i class="layui-icon">&#xe654;</i>添加
                         </button>&nbsp;
-                        <button id="editBtn" class="layui-btn layui-btn-sm layui-btn-warm icon-btn">
+                        <button shiro:hasPermission="dept:update" id="editBtn" class="layui-btn layui-btn-sm layui-btn-warm icon-btn">
                             <i class="layui-icon">&#xe642;</i>修改
                         </button>&nbsp;
-                        <button id="delBtn"
-                                class="layui-btn layui-btn-sm layui-btn-danger icon-btn">
+                        <button shiro:hasPermission="dept:delete" id="delBtn" class="layui-btn layui-btn-sm layui-btn-danger icon-btn">
                             <i class="layui-icon">&#xe640;</i>删除
                         </button>
                     </div>
@@ -150,17 +149,18 @@
 
 <!-- 用户表格操作列 -->
 <script type="text/html" id="userTableBar">
-    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a shiro:hasPermission="user:update" class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
+    <a shiro:hasPermission="user:delete" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
+
 <!-- 用户表格工具列 -->
 <script type="text/html" id="userToolBar">
-    <button lay-event="add" class="layui-btn layui-btn-sm icon-btn">
+    <button shiro:hasPermission="user:save" lay-event="add" class="layui-btn layui-btn-sm icon-btn">
         <i class="layui-icon">&#xe654;</i>添加
-    </button>&nbsp;
-    <button lay-event="del" class="layui-btn layui-btn-sm layui-btn-danger icon-btn">
+    </button>
+    <button shiro:hasPermission="user:delete" lay-event="del" class="layui-btn layui-btn-sm layui-btn-danger icon-btn">
         <i class="layui-icon">&#xe640;</i>删除
-    </button>&nbsp;
+    </button>
     <div class="dropdown-menu">
         <button class="layui-btn layui-btn-sm layui-btn-warm icon-btn">
             <i class="layui-icon">&#xe615;</i>搜索
@@ -381,7 +381,7 @@
         }
 
         /* 删除 */
-        function doDel(obj) {
+        window.doDel = function(obj){
             layer.confirm('确定要删除此机构吗？', {
                 skin: 'layui-layer-admin',
                 shade: .1
@@ -556,9 +556,9 @@
         }
 
         /* 删除2 */
-        function doDel2(obj) {
+        window.doDel2 = function(obj){
             //管理员不让删除
-            if(obj.id === 1 || obj.ids.indexOf(1) > -1){
+            if(obj.id === 1 || (obj.ids && obj.ids.indexOf(1) > -1)){
                 return layer.msg('包含系统预设数据，禁止删除', {icon: 4});
             }
             layer.confirm('确定要删除选中用户吗？', {

@@ -36,11 +36,18 @@
             <artifactId>shiro-core</artifactId>
         </dependency>
 
+        <!--Thymeleaf模版引擎中使用shiro-->
+        <dependency>
+            <groupId>com.github.theborakompanioni</groupId>
+            <artifactId>thymeleaf-extras-shiro</artifactId>
+        </dependency>
+
         <!--Thymeleaf模版引擎-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
+
         <!--WEB相关 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

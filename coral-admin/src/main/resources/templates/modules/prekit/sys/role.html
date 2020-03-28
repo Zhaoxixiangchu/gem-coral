@@ -7,7 +7,7 @@
 * 版权所有，侵权必究！
 -->
 <!DOCTYPE html>
-<html lang="zh-cn" class="fullscreen-bg" xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-cn" class="fullscreen-bg" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head th:replace="common/links :: common_header(~{::title},~{},~{})">
     <title>角色管理</title>
 </head>
@@ -51,9 +51,9 @@
 </div>
 <!-- 表格操作列 -->
 <script type="text/html" id="tableBar">
-    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-    <a class="layui-btn layui-btn-xs" lay-event="auth">权限分配</a>
+    <a shiro:hasPermission="role:update" class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
+    <a shiro:hasPermission="role:delete" class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+    <a shiro:hasAllPermissions="right:tree,roleRights:list,roleRights:save" class="layui-btn layui-btn-xs" lay-event="auth">权限分配</a>
 </script>
 <!-- 表单弹窗 -->
 <script type="text/html" id="formDialog">
@@ -188,10 +188,21 @@
         </div>
     </div>
 </script>
-
+<!-- 设置Shiro权限变量 -->
+<shiro:hasAllPermissions name="role:save">
+    <script>shiroSave = true;</script>
+</shiro:hasAllPermissions>
+<shiro:hasAnyPermissions name="role:delete">
+    <script>shiroDelete = true;</script>
+</shiro:hasAnyPermissions>
+<shiro:hasAnyPermissions name="role:update">
+    <script>shiroEdit = true;</script>
+</shiro:hasAnyPermissions>
 <!-- js部分 -->
 <div th:replace="common/scripts :: common"></div>
 <div th:replace="common/scripts :: jquery"></div>
+<div th:replace="common/scripts :: custom"></div>
+<div th:replace="common/shiro :: roleShiroTag"></div>
 <script th:inline="javascript">
     layui.use(['layer', 'form', 'table', 'util', 'admin', 'zTree','tree','steps','formX'], function () {
         var $ = layui.jquery;
@@ -218,10 +229,7 @@
             elem: '#dataTable',
             url: 'role/page',
             page: true,
-            toolbar: ['<p>',
-                '<button lay-event="add" class="layui-btn layui-btn-sm icon-btn"><i class="layui-icon">&#xe654;</i>添加</button>&nbsp;',
-                '<button lay-event="del" class="layui-btn layui-btn-sm layui-btn-danger icon-btn"><i class="layui-icon">&#xe640;</i>删除</button>',
-                '</p>'].join(''),
+            toolbar: [shiroToolbar(shiroSave,shiroDelete,shiroEdit,shiroInfo)].join(''),
             cellMinWidth: 100,
             cols: [cols],
             done: function (res) {
@@ -269,9 +277,9 @@
         });
 
         /* 删除 */
-        function doDel(obj) {
+        window.doDel = function(obj){
             //系统数据不让删除
-            if(obj.id === 1 || obj.ids.indexOf(1) > -1){
+            if(obj.id === 1 || (obj.ids && obj.ids.indexOf(1) > -1)){
                 return layer.msg('包含系统预设数据，禁止删除', {icon: 4});
             }
             layer.confirm('确定要删除选中数据吗？', {
