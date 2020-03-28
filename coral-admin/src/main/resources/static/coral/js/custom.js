@@ -52,6 +52,7 @@ function helloGem() {
     });
 }
 
+//获取shiro工具栏按钮
 function shiroToolbar(shiroSave,shiroDelete) {
     //工具栏 按钮
     var toolbarHtml ='<p>';
@@ -67,6 +68,7 @@ function shiroToolbar(shiroSave,shiroDelete) {
     return toolbarHtml;
 }
 
+//获取shiro右键绑定按钮
 function shiroBindCtxMenu(shiroDelete,shiroUpdate) {
     //右键绑定按钮
     var bindCtxMenu = [];
