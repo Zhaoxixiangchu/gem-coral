@@ -8,14 +8,21 @@
  */
 package com.gemframework.config.shiro;
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
+import com.gemframework.config.shiro.session.GemCacheSessionDao;
+import com.gemframework.config.shiro.session.GemSessionListener;
+import com.gemframework.config.shiro.session.GemSessionManager;
+import com.gemframework.config.shiro.session.GemRedisSessionDao;
+import com.gemframework.config.shiro.cache.GemCacheManager;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -35,6 +42,9 @@ import java.util.Map;
 @Slf4j
 @Configuration
 public class ShiroConfig {
+
+    @Autowired
+    GemCacheManager shiroRedisCacheManager;
 
     /**
      * 配置shiro过滤器
@@ -74,7 +84,11 @@ public class ShiroConfig {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         //注册自定义realm
         securityManager.setRealm(gemAuthRealm());
+        //注册记住我
         securityManager.setRememberMeManager(cookieRememberMeManager());
+        //配置自定义session管理，使用redis
+        securityManager.setSessionManager(sessionManager());
+//        securityManager.setCacheManager(shiroRedisCacheManager);
         log.info("====SecurityManager注册完成====");
         return securityManager;
     }
@@ -97,6 +111,70 @@ public class ShiroConfig {
         cookieRememberMeManager.setCipherKey(ShiroUtils.REMEMBERME_CIPHERKEY.getBytes());
         return cookieRememberMeManager;
     }
+
+
+    /**
+     * 配置会话管理器，设定会话超时及保存
+     * @return
+     */
+    @Bean("sessionManager")
+    public SessionManager sessionManager() {
+        GemSessionManager sessionManager = new GemSessionManager();
+        //配置监听
+//        Collection<SessionListener> listeners = new ArrayList<>();
+//        listeners.add(sessionListener());
+//        sessionManager.setSessionListeners(listeners);
+
+        sessionManager.setSessionDAO(redisSessionDao());
+//        sessionManager.setSessionDAO(cacheSessionDao());
+
+        //全局会话超时时间（单位毫秒），默认30分钟  暂时设置为10秒钟 用来测试
+//        sessionManager.setGlobalSessionTimeout(1000 * 60 * 30);
+//        //是否开启删除无效的session对象  默认为true
+//        sessionManager.setDeleteInvalidSessions(true);
+//        //是否开启定时调度器进行检测过期session 默认为true
+//        sessionManager.setSessionValidationSchedulerEnabled(true);
+//        //设置session失效的扫描时间, 清理用户直接关闭浏览器造成的孤立会话 默认为 1个小时
+//        //设置该属性 就不需要设置 ExecutorServiceSessionValidationScheduler
+//        //底层也是默认自动调用ExecutorServiceSessionValidationScheduler
+//        //暂时设置为 5秒 用来测试
+//        sessionManager.setSessionValidationInterval(5000);
+//        //取消url 后面的 JSESSIONID
+//        sessionManager.setSessionIdUrlRewritingEnabled(false);
+        return sessionManager;
+    }
+
+    /**
+     * 配置session监听
+     * @return
+     */
+    @Bean("sessionListener")
+    public GemSessionListener sessionListener(){
+        GemSessionListener sessionListener = new GemSessionListener();
+        return sessionListener;
+    }
+
+    /**
+     * 配置session持久化
+     * @return
+     */
+    @Bean("redisSessionDao")
+    public GemRedisSessionDao redisSessionDao(){
+        GemRedisSessionDao gemRedisSessionDao = new GemRedisSessionDao();
+        return gemRedisSessionDao;
+    }
+
+    /**
+     * 配置开启缓存+session持久化
+     * @return
+     */
+    @Bean("cacheSessionDao")
+    public GemCacheSessionDao cacheSessionDao(){
+        GemCacheSessionDao gemCacheSessionDao = new GemCacheSessionDao();
+        return gemCacheSessionDao;
+    }
+
+
 
     //Shiro方言 用于页面标签/表达式
     @Bean(name = "shiroDialect")

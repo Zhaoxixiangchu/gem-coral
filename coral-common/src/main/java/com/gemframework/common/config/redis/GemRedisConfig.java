@@ -8,10 +8,6 @@
  */
 package com.gemframework.common.config.redis;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.session.SessionProperties;
-import org.springframework.boot.autoconfigure.session.StoreType;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;

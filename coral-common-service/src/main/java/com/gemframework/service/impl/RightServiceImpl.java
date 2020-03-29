@@ -15,8 +15,10 @@ import com.gemframework.mapper.RightMapper;
 import com.gemframework.model.entity.po.Right;
 import com.gemframework.model.entity.po.Role;
 import com.gemframework.model.entity.po.RoleRights;
+import com.gemframework.model.enums.MenuType;
 import com.gemframework.service.RightService;
 import com.gemframework.service.RoleRightsService;
+import com.gemframework.service.RoleService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +31,9 @@ public class RightServiceImpl extends ServiceImpl<RightMapper, Right> implements
 
     @Autowired
     private RightMapper rightMapper;
+
+    @Autowired
+    private RoleService roleService;
 
     @Autowired
     private RightService rightService;
@@ -65,28 +70,18 @@ public class RightServiceImpl extends ServiceImpl<RightMapper, Right> implements
 
 
     @Override
-    public List<Right> findRightsByRolesAndType(Set<Role> roles,  Map<Object,Object> map) {
+    public List<Right> findRightsByRolesAndType(Set<String> roleFlags, MenuType type) {
         //用户权限列表
         List<Right> rightsList = new ArrayList<>();
+        Set<Role> roles = roleService.findRolesByFlags(roleFlags);
         if(roles != null && !roles.isEmpty()){
-            for(Role role:roles){
+            for(Role role:roles) {
+                Map<Object,Object> map = new HashMap<>();
+                map.put("type",type.getCode());
                 map.put("role_id",role.getId());
                 rightsList = rightMapper.findRightsByRoleAndType(map);
-//                if(role!=null && role.getId()!= null){
-//                    queryWrapper.eq("role_id",role.getId());
-//                    List<RoleRights> roleRights = roleRightsService.list(queryWrapper);
-//                    if(roleRights!=null && !roleRights.isEmpty()){
-//                        for(RoleRights roleRight:roleRights){
-//                            if(roleRight!=null && roleRight.getRightId()!=null){
-//                                Right right = rightService.getById(roleRight.getRightId());
-//                                if(right!=null){
-//                                    rightsList.add(right);
-//                                }
-//                            }
-//                        }
-//                    }
-                }
             }
+        }
         return rightsList;
     }
 }

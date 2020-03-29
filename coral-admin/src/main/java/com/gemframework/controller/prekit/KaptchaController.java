@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -48,7 +49,14 @@ public class KaptchaController {
          */
         String createText = defaultKaptcha.createText();
         HttpSession session = request.getSession();
-        session.setAttribute(KAPTCHA_SESSION_KEY, createText);
+        Cookie[] cookies = request.getCookies();
+        if (cookies!=null) {
+            for (Cookie cookie : cookies) {
+                if(cookie.getName().equalsIgnoreCase("JSESSIONID")){
+                    session.setAttribute(KAPTCHA_SESSION_KEY+":"+cookie.getValue(), createText);
+                }
+            }
+        }
         /**
          * 使用生成的验证码字符串返回一个BufferedImage对象并转为byte写入到byte数组中
          */

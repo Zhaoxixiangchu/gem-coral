@@ -9,7 +9,9 @@
 package com.gemframework.config.shiro;
 
 import com.gemframework.common.config.GemSystemProperties;
+import com.gemframework.common.config.redis.GemRedisProperties;
 import com.gemframework.common.constant.GemConstant;
+import com.gemframework.common.utils.GemRedisUtils;
 import com.gemframework.model.entity.po.Right;
 import com.gemframework.model.entity.po.Role;
 import com.gemframework.model.entity.po.User;
@@ -26,14 +28,19 @@ import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static com.gemframework.constant.GemRedisKes.Auth.USER_RIGHTS;
+import static com.gemframework.constant.GemRedisKes.Auth.USER_ROLES;
 
 /**
  * @Title: GemAuthRealm
@@ -48,6 +55,7 @@ import java.util.Set;
 @Slf4j
 public class GemAuthRealm extends AuthorizingRealm {
 
+    @Qualifier("shiroUserServiceImpl")
     @Autowired
     private UserService userService;
 
@@ -58,7 +66,19 @@ public class GemAuthRealm extends AuthorizingRealm {
     private RightService rightService;
 
     @Autowired
+    private GemRedisUtils gemRedisUtils;
+
+    @Autowired
+    private GemRedisProperties gemRedisProperties;
+    @Autowired
     private GemSystemProperties gemSystemProperties;
+
+    public String getUserRolesKey(String username){
+        return username + "_" + USER_ROLES;
+    }
+    public String getUserRightsKey(String username){
+        return username  + "_" + USER_RIGHTS;
+    }
 
     /**
      * 实现授权
@@ -73,12 +93,6 @@ public class GemAuthRealm extends AuthorizingRealm {
         //获取拥有角色标识组
         Set<String> rolesFlagSet = roleService.findRolesFlagByUsername(username);
         authorizationInfo.setRoles(rolesFlagSet);
-        //获取拥有角色
-        Set<Role> roles = roleService.findRolesByFlags(rolesFlagSet);
-        // 把角色集合存到 Session 中
-        SecurityUtils.getSubject().getSession().setAttribute("roleFlags", rolesFlagSet);
-        SecurityUtils.getSubject().getSession().setAttribute("roles", roles);
-
         Set<String> rightsSet = new HashSet<>();
         //最高管理员
         if(rolesFlagSet.contains(GemConstant.Auth.ADMIN_ROLE_FLAG)){
@@ -91,12 +105,21 @@ public class GemAuthRealm extends AuthorizingRealm {
                 }
             }
         }else{
+            //获取拥有角色
+            Set<Role> roles = roleService.findRolesByFlags(rolesFlagSet);
             rightsSet = rightService.findRightsByRoles(roles);
         }
-        log.info(username+"拥有权限======================"+rightsSet);
         authorizationInfo.setStringPermissions(rightsSet);
-        // 把权限集合存到 Session 中
-        SecurityUtils.getSubject().getSession().setAttribute("rights", rightsSet);
+
+        //如果开启了redis则设置用户角色，权限到redis
+        if(gemRedisProperties.isOpen()){
+            gemRedisUtils.set(getUserRolesKey(username),rolesFlagSet);
+            gemRedisUtils.set(getUserRightsKey(username),rightsSet);
+        }else{
+            Session session = SecurityUtils.getSubject().getSession();
+            session.setAttribute(getUserRolesKey(username),rolesFlagSet);
+            session.setAttribute(getUserRightsKey(username),rightsSet);
+        }
         return authorizationInfo;
     }
 

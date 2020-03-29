@@ -10,7 +10,9 @@ package com.gemframework.utils;
 
 import lombok.extern.slf4j.Slf4j;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import static com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY;
 
 @Slf4j
 public class VerifyCodeUtils {
@@ -40,12 +42,18 @@ public class VerifyCodeUtils {
      * @return
      */
     public static boolean checkVerifyCode(HttpServletRequest request) {
-        //获取生成的验证码
-        String verifyCodeExpected = (String) request.getSession().getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
-        log.info("生成的验证码："+verifyCodeExpected);
+        String verifyCodeExpected = "";
+        Cookie[] cookies = request.getCookies();
+        if(cookies!=null){
+            for (Cookie cookie : cookies) {
+                if(cookie.getName().equalsIgnoreCase("JSESSIONID")){
+                    //获取生成的验证码
+                    verifyCodeExpected = (String) request.getSession().getAttribute(KAPTCHA_SESSION_KEY+":"+cookie.getValue());
+                }
+            }
+        }
         //获取用户输入的验证码
         String verifyCodeActual = VerifyCodeUtils.getString(request, "validCode");
-        log.info("输入的验证码："+verifyCodeActual);
         if(verifyCodeActual == null ||!verifyCodeActual.equalsIgnoreCase(verifyCodeExpected)) {
             return false;
         }

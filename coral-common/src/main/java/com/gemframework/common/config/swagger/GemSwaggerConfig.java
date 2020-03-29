@@ -52,7 +52,7 @@ public class GemSwaggerConfig {
 				//版本号
 				.version("1.0")
 				//描述
-				.description("Pearl权限管理系统在线API文档")
+				.description("CORAL权限管理系统在线API文档")
 				.build();
 	}
 

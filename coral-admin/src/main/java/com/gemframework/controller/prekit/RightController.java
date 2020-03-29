@@ -150,7 +150,6 @@ public class RightController extends BaseController {
     @ResponseBody
     public BaseResultData leftSidebar() {
         Set<String> rolesFlag = getRolesFlag();
-        Set<Role> roles = getRoles();
         QueryWrapper queryWrapper = setSort();
         queryWrapper.eq("type", MenuType.MENU.getCode());
         //判断用户角色，如果是超级管理员，返回所有
@@ -159,10 +158,8 @@ public class RightController extends BaseController {
             if(rolesFlag.contains(GemConstant.Auth.ADMIN_ROLE_FLAG)){
                 list = rightService.list(queryWrapper);
             }else{
-                //TODO: 如果不是超级管理员，根据角色查询菜单权限
-                Map map = new HashMap();
-                map.put("type",MenuType.MENU.getCode());
-                list = rightService.findRightsByRolesAndType(roles,map);
+                //如果不是超级管理员，根据角色查询菜单权限
+                list = rightService.findRightsByRolesAndType(rolesFlag,MenuType.MENU);
             }
         }else{
             list = rightService.list(queryWrapper);

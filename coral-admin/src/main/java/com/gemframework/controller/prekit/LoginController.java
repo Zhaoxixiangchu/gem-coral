@@ -8,6 +8,7 @@
  */
 package com.gemframework.controller.prekit;
 
+import com.gemframework.constant.GemRedisKes;
 import com.gemframework.model.common.BaseResultData;
 import com.gemframework.model.enums.ErrorCode;
 import com.gemframework.model.request.UserLoginRequest;
@@ -21,11 +22,13 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
+import java.util.Set;
+
 import static com.gemframework.model.enums.ErrorCode.*;
 
 @Slf4j
 @Controller
-public class LoginController {
+public class LoginController extends BaseController{
 
     @PostMapping(value = "/login")
     @ResponseBody
@@ -66,6 +69,13 @@ public class LoginController {
     @GetMapping(value = "/logout")
     public String logout() {
         Subject subject = SecurityUtils.getSubject();
+        //如果开启Redis注销所有keys缓存
+        if(gemRedisProperties.isOpen()){
+            String pattern = subject.getPrincipals() +"_"+ GemRedisKes.Auth.PREFIX + "*";
+            Set<String> keys = gemRedisUtils.keys(pattern);
+            log.info("注销所有keys="+keys);
+            gemRedisUtils.delete(keys);
+        }
         subject.logout();
         return "login";
     }

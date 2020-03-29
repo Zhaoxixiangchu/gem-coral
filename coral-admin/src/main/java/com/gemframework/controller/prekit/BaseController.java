@@ -11,8 +11,10 @@ package com.gemframework.controller.prekit;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.gemframework.common.config.redis.GemRedisProperties;
 import com.gemframework.common.exception.GemException;
 import com.gemframework.common.utils.GemBeanUtils;
+import com.gemframework.common.utils.GemRedisUtils;
 import com.gemframework.common.utils.GemStringUtils;
 import com.gemframework.model.common.BaseEntityVo;
 import com.gemframework.model.common.PageInfo;
@@ -24,7 +26,9 @@ import com.gemframework.model.enums.SortType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.PrincipalCollection;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -34,8 +38,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static com.gemframework.constant.GemRedisKes.Auth.USER_ROLES;
+
 @Slf4j
 public class BaseController {
+
+    @Autowired
+    GemRedisUtils gemRedisUtils;
+
+    @Autowired
+    GemRedisProperties gemRedisProperties;
 
     @NotNull
     public static Page setOrderPage(PageInfo pageInfo) {
@@ -125,12 +137,17 @@ public class BaseController {
         return (User) SecurityUtils.getSubject().getSession().getAttribute("user");
     }
 
+    protected String getUsername() {
+        return (String)SecurityUtils.getSubject().getPrincipal();
+    }
+
     protected Set<String> getRolesFlag() {
-        return (Set) SecurityUtils.getSubject().getSession().getAttribute("roleFlags");
+        String userName = (String)SecurityUtils.getSubject().getPrincipal();
+        //如果Redis开启则从redis中取
+        if(gemRedisProperties.isOpen()){
+            return (Set<String>) gemRedisUtils.get(userName + "_" + USER_ROLES);
+        }else{
+            return (Set<String>) SecurityUtils.getSubject().getSession().getAttribute(userName + "_" + USER_ROLES);
+        }
     }
-
-    protected Set<Role> getRoles() {
-        return (Set) SecurityUtils.getSubject().getSession().getAttribute("roles");
-    }
-
 }

@@ -15,7 +15,7 @@ import java.util.Set;
 
 public interface RoleService extends IService<Role> {
 
-    boolean delete(Long id,String ids);
+    boolean delete(Long id, String ids);
 
     Set<String> findRolesFlagByUsername(String username);
 

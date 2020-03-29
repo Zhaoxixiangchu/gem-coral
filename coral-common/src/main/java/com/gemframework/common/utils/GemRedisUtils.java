@@ -8,7 +8,6 @@
  */
 package com.gemframework.common.utils;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.DataType;
 import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -28,10 +27,10 @@ import java.util.concurrent.TimeUnit;
  * @date 2019年3月25日 16:09:22
  */
 @Component
-public class GemRedisUtils<VALUE> {
+public class GemRedisUtils<V> {
 
     @Resource
-    RedisTemplate<String,VALUE> redisTemplate;
+    RedisTemplate<String,V> redisTemplate;
 
 
     /** -------------------key相关操作--------------------- */
@@ -196,7 +195,7 @@ public class GemRedisUtils<VALUE> {
      * @param key
      * @param value
      */
-    public void set(String key, VALUE value) {
+    public void set(String key, V value) {
         redisTemplate.opsForValue().set(key, value);
     }
 
@@ -205,7 +204,7 @@ public class GemRedisUtils<VALUE> {
      * @param key
      * @return
      */
-    public VALUE get(String key) {
+    public V get(String key) {
         return redisTemplate.opsForValue().get(key);
     }
 
@@ -227,7 +226,7 @@ public class GemRedisUtils<VALUE> {
      * @param value
      * @return
      */
-    public VALUE getAndSet(String key, VALUE value) {
+    public V getAndSet(String key, V value) {
         return redisTemplate.opsForValue().getAndSet(key, value);
     }
 
@@ -248,7 +247,7 @@ public class GemRedisUtils<VALUE> {
      * @param keys
      * @return
      */
-    public List<VALUE> multiGet(Collection<String> keys) {
+    public List<V> multiGet(Collection<String> keys) {
         return redisTemplate.opsForValue().multiGet(keys);
     }
 
@@ -277,7 +276,7 @@ public class GemRedisUtils<VALUE> {
      *            时间单位, 天:TimeUnit.DAYS 小时:TimeUnit.HOURS 分钟:TimeUnit.MINUTES
      *            秒:TimeUnit.SECONDS 毫秒:TimeUnit.MILLISECONDS
      */
-    public void setEx(String key, VALUE value, long timeout, TimeUnit unit) {
+    public void setEx(String key, V value, long timeout, TimeUnit unit) {
         redisTemplate.opsForValue().set(key, value, timeout, unit);
     }
 
@@ -288,7 +287,7 @@ public class GemRedisUtils<VALUE> {
      * @param value
      * @return 之前已经存在返回false,不存在返回true
      */
-    public boolean setIfAbsent(String key, VALUE value) {
+    public boolean setIfAbsent(String key, V value) {
         return redisTemplate.opsForValue().setIfAbsent(key, value);
     }
 
@@ -300,7 +299,7 @@ public class GemRedisUtils<VALUE> {
      * @param offset
      *            从指定位置开始覆写
      */
-    public void setRange(String key, VALUE value, long offset) {
+    public void setRange(String key, V value, long offset) {
         redisTemplate.opsForValue().set(key, value, offset);
     }
 
@@ -319,7 +318,7 @@ public class GemRedisUtils<VALUE> {
      *
      * @param maps
      */
-    public void multiSet(Map<String, VALUE> maps) {
+    public void multiSet(Map<String, V> maps) {
         redisTemplate.opsForValue().multiSet(maps);
     }
 
@@ -329,7 +328,7 @@ public class GemRedisUtils<VALUE> {
      * @param maps
      * @return 之前已经存在返回false,不存在返回true
      */
-    public boolean multiSetIfAbsent(Map<String, VALUE> maps) {
+    public boolean multiSetIfAbsent(Map<String, V> maps) {
         return redisTemplate.opsForValue().multiSetIfAbsent(maps);
     }
 
@@ -515,7 +514,7 @@ public class GemRedisUtils<VALUE> {
      * @param index
      * @return
      */
-    public VALUE lIndex(String key, long index) {
+    public V lIndex(String key, long index) {
         return redisTemplate.opsForList().index(key, index);
     }
 
@@ -529,7 +528,7 @@ public class GemRedisUtils<VALUE> {
      *            结束位置, -1返回所有
      * @return
      */
-    public List<VALUE> lRange(String key, long start, long end) {
+    public List<V> lRange(String key, long start, long end) {
         return redisTemplate.opsForList().range(key, start, end);
     }
 
@@ -540,7 +539,7 @@ public class GemRedisUtils<VALUE> {
      * @param value
      * @return
      */
-    public Long lLeftPush(String key, VALUE value) {
+    public Long lLeftPush(String key, V value) {
         return redisTemplate.opsForList().leftPush(key, value);
     }
 
@@ -550,7 +549,7 @@ public class GemRedisUtils<VALUE> {
      * @param value
      * @return
      */
-    public Long lLeftPushAll(String key, VALUE... value) {
+    public Long lLeftPushAll(String key, V... value) {
         return redisTemplate.opsForList().leftPushAll(key, value);
     }
 
@@ -560,7 +559,7 @@ public class GemRedisUtils<VALUE> {
      * @param value
      * @return
      */
-    public Long lLeftPushAll(String key, Collection<VALUE> value) {
+    public Long lLeftPushAll(String key, Collection<V> value) {
         return redisTemplate.opsForList().leftPushAll(key, value);
     }
 
@@ -571,7 +570,7 @@ public class GemRedisUtils<VALUE> {
      * @param value
      * @return
      */
-    public Long lLeftPushIfPresent(String key, VALUE value) {
+    public Long lLeftPushIfPresent(String key, V value) {
         return redisTemplate.opsForList().leftPushIfPresent(key, value);
     }
 
@@ -583,7 +582,7 @@ public class GemRedisUtils<VALUE> {
      * @param value
      * @return
      */
-    public Long lLeftPush(String key, VALUE pivot, VALUE value) {
+    public Long lLeftPush(String key, V pivot, V value) {
         return redisTemplate.opsForList().leftPush(key, pivot, value);
     }
 
@@ -593,7 +592,7 @@ public class GemRedisUtils<VALUE> {
      * @param value
      * @return
      */
-    public Long lRightPush(String key, VALUE value) {
+    public Long lRightPush(String key, V value) {
         return redisTemplate.opsForList().rightPush(key, value);
     }
 
@@ -603,7 +602,7 @@ public class GemRedisUtils<VALUE> {
      * @param value
      * @return
      */
-    public Long lRightPushAll(String key, VALUE... value) {
+    public Long lRightPushAll(String key, V... value) {
         return redisTemplate.opsForList().rightPushAll(key, value);
     }
 
@@ -613,7 +612,7 @@ public class GemRedisUtils<VALUE> {
      * @param value
      * @return
      */
-    public Long lRightPushAll(String key, Collection<VALUE> value) {
+    public Long lRightPushAll(String key, Collection<V> value) {
         return redisTemplate.opsForList().rightPushAll(key, value);
     }
 
@@ -624,7 +623,7 @@ public class GemRedisUtils<VALUE> {
      * @param value
      * @return
      */
-    public Long lRightPushIfPresent(String key, VALUE value) {
+    public Long lRightPushIfPresent(String key, V value) {
         return redisTemplate.opsForList().rightPushIfPresent(key, value);
     }
 
@@ -636,7 +635,7 @@ public class GemRedisUtils<VALUE> {
      * @param value
      * @return
      */
-    public Long lRightPush(String key, VALUE pivot, VALUE value) {
+    public Long lRightPush(String key, V pivot, V value) {
         return redisTemplate.opsForList().rightPush(key, pivot, value);
     }
 
@@ -648,7 +647,7 @@ public class GemRedisUtils<VALUE> {
      *            位置
      * @param value
      */
-    public void lSet(String key, long index, VALUE value) {
+    public void lSet(String key, long index, V value) {
         redisTemplate.opsForList().set(key, index, value);
     }
 
@@ -658,7 +657,7 @@ public class GemRedisUtils<VALUE> {
      * @param key
      * @return 删除的元素
      */
-    public VALUE lLeftPop(String key) {
+    public V lLeftPop(String key) {
         return redisTemplate.opsForList().leftPop(key);
     }
 
@@ -672,7 +671,7 @@ public class GemRedisUtils<VALUE> {
      *            时间单位
      * @return
      */
-    public VALUE lBLeftPop(String key, long timeout, TimeUnit unit) {
+    public V lBLeftPop(String key, long timeout, TimeUnit unit) {
         return redisTemplate.opsForList().leftPop(key, timeout, unit);
     }
 
@@ -682,7 +681,7 @@ public class GemRedisUtils<VALUE> {
      * @param key
      * @return 删除的元素
      */
-    public VALUE lRightPop(String key) {
+    public V lRightPop(String key) {
         return redisTemplate.opsForList().rightPop(key);
     }
 
@@ -696,7 +695,7 @@ public class GemRedisUtils<VALUE> {
      *            时间单位
      * @return
      */
-    public VALUE lBRightPop(String key, long timeout, TimeUnit unit) {
+    public V lBRightPop(String key, long timeout, TimeUnit unit) {
         return redisTemplate.opsForList().rightPop(key, timeout, unit);
     }
 
@@ -707,7 +706,7 @@ public class GemRedisUtils<VALUE> {
      * @param destinationKey
      * @return
      */
-    public VALUE lRightPopAndLeftPush(String sourceKey, String destinationKey) {
+    public V lRightPopAndLeftPush(String sourceKey, String destinationKey) {
         return redisTemplate.opsForList().rightPopAndLeftPush(sourceKey,
                 destinationKey);
     }
@@ -721,7 +720,7 @@ public class GemRedisUtils<VALUE> {
      * @param unit
      * @return
      */
-    public VALUE lBRightPopAndLeftPush(String sourceKey, String destinationKey,
+    public V lBRightPopAndLeftPush(String sourceKey, String destinationKey,
                                         long timeout, TimeUnit unit) {
         return redisTemplate.opsForList().rightPopAndLeftPush(sourceKey,
                 destinationKey, timeout, unit);
@@ -771,7 +770,7 @@ public class GemRedisUtils<VALUE> {
      * @param values
      * @return
      */
-    public Long sAdd(String key, VALUE... values) {
+    public Long sAdd(String key, V... values) {
         return redisTemplate.opsForSet().add(key, values);
     }
 
@@ -792,7 +791,7 @@ public class GemRedisUtils<VALUE> {
      * @param key
      * @return
      */
-    public VALUE sPop(String key) {
+    public V sPop(String key) {
         return redisTemplate.opsForSet().pop(key);
     }
 
@@ -804,7 +803,7 @@ public class GemRedisUtils<VALUE> {
      * @param destKey
      * @return
      */
-    public Boolean sMove(String key, VALUE value, String destKey) {
+    public Boolean sMove(String key, V value, String destKey) {
         return redisTemplate.opsForSet().move(key, value, destKey);
     }
 
@@ -836,7 +835,7 @@ public class GemRedisUtils<VALUE> {
      * @param otherKey
      * @return
      */
-    public Set<VALUE> sIntersect(String key, String otherKey) {
+    public Set<V> sIntersect(String key, String otherKey) {
         return redisTemplate.opsForSet().intersect(key, otherKey);
     }
 
@@ -847,7 +846,7 @@ public class GemRedisUtils<VALUE> {
      * @param otherKeys
      * @return
      */
-    public Set<VALUE> sIntersect(String key, Collection<String> otherKeys) {
+    public Set<V> sIntersect(String key, Collection<String> otherKeys) {
         return redisTemplate.opsForSet().intersect(key, otherKeys);
     }
 
@@ -885,7 +884,7 @@ public class GemRedisUtils<VALUE> {
      * @param otherKeys
      * @return
      */
-    public Set<VALUE> sUnion(String key, String otherKeys) {
+    public Set<V> sUnion(String key, String otherKeys) {
         return redisTemplate.opsForSet().union(key, otherKeys);
     }
 
@@ -896,7 +895,7 @@ public class GemRedisUtils<VALUE> {
      * @param otherKeys
      * @return
      */
-    public Set<VALUE> sUnion(String key, Collection<String> otherKeys) {
+    public Set<V> sUnion(String key, Collection<String> otherKeys) {
         return redisTemplate.opsForSet().union(key, otherKeys);
     }
 
@@ -932,7 +931,7 @@ public class GemRedisUtils<VALUE> {
      * @param otherKey
      * @return
      */
-    public Set<VALUE> sDifference(String key, String otherKey) {
+    public Set<V> sDifference(String key, String otherKey) {
         return redisTemplate.opsForSet().difference(key, otherKey);
     }
 
@@ -943,7 +942,7 @@ public class GemRedisUtils<VALUE> {
      * @param otherKeys
      * @return
      */
-    public Set<VALUE> sDifference(String key, Collection<String> otherKeys) {
+    public Set<V> sDifference(String key, Collection<String> otherKeys) {
         return redisTemplate.opsForSet().difference(key, otherKeys);
     }
 
@@ -980,7 +979,7 @@ public class GemRedisUtils<VALUE> {
      * @param key
      * @return
      */
-    public Set<VALUE> setMembers(String key) {
+    public Set<V> setMembers(String key) {
         return redisTemplate.opsForSet().members(key);
     }
 
@@ -990,7 +989,7 @@ public class GemRedisUtils<VALUE> {
      * @param key
      * @return
      */
-    public VALUE sRandomMember(String key) {
+    public V sRandomMember(String key) {
         return redisTemplate.opsForSet().randomMember(key);
     }
 
@@ -1001,7 +1000,7 @@ public class GemRedisUtils<VALUE> {
      * @param count
      * @return
      */
-    public List<VALUE> sRandomMembers(String key, long count) {
+    public List<V> sRandomMembers(String key, long count) {
         return redisTemplate.opsForSet().randomMembers(key, count);
     }
 
@@ -1012,7 +1011,7 @@ public class GemRedisUtils<VALUE> {
      * @param count
      * @return
      */
-    public Set<VALUE> sDistinctRandomMembers(String key, long count) {
+    public Set<V> sDistinctRandomMembers(String key, long count) {
         return redisTemplate.opsForSet().distinctRandomMembers(key, count);
     }
 
@@ -1022,7 +1021,7 @@ public class GemRedisUtils<VALUE> {
      * @param options
      * @return
      */
-    public Cursor<VALUE> sScan(String key, ScanOptions options) {
+    public Cursor<V> sScan(String key, ScanOptions options) {
         return redisTemplate.opsForSet().scan(key, options);
     }
 
@@ -1036,7 +1035,7 @@ public class GemRedisUtils<VALUE> {
      * @param score
      * @return
      */
-    public Boolean zAdd(String key, VALUE value, double score) {
+    public Boolean zAdd(String key, V value, double score) {
         return redisTemplate.opsForZSet().add(key, value, score);
     }
 
@@ -1046,7 +1045,7 @@ public class GemRedisUtils<VALUE> {
      * @param values
      * @return
      */
-    public Long zAdd(String key, Set<TypedTuple<VALUE>> values) {
+    public Long zAdd(String key, Set<TypedTuple<V>> values) {
         return redisTemplate.opsForZSet().add(key, values);
     }
 
@@ -1068,7 +1067,7 @@ public class GemRedisUtils<VALUE> {
      * @param delta
      * @return
      */
-    public Double zIncrementScore(String key, VALUE value, double delta) {
+    public Double zIncrementScore(String key, V value, double delta) {
         return redisTemplate.opsForZSet().incrementScore(key, value, delta);
     }
 
@@ -1104,7 +1103,7 @@ public class GemRedisUtils<VALUE> {
      *            结束位置, -1查询所有
      * @return
      */
-    public Set<VALUE> zRange(String key, long start, long end) {
+    public Set<V> zRange(String key, long start, long end) {
         return redisTemplate.opsForZSet().range(key, start, end);
     }
 
@@ -1116,7 +1115,7 @@ public class GemRedisUtils<VALUE> {
      * @param end
      * @return
      */
-    public Set<TypedTuple<VALUE>> zRangeWithScores(String key, long start,
+    public Set<TypedTuple<V>> zRangeWithScores(String key, long start,
                                                    long end) {
         return redisTemplate.opsForZSet().rangeWithScores(key, start, end);
     }
@@ -1131,7 +1130,7 @@ public class GemRedisUtils<VALUE> {
      *            最大值
      * @return
      */
-    public Set<VALUE> zRangeByScore(String key, double min, double max) {
+    public Set<V> zRangeByScore(String key, double min, double max) {
         return redisTemplate.opsForZSet().rangeByScore(key, min, max);
     }
 
@@ -1145,7 +1144,7 @@ public class GemRedisUtils<VALUE> {
      *            最大值
      * @return
      */
-    public Set<TypedTuple<VALUE>> zRangeByScoreWithScores(String key,
+    public Set<TypedTuple<V>> zRangeByScoreWithScores(String key,
                                                           double min, double max) {
         return redisTemplate.opsForZSet().rangeByScoreWithScores(key, min, max);
     }
@@ -1159,7 +1158,7 @@ public class GemRedisUtils<VALUE> {
      * @param end
      * @return
      */
-    public Set<TypedTuple<VALUE>> zRangeByScoreWithScores(String key,
+    public Set<TypedTuple<V>> zRangeByScoreWithScores(String key,
                                                           double min, double max, long start, long end) {
         return redisTemplate.opsForZSet().rangeByScoreWithScores(key, min, max,
                 start, end);
@@ -1173,7 +1172,7 @@ public class GemRedisUtils<VALUE> {
      * @param end
      * @return
      */
-    public Set<VALUE> zReverseRange(String key, long start, long end) {
+    public Set<V> zReverseRange(String key, long start, long end) {
         return redisTemplate.opsForZSet().reverseRange(key, start, end);
     }
 
@@ -1185,7 +1184,7 @@ public class GemRedisUtils<VALUE> {
      * @param end
      * @return
      */
-    public Set<TypedTuple<VALUE>> zReverseRangeWithScores(String key,
+    public Set<TypedTuple<V>> zReverseRangeWithScores(String key,
                                                           long start, long end) {
         return redisTemplate.opsForZSet().reverseRangeWithScores(key, start,
                 end);
@@ -1199,7 +1198,7 @@ public class GemRedisUtils<VALUE> {
      * @param max
      * @return
      */
-    public Set<VALUE> zReverseRangeByScore(String key, double min,
+    public Set<V> zReverseRangeByScore(String key, double min,
                                             double max) {
         return redisTemplate.opsForZSet().reverseRangeByScore(key, min, max);
     }
@@ -1212,7 +1211,7 @@ public class GemRedisUtils<VALUE> {
      * @param max
      * @return
      */
-    public Set<TypedTuple<VALUE>> zReverseRangeByScoreWithScores(
+    public Set<TypedTuple<V>> zReverseRangeByScoreWithScores(
             String key, double min, double max) {
         return redisTemplate.opsForZSet().reverseRangeByScoreWithScores(key,
                 min, max);
@@ -1227,7 +1226,7 @@ public class GemRedisUtils<VALUE> {
      * @param end
      * @return
      */
-    public Set<VALUE> zReverseRangeByScore(String key, double min,
+    public Set<V> zReverseRangeByScore(String key, double min,
                                             double max, long start, long end) {
         return redisTemplate.opsForZSet().reverseRangeByScore(key, min, max,
                 start, end);
@@ -1359,7 +1358,7 @@ public class GemRedisUtils<VALUE> {
      * @param options
      * @return
      */
-    public Cursor<TypedTuple<VALUE>> zScan(String key, ScanOptions options) {
+    public Cursor<TypedTuple<V>> zScan(String key, ScanOptions options) {
         return redisTemplate.opsForZSet().scan(key, options);
     }
 }

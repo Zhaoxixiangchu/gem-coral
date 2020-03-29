@@ -23,6 +23,7 @@ import com.gemframework.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,6 +36,7 @@ import java.util.stream.Collectors;
 @RequestMapping(GemModules.PreKit.PATH_SYSTEM+"/user")
 public class UserController extends BaseController {
 
+    @Qualifier("shiroUserServiceImpl")
     @Autowired
     private UserService userService;
 

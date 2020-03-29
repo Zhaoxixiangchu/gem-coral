@@ -6,14 +6,13 @@
  * http://www.gemframework.com
  * 版权所有，侵权必究！
  */
-package com.gemframework.service.impl;
+package com.gemframework.config.shiro;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gemframework.common.utils.GemBeanUtils;
-import com.gemframework.config.shiro.ShiroUtils;
 import com.gemframework.mapper.UserMapper;
 import com.gemframework.model.entity.po.Role;
 import com.gemframework.model.entity.po.User;
@@ -30,11 +29,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Service
-public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
+public class ShiroUserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
     @Autowired
     private UserMapper userMapper;

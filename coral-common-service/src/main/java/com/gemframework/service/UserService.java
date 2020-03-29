@@ -15,7 +15,6 @@ import com.gemframework.model.entity.po.User;
 import com.gemframework.model.entity.vo.UserVo;
 
 import java.util.List;
-import java.util.Set;
 
 public interface UserService extends IService<User> {
 
