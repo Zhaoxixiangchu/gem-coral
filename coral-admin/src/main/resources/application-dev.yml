@@ -94,9 +94,6 @@ gem:
     nofound-page: /404
     index-page: /index
 
-  redis:
-    open: true
-
   swagger:
     web-package-path: com.gemframework.controller
 
@@ -107,3 +104,7 @@ gem:
     generate-code-server-path: /app
     #运行环境 test 测试、demo演示、dev开发、prod生产
     runtime: dev
+
+  cluster: false
+  redis:
+    open: true

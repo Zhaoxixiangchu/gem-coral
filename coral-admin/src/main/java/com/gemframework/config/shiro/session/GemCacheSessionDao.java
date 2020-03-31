@@ -10,7 +10,7 @@ package com.gemframework.config.shiro.session;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.session.Session;
-import org.apache.shiro.session.mgt.eis.CachingSessionDAO;
+import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
@@ -26,28 +26,33 @@ import java.io.Serializable;
  * @Company: www.gemframework.com
  */
 @Slf4j
-public class GemCacheSessionDao extends CachingSessionDAO {
+public class GemCacheSessionDao extends EnterpriseCacheSessionDAO {
 
     @Autowired
     private GemRedisSessionDao gemRedisSessionDao;
 
     @Override
     protected Serializable doCreate(Session session) {
+        log.info("创建sessionId:"+session.getId()+"==session:"+session);
         return gemRedisSessionDao.doCreate(session);
     }
 
     @Override
     protected Session doReadSession(Serializable sessionId) {
+
+        log.info("读取sessionId:"+sessionId);
         return gemRedisSessionDao.doReadSession(sessionId);
     }
 
     @Override
     protected void doUpdate(Session session) {
+        log.info("更新session:"+session);
         gemRedisSessionDao.update(session);
     }
 
     @Override
     protected void doDelete(Session session) {
+        log.info("删除session:"+session);
         gemRedisSessionDao.delete(session);
     }
 }

@@ -19,12 +19,14 @@ import com.gemframework.model.enums.MenuType;
 import com.gemframework.service.RightService;
 import com.gemframework.service.RoleRightsService;
 import com.gemframework.service.RoleService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+@Slf4j
 @Service
 public class RightServiceImpl extends ServiceImpl<RightMapper, Right> implements RightService {
 
@@ -43,6 +45,7 @@ public class RightServiceImpl extends ServiceImpl<RightMapper, Right> implements
 
     @Override
     public Set<String> findRightsByRoles(Set<Role> roles) {
+        log.info("==从数据库中获取角色信息");
         //用户权限列表
         Set<String> rightsSet = new HashSet<>();
         if(roles != null && !roles.isEmpty()){

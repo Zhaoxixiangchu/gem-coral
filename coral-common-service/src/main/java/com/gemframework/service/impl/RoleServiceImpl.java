@@ -15,6 +15,7 @@ import com.gemframework.model.entity.po.Role;
 import com.gemframework.model.entity.po.User;
 import com.gemframework.model.entity.po.UserRoles;
 import com.gemframework.service.*;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -27,6 +28,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements RoleService {
 
@@ -71,6 +73,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
 
     @Override
     public Set<String> findRolesFlagByUsername(String username) {
+        log.info("==从数据库中获取角色信息");
         //用户角色标识列表
         Set<String> rolesSet = new HashSet<>();
         User user = userService.getByUserName(username);

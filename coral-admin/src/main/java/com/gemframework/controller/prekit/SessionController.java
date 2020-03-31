@@ -21,12 +21,12 @@ import javax.annotation.security.PermitAll;
 public class SessionController {
 
 
-    @Autowired
-    GemSessionListener gemSessionListener;
-
-    @PermitAll
-    @GetMapping(value = "/online")
-    public int online() {
-        return gemSessionListener.getSessionCount().intValue();
-    }
+//    @Autowired
+//    GemSessionListener gemSessionListener;
+//
+//    @PermitAll
+//    @GetMapping(value = "/online")
+//    public int online() {
+//        return gemSessionListener.getSessionCount().intValue();
+//    }
 }

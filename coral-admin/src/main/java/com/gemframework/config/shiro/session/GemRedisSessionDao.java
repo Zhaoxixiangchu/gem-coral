@@ -17,6 +17,7 @@ import org.apache.shiro.session.UnknownSessionException;
 import org.apache.shiro.session.mgt.eis.AbstractSessionDAO;
 import org.apache.shiro.session.mgt.eis.SessionIdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -26,6 +27,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
+@Component
 public class GemRedisSessionDao extends AbstractSessionDAO {
 
     @Autowired
@@ -51,7 +53,6 @@ public class GemRedisSessionDao extends AbstractSessionDAO {
         Serializable sessionId = sessionIdGenerator.generateId(session);
         assignSessionId(session,sessionId);
         saveSession(session);
-        log.debug("创建sessionId:"+sessionId+"==session:"+session);
         return sessionId;
     }
 
@@ -66,7 +67,7 @@ public class GemRedisSessionDao extends AbstractSessionDAO {
         if(value != null){
             try {
                 session = (Session) GemSerializeUtils.serializeToObject(value);
-//                log.info("读取key:"+key+"==session:"+session);
+                //log.info("读取key:"+key+"==session:"+session);
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
@@ -80,13 +81,11 @@ public class GemRedisSessionDao extends AbstractSessionDAO {
     @SneakyThrows
     @Override
     public void update(Session session) throws UnknownSessionException {
-        log.debug("更新session:"+session);
         saveSession(session);
     }
 
     @Override
     public void delete(Session session) {
-        log.debug("删除session:"+session);
         if(session == null || session.getId() == null){
             return;
         }

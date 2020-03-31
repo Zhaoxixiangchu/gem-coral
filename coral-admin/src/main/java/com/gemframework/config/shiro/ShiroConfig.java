@@ -9,20 +9,22 @@
 package com.gemframework.config.shiro;
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import com.gemframework.config.shiro.session.GemCacheSessionDao;
-import com.gemframework.config.shiro.session.GemSessionListener;
 import com.gemframework.config.shiro.session.GemSessionManager;
 import com.gemframework.config.shiro.session.GemRedisSessionDao;
 import com.gemframework.config.shiro.cache.GemCacheManager;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.mgt.SessionManager;
+import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -42,9 +44,6 @@ import java.util.Map;
 @Slf4j
 @Configuration
 public class ShiroConfig {
-
-    @Autowired
-    GemCacheManager shiroRedisCacheManager;
 
     /**
      * 配置shiro过滤器
@@ -80,15 +79,14 @@ public class ShiroConfig {
      * @return SecurityManager
      */
     @Bean
-    public SecurityManager securityManager() {
+    public SecurityManager securityManager(SessionManager sessionManager) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         //注册自定义realm
         securityManager.setRealm(gemAuthRealm());
         //注册记住我
         securityManager.setRememberMeManager(cookieRememberMeManager());
         //配置自定义session管理，使用redis
-        securityManager.setSessionManager(sessionManager());
-//        securityManager.setCacheManager(shiroRedisCacheManager);
+        securityManager.setSessionManager(sessionManager);
         log.info("====SecurityManager注册完成====");
         return securityManager;
     }
@@ -98,6 +96,8 @@ public class ShiroConfig {
     @Bean
     public GemAuthRealm gemAuthRealm() {
         GemAuthRealm gemAuthRealm = new GemAuthRealm();
+        //开启缓存机制（也可以再SecurityManager中设置，作用一样）
+        gemAuthRealm.setCacheManager(gemCacheManager());
         return gemAuthRealm;
     }
 
@@ -114,44 +114,27 @@ public class ShiroConfig {
 
 
     /**
-     * 配置会话管理器，设定会话超时及保存
+     * 集群环境开启REDIS-SESSION
+     * 配置会话管理器
      * @return
      */
-    @Bean("sessionManager")
+    @Bean
+    @ConditionalOnProperty(prefix = "gem", name = "cluster", havingValue = "true")
     public SessionManager sessionManager() {
         GemSessionManager sessionManager = new GemSessionManager();
-        //配置监听
-//        Collection<SessionListener> listeners = new ArrayList<>();
-//        listeners.add(sessionListener());
-//        sessionManager.setSessionListeners(listeners);
-
-        sessionManager.setSessionDAO(redisSessionDao());
-//        sessionManager.setSessionDAO(cacheSessionDao());
-
-        //全局会话超时时间（单位毫秒），默认30分钟  暂时设置为10秒钟 用来测试
-//        sessionManager.setGlobalSessionTimeout(1000 * 60 * 30);
-//        //是否开启删除无效的session对象  默认为true
-//        sessionManager.setDeleteInvalidSessions(true);
-//        //是否开启定时调度器进行检测过期session 默认为true
-//        sessionManager.setSessionValidationSchedulerEnabled(true);
-//        //设置session失效的扫描时间, 清理用户直接关闭浏览器造成的孤立会话 默认为 1个小时
-//        //设置该属性 就不需要设置 ExecutorServiceSessionValidationScheduler
-//        //底层也是默认自动调用ExecutorServiceSessionValidationScheduler
-//        //暂时设置为 5秒 用来测试
-//        sessionManager.setSessionValidationInterval(5000);
-//        //取消url 后面的 JSESSIONID
-//        sessionManager.setSessionIdUrlRewritingEnabled(false);
+        sessionManager.setSessionDAO(cacheSessionDao());
         return sessionManager;
     }
 
     /**
-     * 配置session监听
+     * 单机环境默认使用Shiro管理Session
      * @return
      */
-    @Bean("sessionListener")
-    public GemSessionListener sessionListener(){
-        GemSessionListener sessionListener = new GemSessionListener();
-        return sessionListener;
+    @Bean
+    @ConditionalOnProperty(prefix = "gem", name = "cluster", havingValue = "false")
+    public DefaultWebSessionManager defaultWebSessionManager(){
+        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+        return sessionManager;
     }
 
     /**
@@ -165,7 +148,7 @@ public class ShiroConfig {
     }
 
     /**
-     * 配置开启缓存+session持久化
+     * 配置开启缓存+Redis持久化
      * @return
      */
     @Bean("cacheSessionDao")
@@ -175,12 +158,23 @@ public class ShiroConfig {
     }
 
 
+    /**
+     * 自定义Redis CacheManager
+     * @return
+     */
+    @Bean("gemCacheManager")
+    public GemCacheManager gemCacheManager(){
+        GemCacheManager gemCacheManager = new GemCacheManager();
+        return gemCacheManager;
+    }
+
 
     //Shiro方言 用于页面标签/表达式
     @Bean(name = "shiroDialect")
     public ShiroDialect shiroDialect(){
         return new ShiroDialect();
     }
+
 
     //开启注解
     @Bean
@@ -189,7 +183,6 @@ public class ShiroConfig {
         proxyCreator.setProxyTargetClass(true);
         return proxyCreator;
     }
-
     @Bean
     public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
         AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
