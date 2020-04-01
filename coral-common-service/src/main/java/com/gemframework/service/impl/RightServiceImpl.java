@@ -45,7 +45,6 @@ public class RightServiceImpl extends ServiceImpl<RightMapper, Right> implements
 
     @Override
     public Set<String> findRightsByRoles(Set<Role> roles) {
-        log.info("==从数据库中获取角色信息");
         //用户权限列表
         Set<String> rightsSet = new HashSet<>();
         if(roles != null && !roles.isEmpty()){

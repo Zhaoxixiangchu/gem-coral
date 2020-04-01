@@ -33,26 +33,26 @@ public class GemCacheSessionDao extends EnterpriseCacheSessionDAO {
 
     @Override
     protected Serializable doCreate(Session session) {
-        log.info("创建sessionId:"+session.getId()+"==session:"+session);
+        log.debug("Create-SessionId:"+session);
         return gemRedisSessionDao.doCreate(session);
     }
 
     @Override
     protected Session doReadSession(Serializable sessionId) {
 
-        log.info("读取sessionId:"+sessionId);
+        log.debug("Read-SessionId:"+sessionId);
         return gemRedisSessionDao.doReadSession(sessionId);
     }
 
     @Override
     protected void doUpdate(Session session) {
-        log.info("更新session:"+session);
+        log.debug("Update-Session:"+session);
         gemRedisSessionDao.update(session);
     }
 
     @Override
     protected void doDelete(Session session) {
-        log.info("删除session:"+session);
+        log.debug("Delete-Session:"+session);
         gemRedisSessionDao.delete(session);
     }
 }

@@ -105,6 +105,7 @@ gem:
     #运行环境 test 测试、demo演示、dev开发、prod生产
     runtime: dev
 
-  cluster: false
+  #是否集群环境部署 如果开启集群[cluster: true] 请务必开启redis [redis.open: true]
+  cluster: true
   redis:
     open: true

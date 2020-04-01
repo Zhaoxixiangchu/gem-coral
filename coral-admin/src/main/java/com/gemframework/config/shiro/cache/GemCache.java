@@ -33,7 +33,7 @@ import java.util.concurrent.TimeUnit;
 public class GemCache<K,V> implements Cache<K,V>{
 
     private final String SHIRO_CACHE_PERFIX = "shiro-cache:";
-    private String getKey(String key){
+    private String getKey(K key){
         return SHIRO_CACHE_PERFIX + key;
     }
 
@@ -43,30 +43,26 @@ public class GemCache<K,V> implements Cache<K,V>{
     @SneakyThrows
     @Override
     public V put(K k, V v) throws CacheException {
-        if(k instanceof String){
-            String key = getKey((String)k);
-            String value = GemSerializeUtils.serialize(v);
-            log.info("put====="+key+"======"+v);
-            gemRedisUtils.set(key,value);
-            gemRedisUtils.expire(key,30, TimeUnit.MINUTES);
-        }
+        log.debug("put-cache-key:"+k);
+        String key = getKey(k);
+        String value = GemSerializeUtils.serialize(v);
+        gemRedisUtils.set(key,value);
+        gemRedisUtils.expire(key,30, TimeUnit.MINUTES);
         return v;
     }
 
     @Override
     public V get(K k) throws CacheException {
-        if(k instanceof String){
-            String key = getKey((String)k);
-            String value = gemRedisUtils.get(key);
-            if(StringUtils.isNotBlank(value)){
-                try {
-                    log.info("get====="+key+"======"+GemSerializeUtils.serializeToObject(value));
-                    return (V) GemSerializeUtils.serializeToObject(value);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
+        log.debug("get-cache-key:"+k);
+        String key = getKey(k);
+        String value = gemRedisUtils.get(key);
+        if(StringUtils.isNotBlank(value)){
+            try {
+                return (V) GemSerializeUtils.serializeToObject(value);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
             }
         }
         return null;
@@ -74,14 +70,12 @@ public class GemCache<K,V> implements Cache<K,V>{
 
     @Override
     public V remove(K k) throws CacheException {
-        if(k instanceof String){
-            V v = get(k);
-            if(v != null){
-                gemRedisUtils.delete(getKey((String)k));
-            }
-            return v;
+        log.debug("delete-cache-key:"+k);
+        V v = get(k);
+        if(v != null){
+            gemRedisUtils.delete(getKey(k));
         }
-        return null;
+        return v;
     }
 
     @Override

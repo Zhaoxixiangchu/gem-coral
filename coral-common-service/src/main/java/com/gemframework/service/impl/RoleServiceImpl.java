@@ -73,7 +73,6 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
 
     @Override
     public Set<String> findRolesFlagByUsername(String username) {
-        log.info("==从数据库中获取角色信息");
         //用户角色标识列表
         Set<String> rolesSet = new HashSet<>();
         User user = userService.getByUserName(username);
