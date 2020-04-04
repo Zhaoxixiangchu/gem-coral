@@ -9,6 +9,7 @@
 package com.gemframework.controller.prekit;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.gemframework.annotation.Log;
 import com.gemframework.common.constant.GemConstant;
 import com.gemframework.common.utils.GemBeanUtils;
 import com.gemframework.constant.GemModules;
@@ -22,6 +23,7 @@ import com.gemframework.model.entity.po.Role;
 import com.gemframework.model.entity.vo.RightVo;
 import com.gemframework.model.enums.ErrorCode;
 import com.gemframework.model.enums.MenuType;
+import com.gemframework.model.enums.OperateType;
 import com.gemframework.service.RightService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -43,8 +45,10 @@ import java.util.*;
  */
 @Slf4j
 @RestController
-@RequestMapping(GemModules.PreKit.PATH_SYSTEM+"/right")
+@RequestMapping(GemModules.PreKit.PATH_RBAC+"/right")
 public class RightController extends BaseController {
+
+    private static final String moduleName = "权限信息";
 
     @Autowired
     private RightService rightService;
@@ -54,6 +58,7 @@ public class RightController extends BaseController {
      * 获取列表分页
      * @return
      */
+    @Log(type = OperateType.NORMAL,value = "分页查询"+moduleName)
     @GetMapping("/page")
     @RequiresPermissions("right:page")
     public BaseResultData page(PageInfo pageInfo, RightVo vo) {
@@ -66,6 +71,7 @@ public class RightController extends BaseController {
      * 获取列表
      * @return
      */
+    @Log(type = OperateType.NORMAL,value = "列表查询"+moduleName)
     @GetMapping("/list")
     @RequiresPermissions("right:list")
     public BaseResultData list(RightVo vo) {
@@ -78,6 +84,7 @@ public class RightController extends BaseController {
      * 添加或编辑
      * @return
      */
+    @Log(type = OperateType.ALTER,value = "保存"+moduleName)
     @PostMapping("/save")
     @RequiresPermissions("right:save")
     public BaseResultData save(@RequestBody RightVo vo) {
@@ -93,6 +100,7 @@ public class RightController extends BaseController {
      * 编辑
      * @return
      */
+    @Log(type = OperateType.ALTER,value = "编辑"+moduleName)
     @PostMapping("/update")
     @RequiresPermissions("right:update")
     public BaseResultData update(@RequestBody RightVo vo) {
@@ -108,6 +116,7 @@ public class RightController extends BaseController {
      * 删除 & 批量删除
      * @return
      */
+    @Log(type = OperateType.ALTER,value = "删除"+moduleName)
     @PostMapping("/delete")
     @RequiresPermissions("right:delete")
     public BaseResultData delete(Long id) {
@@ -120,6 +129,7 @@ public class RightController extends BaseController {
      * 获取权限数据树
      * @return
      */
+    @Log(type = OperateType.NORMAL,value = "树形查询"+moduleName)
     @GetMapping("/tree")
     @RequiresPermissions("right:tree")
     public BaseResultData tree(){

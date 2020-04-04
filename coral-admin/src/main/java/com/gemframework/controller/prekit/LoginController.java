@@ -8,9 +8,11 @@
  */
 package com.gemframework.controller.prekit;
 
-import com.gemframework.constant.GemRedisKes;
+import com.gemframework.annotation.Log;
+import com.gemframework.constant.GemRedisKeys;
 import com.gemframework.model.common.BaseResultData;
 import com.gemframework.model.enums.ErrorCode;
+import com.gemframework.model.enums.OperateType;
 import com.gemframework.model.request.UserLoginRequest;
 import com.gemframework.utils.VerifyCodeUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +32,7 @@ import static com.gemframework.model.enums.ErrorCode.*;
 @Controller
 public class LoginController extends BaseController{
 
+    @Log(type = OperateType.LOGIN,value = "用户登录")
     @PostMapping(value = "/login")
     @ResponseBody
     public BaseResultData login(UserLoginRequest loginRequest, HttpServletRequest request) {
@@ -66,12 +69,13 @@ public class LoginController extends BaseController{
         }
     }
 
+    @Log(type = OperateType.LOGIN,value = "用户登出")
     @GetMapping(value = "/logout")
     public String logout() {
         Subject subject = SecurityUtils.getSubject();
         //如果开启Redis注销所有keys缓存
         if(gemRedisProperties.isOpen()){
-            String pattern = subject.getPrincipals() +"_"+ GemRedisKes.Auth.PREFIX + "*";
+            String pattern = subject.getPrincipals() +"_"+ GemRedisKeys.Auth.PREFIX + "*";
             Set<String> keys = gemRedisUtils.keys(pattern);
             log.info("注销所有keys="+keys);
             gemRedisUtils.delete(keys);

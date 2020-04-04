@@ -9,6 +9,7 @@
  */
 package com.gemframework.model.common;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Data;
@@ -31,6 +32,7 @@ import java.util.Date;
 @Data
 public class BaseEntityPo implements Serializable {
 
+    @TableId
     private Long id;
     //排序
     private Integer sortNumber;
@@ -40,7 +42,6 @@ public class BaseEntityPo implements Serializable {
     //创建时间
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createTime = new Date();
-
     //更新时间
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date updateTime = new Date();

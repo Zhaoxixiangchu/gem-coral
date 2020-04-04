@@ -97,7 +97,7 @@ public class ShiroConfig {
     public GemAuthRealm gemAuthRealm() {
         GemAuthRealm gemAuthRealm = new GemAuthRealm();
         gemAuthRealm.setCachingEnabled(true);
-        //开启缓存机制（也可以再SecurityManager中设置，作用一样）
+        //开启缓存机制（也可以再SecurityManager中设置，在此开启只缓存realm信息）
         gemAuthRealm.setCacheManager(gemCacheManager());
         gemAuthRealm.setAuthorizationCachingEnabled(true);
         return gemAuthRealm;

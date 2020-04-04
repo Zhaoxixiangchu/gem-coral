@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
-@RequestMapping(GemModules.PreKit.PATH_SYSTEM+"/dept")
+@RequestMapping(GemModules.PreKit.PATH_RBAC+"/dept")
 public class DeptController extends BaseController {
 
     @Autowired

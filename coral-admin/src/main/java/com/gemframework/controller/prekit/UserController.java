@@ -10,6 +10,7 @@ package com.gemframework.controller.prekit;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.gemframework.annotation.Log;
 import com.gemframework.common.constant.GemConstant;
 import com.gemframework.config.shiro.ShiroUtils;
 import com.gemframework.constant.GemModules;
@@ -19,6 +20,7 @@ import com.gemframework.model.common.validator.*;
 import com.gemframework.model.entity.po.User;
 import com.gemframework.model.entity.vo.UserVo;
 import com.gemframework.model.enums.ErrorCode;
+import com.gemframework.model.enums.OperateType;
 import com.gemframework.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -33,8 +35,10 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
-@RequestMapping(GemModules.PreKit.PATH_SYSTEM+"/user")
+@RequestMapping(GemModules.PreKit.PATH_RBAC+"/user")
 public class UserController extends BaseController {
+
+    private static final String moduleName = "用户信息";
 
     @Qualifier("shiroUserServiceImpl")
     @Autowired
@@ -44,6 +48,7 @@ public class UserController extends BaseController {
      * 根据参数获取列表分页
      * @return
      */
+    @Log(type = OperateType.NORMAL,value = "分页查询"+moduleName)
     @GetMapping("/page")
     @RequiresPermissions("user:page")
     public BaseResultData page(PageInfo pageInfo, UserVo vo) {
@@ -57,6 +62,7 @@ public class UserController extends BaseController {
      * 获取列表
      * @return
      */
+    @Log(type = OperateType.NORMAL,value = "列表查询"+moduleName)
     @GetMapping("/list")
     @RequiresPermissions("user:list")
     public BaseResultData list(UserVo vo) {
@@ -69,6 +75,7 @@ public class UserController extends BaseController {
      * 添加
      * @return
      */
+    @Log(type = OperateType.ALTER,value = "保存"+moduleName)
     @PostMapping("/save")
     @RequiresPermissions("user:save")
     public BaseResultData save(@RequestBody UserVo vo) {
@@ -80,6 +87,7 @@ public class UserController extends BaseController {
      * 编辑
      * @return
      */
+    @Log(type = OperateType.ALTER,value = "编辑"+moduleName)
     @PostMapping("/update")
     @RequiresPermissions("user:update")
     public BaseResultData update(@RequestBody UserVo vo) {
@@ -88,9 +96,10 @@ public class UserController extends BaseController {
     }
 
     /**
-     * 重置密码
+     * 修改密码
      * @return
      */
+    @Log(type = OperateType.ALTER,value = "编辑"+moduleName)
     @PostMapping("/updatePass")
     @RequiresPermissions("user:updatePass")
     public BaseResultData updatePass(@RequestBody UserVo vo) {
@@ -119,6 +128,7 @@ public class UserController extends BaseController {
      * 重置密码
      * @return
      */
+    @Log(type = OperateType.ALTER,value = "编辑"+moduleName)
     @PostMapping("/resetPass")
     @RequiresPermissions("user:resetPass")
     public BaseResultData resetPass(@RequestBody UserVo vo) {
@@ -130,6 +140,7 @@ public class UserController extends BaseController {
      * 修改用户状态
      * @return
      */
+    @Log(type = OperateType.ALTER,value = "编辑"+moduleName)
     @PostMapping("/status")
     @RequiresPermissions("user:status")
     public BaseResultData status(@RequestBody UserVo vo) {
@@ -141,6 +152,7 @@ public class UserController extends BaseController {
      * 获取用户信息ById
      * @return
      */
+    @Log(type = OperateType.NORMAL,value = "查看"+moduleName)
     @GetMapping("/info")
     @RequiresPermissions("user:info")
     public BaseResultData info(Long id) {
@@ -152,6 +164,7 @@ public class UserController extends BaseController {
      * 删除 & 批量删除
      * @return
      */
+    @Log(type = OperateType.ALTER,value = "删除"+moduleName)
     @PostMapping("/delete")
     @RequiresPermissions("user:delete")
     public BaseResultData delete(Long id,String ids) {

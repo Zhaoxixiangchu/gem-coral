@@ -46,6 +46,7 @@
         <dozer.version>5.5.1</dozer.version>
         <knife4j.version>2.0.1</knife4j.version>
         <velocity.version>1.7</velocity.version>
+        <google.gson>2.6</google.gson>
 
     </properties>
 
@@ -192,6 +193,12 @@
             <dependency>
                 <groupId>org.hibernate.validator</groupId>
                 <artifactId>hibernate-validator</artifactId>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.code.gson</groupId>
+                <artifactId>gson</artifactId>
+                <version>${google.gson}</version>
             </dependency>
 
         </dependencies>

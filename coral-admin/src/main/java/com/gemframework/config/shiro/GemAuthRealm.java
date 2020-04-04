@@ -39,8 +39,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static com.gemframework.constant.GemRedisKes.Auth.USER_RIGHTS;
-import static com.gemframework.constant.GemRedisKes.Auth.USER_ROLES;
+import static com.gemframework.constant.GemRedisKeys.Auth.USER_RIGHTS;
+import static com.gemframework.constant.GemRedisKeys.Auth.USER_ROLES;
 
 /**
  * @Title: GemAuthRealm

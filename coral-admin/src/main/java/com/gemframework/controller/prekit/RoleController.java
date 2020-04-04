@@ -10,6 +10,7 @@ package com.gemframework.controller.prekit;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.gemframework.annotation.Log;
 import com.gemframework.common.utils.GemBeanUtils;
 import com.gemframework.constant.GemModules;
 import com.gemframework.model.common.BaseResultData;
@@ -19,6 +20,7 @@ import com.gemframework.model.common.validator.UpdateValidator;
 import com.gemframework.model.entity.po.Role;
 import com.gemframework.model.entity.vo.RoleVo;
 import com.gemframework.model.enums.ErrorCode;
+import com.gemframework.model.enums.OperateType;
 import com.gemframework.service.RoleService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -29,17 +31,19 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping(GemModules.PreKit.PATH_SYSTEM+"/role")
+@RequestMapping(GemModules.PreKit.PATH_RBAC+"/role")
 public class RoleController extends BaseController {
+
+    private static final String moduleName = "角色信息";
 
     @Autowired
     private RoleService roleService;
-
 
     /**
      * 获取列表分页
      * @return
      */
+    @Log(type = OperateType.NORMAL,value = "分页查询"+moduleName)
     @GetMapping("/page")
     @RequiresPermissions("role:page")
     public BaseResultData page(PageInfo pageInfo,RoleVo vo) {
@@ -52,6 +56,7 @@ public class RoleController extends BaseController {
      * 获取列表
      * @return
      */
+    @Log(type = OperateType.NORMAL,value = "列表查询"+moduleName)
     @GetMapping("/list")
     @RequiresPermissions("role:list")
     public BaseResultData list(RoleVo vo) {
@@ -64,6 +69,7 @@ public class RoleController extends BaseController {
      * 添加
      * @return
      */
+    @Log(type = OperateType.ALTER,value = "保存"+moduleName)
     @PostMapping("/save")
     @RequiresPermissions("role:save")
     public BaseResultData save(@RequestBody RoleVo vo) {
@@ -79,6 +85,7 @@ public class RoleController extends BaseController {
      * 编辑
      * @return
      */
+    @Log(type = OperateType.ALTER,value = "编辑"+moduleName)
     @PostMapping("/update")
     @RequiresPermissions("role:update")
     public BaseResultData update(@RequestBody RoleVo vo) {
@@ -94,6 +101,7 @@ public class RoleController extends BaseController {
      * 删除 & 批量删除
      * @return
      */
+    @Log(type = OperateType.ALTER,value = "删除"+moduleName)
     @PostMapping("/delete")
     @RequiresPermissions("role:delete")
     public BaseResultData delete(Long id,String ids) {

@@ -19,14 +19,12 @@ import com.gemframework.common.utils.GemStringUtils;
 import com.gemframework.model.common.BaseEntityVo;
 import com.gemframework.model.common.PageInfo;
 import com.gemframework.model.common.ZtreeEntity;
-import com.gemframework.model.entity.po.Role;
 import com.gemframework.model.entity.po.User;
 import com.gemframework.model.enums.ErrorCode;
 import com.gemframework.model.enums.SortType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.PrincipalCollection;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -38,7 +36,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static com.gemframework.constant.GemRedisKes.Auth.USER_ROLES;
+import static com.gemframework.constant.GemRedisKeys.Auth.USER_ROLES;
 
 @Slf4j
 public class BaseController {

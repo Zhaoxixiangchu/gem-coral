@@ -15,6 +15,8 @@ public interface GemModules {
 		String PATH_PRE= "/prekit";
 		//工作台
 		String PATH_DESKTOP= PATH_PRE+"/desk";
+		//RBAC
+		String PATH_RBAC= PATH_PRE+"/rbac";
 		//系统模块
 		String PATH_SYSTEM= PATH_PRE+"/sys";
 	}

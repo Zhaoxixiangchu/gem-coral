@@ -8,16 +8,14 @@
  */
 package com.gemframework.constant;
 
-public interface GemRedisKes {
-
+public interface GemRedisKeys {
 
 	//auth相关
 	interface Auth{
 
-		String PREFIX = "auth";
+		String PREFIX = "auth:";
 
-		String USER_ROLES = PREFIX+"_user_roles";
-		String USER_RIGHTS = PREFIX+"_user_rights";
+		String USER_ROLES = PREFIX+"user_roles";
+		String USER_RIGHTS = PREFIX+"user_rights";
 	}
-
 }
