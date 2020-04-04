@@ -6,18 +6,19 @@
  * http://www.gemframework.com
  * 版权所有，侵权必究！
  */
-package com.gemframework.controller.prekit;
+package com.gemframework.controller.prekit.rbac;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gemframework.annotation.Log;
 import com.gemframework.constant.GemModules;
+import com.gemframework.controller.prekit.BaseController;
 import com.gemframework.model.common.BaseResultData;
 import com.gemframework.model.common.PageInfo;
 import com.gemframework.model.common.validator.StatusValidator;
-import com.gemframework.model.entity.vo.UserRolesVo;
+import com.gemframework.model.entity.vo.RoleDeptsVo;
 import com.gemframework.model.enums.OperateType;
-import com.gemframework.service.UserRolesService;
+import com.gemframework.service.RoleDeptsService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -30,39 +31,37 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
-@RequestMapping(GemModules.PreKit.PATH_RBAC+"/userRoles")
-public class UserRolesController extends BaseController {
+@RequestMapping(GemModules.PreKit.PATH_RBAC+"/roleDepts")
+public class RoleDeptsController extends BaseController {
 
-    private static final String moduleName = "用户角色关联信息";
+    private static final String moduleName = "角色部门关联信息";
 
     @Autowired
-    private UserRolesService userRolesService;
+    private RoleDeptsService roleDeptsService;
+
 
 
     /**
      * 获取列表分页
      * @return
      */
-    @Log(type = OperateType.NORMAL,value = "分页查询"+moduleName)
     @GetMapping("/page")
-    @RequiresPermissions("userRoles:page")
-    public BaseResultData page(PageInfo pageInfo, UserRolesVo vo) {
+    @RequiresPermissions("roleDepts:page")
+    public BaseResultData page(PageInfo pageInfo, RoleDeptsVo vo) {
         QueryWrapper queryWrapper = makeQueryMaps(vo);
-        Page page = userRolesService.page(setOrderPage(pageInfo),queryWrapper);
+        Page page = roleDeptsService.page(setOrderPage(pageInfo),queryWrapper);
         return BaseResultData.SUCCESS(page.getRecords(),page.getTotal());
     }
-
 
     /**
      * 获取列表
      * @return
      */
-    @Log(type = OperateType.NORMAL,value = "列表查询"+moduleName)
     @GetMapping("/list")
-    @RequiresPermissions("userRoles:list")
-    public BaseResultData list(UserRolesVo vo) {
+    @RequiresPermissions("roleDepts:list")
+    public BaseResultData list(RoleDeptsVo vo) {
         QueryWrapper queryWrapper = makeQueryMaps(vo);
-        List list = userRolesService.list(queryWrapper);
+        List list = roleDeptsService.list(queryWrapper);
         return BaseResultData.SUCCESS(list);
     }
 
@@ -72,25 +71,26 @@ public class UserRolesController extends BaseController {
      */
     @Log(type = OperateType.ALTER,value = "保存"+moduleName)
     @PostMapping("/save")
-    @RequiresPermissions("userRoles:save")
-    public BaseResultData save(@RequestBody UserRolesVo vo) {
+    @RequiresPermissions("roleDepts:save")
+    public BaseResultData save(@RequestBody RoleDeptsVo vo) {
         GemValidate(vo, StatusValidator.class);
-        return BaseResultData.SUCCESS(userRolesService.save(vo));
+        return BaseResultData.SUCCESS(roleDeptsService.save(vo));
     }
 
+
     /**
-     * 删除 & 批量删除
+     * 删除
      * @return
      */
     @Log(type = OperateType.ALTER,value = "删除"+moduleName)
     @PostMapping("/delete")
-    @RequiresPermissions("userRoles:delete")
+    @RequiresPermissions("roleDepts:delete")
     public BaseResultData delete(Long id,String ids) {
-        if(id!=null) userRolesService.removeById(id);
+        if(id!=null) roleDeptsService.removeById(id);
         if(StringUtils.isNotBlank(ids)){
             List<Long> listIds = Arrays.asList(ids.split(",")).stream().map(s ->Long.parseLong(s.trim())).collect(Collectors.toList());
             if(listIds!=null && !listIds.isEmpty()){
-                userRolesService.removeByIds(listIds);
+                roleDeptsService.removeByIds(listIds);
             }
         }
         return BaseResultData.SUCCESS();

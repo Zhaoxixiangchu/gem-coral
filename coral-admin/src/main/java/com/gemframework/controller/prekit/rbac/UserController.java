@@ -6,7 +6,7 @@
  * http://www.gemframework.com
  * 版权所有，侵权必究！
  */
-package com.gemframework.controller.prekit;
+package com.gemframework.controller.prekit.rbac;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -14,6 +14,7 @@ import com.gemframework.annotation.Log;
 import com.gemframework.common.constant.GemConstant;
 import com.gemframework.config.shiro.ShiroUtils;
 import com.gemframework.constant.GemModules;
+import com.gemframework.controller.prekit.BaseController;
 import com.gemframework.model.common.BaseResultData;
 import com.gemframework.model.common.PageInfo;
 import com.gemframework.model.common.validator.*;
@@ -48,7 +49,6 @@ public class UserController extends BaseController {
      * 根据参数获取列表分页
      * @return
      */
-    @Log(type = OperateType.NORMAL,value = "分页查询"+moduleName)
     @GetMapping("/page")
     @RequiresPermissions("user:page")
     public BaseResultData page(PageInfo pageInfo, UserVo vo) {
@@ -62,7 +62,6 @@ public class UserController extends BaseController {
      * 获取列表
      * @return
      */
-    @Log(type = OperateType.NORMAL,value = "列表查询"+moduleName)
     @GetMapping("/list")
     @RequiresPermissions("user:list")
     public BaseResultData list(UserVo vo) {

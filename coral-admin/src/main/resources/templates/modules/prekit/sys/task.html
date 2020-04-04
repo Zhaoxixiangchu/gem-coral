@@ -69,25 +69,25 @@
         var tableX = layui.tableX;
 
         /* 渲染表格 */
+        var cols = [
+            {type: 'checkbox'},
+            {field: 'username', title: '用户名', sort: true},
+            {field: 'ip', title: '用户IP', sort: true},
+            {field: 'device', title: '设备', sort: true},
+            {field: 'osName', title: '设备类型', sort: true},
+            {field: 'browserType', title: '浏览器', sort: true},
+            {
+                field: 'createTime', title: '登录时间', templet: function (d) {
+                    return util.toDateString(d.createTime);
+                }, sort: true
+            }
+        ];
         var insTb = table.render({
             elem: '#loginRecordTable',
             url: 'json/login-record.json',
             page: true,
             cellMinWidth: 100,
-            cols: [[
-                {type: 'checkbox'},
-                {field: 'username', title: '账号', sort: true},
-                {field: 'nickName', title: '用户名', sort: true},
-                {field: 'ipAddress', title: 'IP', sort: true},
-                {field: 'device', title: '设备', sort: true},
-                {field: 'osName', title: '设备类型', sort: true},
-                {field: 'browserType', title: '浏览器', sort: true},
-                {
-                    field: 'createTime', title: '登录时间', templet: function (d) {
-                        return util.toDateString(d.createTime);
-                    }, sort: true
-                }
-            ]]
+            cols: [cols]
         });
 
         /* 渲染时间选择 */

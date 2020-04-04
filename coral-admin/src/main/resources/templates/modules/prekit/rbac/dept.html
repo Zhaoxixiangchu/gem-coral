@@ -221,7 +221,7 @@
             <label class="layui-form-label layui-form-required">设置密码:</label>
             <div class="layui-input-block">
                 <input name="password" placeholder="默认123456" class="layui-input" type="password"
-                       lay-verType="tips" lay-verify="required" value="123456"/>
+                       lay-verType="tips" value="123456"/>
             </div>
         </div>
         <div class="layui-form-item">
@@ -486,7 +486,7 @@
                     form.val('userEditForm', mData);
                     // 表单提交事件
                     form.on('submit(userEditSubmit)', function (data) {
-                        // data.field.deptId = selObj ? selObj.data.id : 1;
+                        data.field.roleIds = insRoleSel.getValue('valueStr');
                         data.field.deptId = insDeptXmSel.getValue('valueStr');
                         var loadIndex = layer.load(2);
                         $.post(mData?'user/update':'user/save', data.field, function (res) {
@@ -525,29 +525,52 @@
                         }
                     });
 
-                    // 渲染多选下拉框
-                    var insRoleSel = xmSelect.render({
-                        el: '#userEditRoleSel',
-                        name: 'userEditRoleSel',
-                        layVerify: 'required',
-                        layVerType: 'tips',
-                        data: [{
-                            name: '管理员',
-                            value: 1
-                        }, {
-                            name: '普通用户',
-                            value: 2
-                        }, {
-                            name: '游客',
-                            value: 3
-                        }]
-                    });
-                    // 回显选中角色
-                    if (mData && mData.roles) {
-                        insRoleSel.setValue(mData.roles.map(function (item) {
-                            return item.roleId;
-                        }));
-                    }
+                    //查询角色list
+                    var insRoleSel;
+                    $.get('role/list', {}, function (res) {
+                        if (res.code === 0) {
+                            // 渲染多选下拉框
+                            insRoleSel = xmSelect.render({
+                                el: '#userEditRoleSel',
+                                name: 'userEditRoleSel',
+                                tips:'请授权角色',
+                                layVerify: 'required',
+                                layVerType: 'tips',
+                                direction: 'auto',
+                                filterable: true,
+                                paging: true,
+                                pageSize: 5,
+                                model: {
+                                    label: {
+                                        type: 'block',
+                                        block: {
+                                            //最大显示数量, 0:不限制
+                                            showCount: 5,
+                                            //是否显示删除图标
+                                            showIcon: true,
+                                        }
+                                    }
+                                },
+                                toolbar: {
+                                    show: true,
+                                },
+                                prop: {
+                                    name: 'name',
+                                    value: 'id',
+                                },
+                                data: res.data,
+                            });
+                            insRoleSel.set
+                        } else {
+                            layer.msg(res.msg, {icon: 2});
+                        }
+                        // 回显选中角色
+                        if (mData && mData.roles) {
+                            insRoleSel.setValue(mData.roles.map(function (item) {
+                                return item.id;
+                            }));
+                        }
+                    }, 'json');
 
                     // 禁止弹窗出现滚动条
                     $(layero).children('.layui-layer-content').css('overflow', 'visible');

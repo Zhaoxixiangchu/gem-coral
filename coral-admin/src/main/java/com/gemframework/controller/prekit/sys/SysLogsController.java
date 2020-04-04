@@ -6,18 +6,23 @@
  * http://www.gemframework.com
  * 版权所有，侵权必究！
  */
-package com.gemframework.controller.prekit;
+package com.gemframework.controller.prekit.sys;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gemframework.annotation.Log;
+import com.gemframework.common.utils.GemBeanUtils;
 import com.gemframework.constant.GemModules;
+import com.gemframework.controller.prekit.BaseController;
 import com.gemframework.model.common.BaseResultData;
 import com.gemframework.model.common.PageInfo;
-import com.gemframework.model.common.validator.StatusValidator;
-import com.gemframework.model.entity.vo.RoleDeptsVo;
+import com.gemframework.model.common.validator.*;
+import com.gemframework.model.entity.po.SysLogs;
+import com.gemframework.model.entity.vo.RoleVo;
+import com.gemframework.model.entity.vo.SysLogsVo;
+import com.gemframework.model.enums.ErrorCode;
 import com.gemframework.model.enums.OperateType;
-import com.gemframework.service.RoleDeptsService;
+import com.gemframework.service.SysLogsService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -30,39 +35,34 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
-@RequestMapping(GemModules.PreKit.PATH_RBAC+"/roleDepts")
-public class RoleDeptsController extends BaseController {
+@RequestMapping(GemModules.PreKit.PATH_SYSTEM+"/sysLogs")
+public class SysLogsController extends BaseController {
 
-    private static final String moduleName = "角色部门关联信息";
+    private static final String moduleName = "系统操作日志";
 
     @Autowired
-    private RoleDeptsService roleDeptsService;
-
-
+    private SysLogsService sysLogsService;
 
     /**
      * 获取列表分页
      * @return
      */
-    @Log(type = OperateType.NORMAL,value = "分页查询"+moduleName)
     @GetMapping("/page")
-    @RequiresPermissions("roleDepts:page")
-    public BaseResultData page(PageInfo pageInfo, RoleDeptsVo vo) {
+    @RequiresPermissions("sysLogs:page")
+    public BaseResultData page(PageInfo pageInfo, RoleVo vo) {
         QueryWrapper queryWrapper = makeQueryMaps(vo);
-        Page page = roleDeptsService.page(setOrderPage(pageInfo),queryWrapper);
+        Page page = sysLogsService.page(setOrderPage(pageInfo),queryWrapper);
         return BaseResultData.SUCCESS(page.getRecords(),page.getTotal());
     }
-
     /**
      * 获取列表
      * @return
      */
-    @Log(type = OperateType.NORMAL,value = "列表查询"+moduleName)
     @GetMapping("/list")
-    @RequiresPermissions("roleDepts:list")
-    public BaseResultData list(RoleDeptsVo vo) {
+    @RequiresPermissions("sysLogs:list")
+    public BaseResultData list(SysLogsVo vo) {
         QueryWrapper queryWrapper = makeQueryMaps(vo);
-        List list = roleDeptsService.list(queryWrapper);
+        List list = sysLogsService.list(queryWrapper);
         return BaseResultData.SUCCESS(list);
     }
 
@@ -72,29 +72,49 @@ public class RoleDeptsController extends BaseController {
      */
     @Log(type = OperateType.ALTER,value = "保存"+moduleName)
     @PostMapping("/save")
-    @RequiresPermissions("roleDepts:save")
-    public BaseResultData save(@RequestBody RoleDeptsVo vo) {
+    @RequiresPermissions("sysLogs:save")
+    public BaseResultData save(@RequestBody SysLogsVo vo) {
         GemValidate(vo, StatusValidator.class);
-        return BaseResultData.SUCCESS(roleDeptsService.save(vo));
+        SysLogs entity = GemBeanUtils.copyProperties(vo, SysLogs.class);
+        if(!sysLogsService.save(entity)){
+            return BaseResultData.ERROR(ErrorCode.SAVE_OR_UPDATE_FAIL);
+        }
+        return BaseResultData.SUCCESS(entity);
     }
 
+    /**
+     * 编辑
+     * @return
+     */
+    @Log(type = OperateType.ALTER,value = "编辑"+moduleName)
+    @PostMapping("/update")
+    @RequiresPermissions("sysLogs:update")
+    public BaseResultData update(@RequestBody SysLogsVo vo) {
+        GemValidate(vo, UpdateValidator.class);
+        SysLogs entity = GemBeanUtils.copyProperties(vo, SysLogs.class);
+        if(!sysLogsService.updateById(entity)){
+            return BaseResultData.ERROR(ErrorCode.SAVE_OR_UPDATE_FAIL);
+        }
+        return BaseResultData.SUCCESS(entity);
+    }
 
     /**
-     * 删除
+     * 删除 & 批量刪除
      * @return
      */
     @Log(type = OperateType.ALTER,value = "删除"+moduleName)
     @PostMapping("/delete")
-    @RequiresPermissions("roleDepts:delete")
+    @RequiresPermissions("sysLogs:delete")
     public BaseResultData delete(Long id,String ids) {
-        if(id!=null) roleDeptsService.removeById(id);
+        if(id!=null) sysLogsService.removeById(id);
         if(StringUtils.isNotBlank(ids)){
             List<Long> listIds = Arrays.asList(ids.split(",")).stream().map(s ->Long.parseLong(s.trim())).collect(Collectors.toList());
             if(listIds!=null && !listIds.isEmpty()){
-                roleDeptsService.removeByIds(listIds);
+                sysLogsService.removeByIds(listIds);
             }
         }
         return BaseResultData.SUCCESS();
     }
+
 
 }

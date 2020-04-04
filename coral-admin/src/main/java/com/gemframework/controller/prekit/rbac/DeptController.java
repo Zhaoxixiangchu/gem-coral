@@ -6,12 +6,14 @@
  * http://www.gemframework.com
  * 版权所有，侵权必究！
  */
-package com.gemframework.controller.prekit;
+package com.gemframework.controller.prekit.rbac;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.gemframework.annotation.Log;
 import com.gemframework.common.utils.GemBeanUtils;
 import com.gemframework.constant.GemModules;
+import com.gemframework.controller.prekit.BaseController;
 import com.gemframework.model.common.BaseResultData;
 import com.gemframework.model.common.PageInfo;
 import com.gemframework.model.common.ZtreeEntity;
@@ -20,6 +22,7 @@ import com.gemframework.model.common.validator.UpdateValidator;
 import com.gemframework.model.entity.po.Dept;
 import com.gemframework.model.entity.vo.DeptVo;
 import com.gemframework.model.enums.ErrorCode;
+import com.gemframework.model.enums.OperateType;
 import com.gemframework.service.DeptService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -35,6 +38,8 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping(GemModules.PreKit.PATH_RBAC+"/dept")
 public class DeptController extends BaseController {
+
+    private static final String moduleName = "机构（部门）信息";
 
     @Autowired
     private DeptService deptService;
@@ -100,6 +105,7 @@ public class DeptController extends BaseController {
      * 添加或编辑
      * @return
      */
+    @Log(type = OperateType.ALTER,value = "保存"+moduleName)
     @PostMapping("/save")
     @RequiresPermissions("dept:save")
     public BaseResultData save(@RequestBody DeptVo vo) {
@@ -115,6 +121,7 @@ public class DeptController extends BaseController {
      * 添加或编辑
      * @return
      */
+    @Log(type = OperateType.ALTER,value = "编辑"+moduleName)
     @PostMapping("/update")
     @RequiresPermissions("dept:update")
     public BaseResultData update(@RequestBody DeptVo vo) {
@@ -130,6 +137,7 @@ public class DeptController extends BaseController {
      * 删除 & 批量刪除
      * @return
      */
+    @Log(type = OperateType.ALTER,value = "删除"+moduleName)
     @PostMapping("/delete")
     @RequiresPermissions("dept:delete")
     public BaseResultData delete(Long id,String ids) {

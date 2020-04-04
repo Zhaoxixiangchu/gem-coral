@@ -6,13 +6,14 @@
  * http://www.gemframework.com
  * 版权所有，侵权必究！
  */
-package com.gemframework.controller.prekit;
+package com.gemframework.controller.prekit.rbac;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gemframework.annotation.Log;
 import com.gemframework.common.constant.GemConstant;
 import com.gemframework.common.utils.GemBeanUtils;
 import com.gemframework.constant.GemModules;
+import com.gemframework.controller.prekit.BaseController;
 import com.gemframework.model.common.BaseResultData;
 import com.gemframework.model.common.PageInfo;
 import com.gemframework.model.common.ZtreeEntity;
@@ -58,7 +59,6 @@ public class RightController extends BaseController {
      * 获取列表分页
      * @return
      */
-    @Log(type = OperateType.NORMAL,value = "分页查询"+moduleName)
     @GetMapping("/page")
     @RequiresPermissions("right:page")
     public BaseResultData page(PageInfo pageInfo, RightVo vo) {
@@ -71,7 +71,6 @@ public class RightController extends BaseController {
      * 获取列表
      * @return
      */
-    @Log(type = OperateType.NORMAL,value = "列表查询"+moduleName)
     @GetMapping("/list")
     @RequiresPermissions("right:list")
     public BaseResultData list(RightVo vo) {
@@ -129,7 +128,6 @@ public class RightController extends BaseController {
      * 获取权限数据树
      * @return
      */
-    @Log(type = OperateType.NORMAL,value = "树形查询"+moduleName)
     @GetMapping("/tree")
     @RequiresPermissions("right:tree")
     public BaseResultData tree(){

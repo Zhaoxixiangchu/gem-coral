@@ -6,13 +6,14 @@
  * http://www.gemframework.com
  * 版权所有，侵权必究！
  */
-package com.gemframework.controller.prekit;
+package com.gemframework.controller.prekit.rbac;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gemframework.annotation.Log;
 import com.gemframework.common.utils.GemBeanUtils;
 import com.gemframework.constant.GemModules;
+import com.gemframework.controller.prekit.BaseController;
 import com.gemframework.model.common.BaseResultData;
 import com.gemframework.model.common.PageInfo;
 import com.gemframework.model.common.validator.StatusValidator;
@@ -43,7 +44,6 @@ public class RoleController extends BaseController {
      * 获取列表分页
      * @return
      */
-    @Log(type = OperateType.NORMAL,value = "分页查询"+moduleName)
     @GetMapping("/page")
     @RequiresPermissions("role:page")
     public BaseResultData page(PageInfo pageInfo,RoleVo vo) {
@@ -56,7 +56,6 @@ public class RoleController extends BaseController {
      * 获取列表
      * @return
      */
-    @Log(type = OperateType.NORMAL,value = "列表查询"+moduleName)
     @GetMapping("/list")
     @RequiresPermissions("role:list")
     public BaseResultData list(RoleVo vo) {

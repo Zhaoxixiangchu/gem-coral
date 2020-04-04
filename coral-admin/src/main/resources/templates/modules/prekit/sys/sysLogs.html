@@ -28,11 +28,11 @@
                     <div class="layui-inline">
                         <label class="layui-form-label">用户账号:</label>
                         <div class="layui-input-inline">
-                            <input name="account" class="layui-input" placeholder="输入账号"/>
+                            <input name="username" class="layui-input" placeholder="请输入用户账号"/>
                         </div>
                     </div>
                     <div class="layui-inline">
-                        <label class="layui-form-label">登录日期:</label>
+                        <label class="layui-form-label">操作日期:</label>
                         <div class="layui-input-inline">
                             <input name="loginRecordDateSel" class="layui-input icon-date" placeholder="选择日期范围"
                                    autocomplete="off"/>
@@ -49,7 +49,7 @@
                 </div>
             </form>
             <!-- 数据表格 -->
-            <table id="loginRecordTable" lay-filter="loginRecordTable"></table>
+            <table id="dataTable" lay-filter="dataTable"></table>
         </div>
     </div>
 </div>
@@ -69,25 +69,24 @@
         var tableX = layui.tableX;
 
         /* 渲染表格 */
+        var cols = [
+            {type: 'checkbox'},
+            {field: 'username', title: '用户账号', sort: true},
+            {field: 'ip', title: '用户IP', sort: true},
+            {field: 'operation', title: '操作内容', sort: true},
+            {field: 'times', title: '操作耗时', sort: true},
+            {
+                field: 'createTime', title: '操作时间', templet: function (d) {
+                    return util.toDateString(d.createTime);
+                }, sort: true
+            }
+        ];
         var insTb = table.render({
-            elem: '#loginRecordTable',
-            url: 'json/login-record.json',
+            elem: '#dataTable',
+            url: 'sysLogs/page',
             page: true,
             cellMinWidth: 100,
-            cols: [[
-                {type: 'checkbox'},
-                {field: 'username', title: '账号', sort: true},
-                {field: 'nickName', title: '用户名', sort: true},
-                {field: 'ipAddress', title: 'IP', sort: true},
-                {field: 'device', title: '设备', sort: true},
-                {field: 'osName', title: '设备类型', sort: true},
-                {field: 'browserType', title: '浏览器', sort: true},
-                {
-                    field: 'createTime', title: '登录时间', templet: function (d) {
-                        return util.toDateString(d.createTime);
-                    }, sort: true
-                }
-            ]]
+            cols: [cols]
         });
 
         /* 渲染时间选择 */
@@ -122,7 +121,7 @@
                 tableX.exportDataX({
                     cols: insTb.config.cols,
                     data: checkRows.data,
-                    fileName: '登录日志'
+                    fileName: '操作日志'
                 });
             }
         });
