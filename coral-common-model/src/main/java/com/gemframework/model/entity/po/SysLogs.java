@@ -17,43 +17,16 @@ import lombok.Data;
 @TableName("gem_sys_logs")
 @Data
 public class SysLogs extends BaseEntityPo{
-	/**
-	 * 用户名
-	 */
 	private String username;
-	/**
-	 * 用户操作
-	 */
 	private String operation;
-	/**
-	 * 请求方法
-	 */
 	private String method;
-	/**
-	 * 请求参数
-	 */
 	private String params;
-	/**
-	 * 执行时长(毫秒)
-	 */
 	private Long times;
-	/**
-	 * IP地址
-	 */
-	private String ip;
-
-
-	/**
-	 * 请求参数
-	 */
+	private String userip;
+	//请求前参数
 	private String beforeParams;
-
-	/**
-	 * 操作结果信息
-	 */
-	private String msg;
-	/**
-	 * 操作结果
-	 */
-	private Object data;
+	//操作执行状态信息
+	private Integer status;
+	private Integer statusCode;
+	private String statusMsg;
 }

@@ -18,14 +18,11 @@ import com.gemframework.model.entity.po.Role;
 import com.gemframework.model.entity.po.User;
 import com.gemframework.model.entity.po.UserRoles;
 import com.gemframework.model.entity.vo.RoleVo;
-import com.gemframework.model.entity.vo.UserRolesVo;
 import com.gemframework.model.entity.vo.UserVo;
 import com.gemframework.service.RoleService;
 import com.gemframework.service.UserRolesService;
 import com.gemframework.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -86,5 +83,23 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public User getById(Long id) {
         return super.getById(id);
+    }
+
+    @Override
+    public boolean exits(User entity) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper();
+        queryWrapper.eq("username",entity.getUsername())
+                .or()
+                .eq("phone",entity.getPhone())
+                .or()
+                .eq("email",entity.getEmail());
+        //编辑
+        if(entity.getId() != null && entity.getId() !=0){
+            queryWrapper.and(wrapper -> wrapper.ne("id",entity.getId()));
+        }
+        if(count(queryWrapper)>0){
+            return true;
+        }
+        return false;
     }
 }

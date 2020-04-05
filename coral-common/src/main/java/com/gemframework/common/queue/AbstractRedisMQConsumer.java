@@ -34,7 +34,6 @@ public abstract class AbstractRedisMQConsumer<T> {
      */
     private int consumerThreadCount = 5;
 
-    private ExecutorService executor;
 
 
     /***
@@ -42,7 +41,7 @@ public abstract class AbstractRedisMQConsumer<T> {
      * @param key
      */
     public void runConsumers(final String key){
-        executor = Executors.newFixedThreadPool(consumerThreadCount);
+        ExecutorService executor = Executors.newFixedThreadPool(consumerThreadCount);
         for(int i = 0 ; i < consumerThreadCount ; i ++){
             executor.submit(new Runnable() {
                 @Override
@@ -65,12 +64,11 @@ public abstract class AbstractRedisMQConsumer<T> {
                         }
                     }else{
                         log.debug("====已经消费完====");
-                        executor.shutdown();
                     }
                 }
             });
         }
-
+        executor.shutdown();
     }
 
     public Long getSize(String key){

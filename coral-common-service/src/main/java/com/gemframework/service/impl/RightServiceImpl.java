@@ -86,4 +86,18 @@ public class RightServiceImpl extends ServiceImpl<RightMapper, Right> implements
         }
         return rightsList;
     }
+
+    @Override
+    public boolean exits(Right entity) {
+        QueryWrapper<Right> queryWrapper = new QueryWrapper();
+        queryWrapper.eq("name",entity.getName());
+        //编辑
+        if(entity.getId() != null && entity.getId() !=0){
+            queryWrapper.and(wrapper -> wrapper.ne("id",entity.getId()));
+        }
+        if(count(queryWrapper)>0){
+            return true;
+        }
+        return false;
+    }
 }

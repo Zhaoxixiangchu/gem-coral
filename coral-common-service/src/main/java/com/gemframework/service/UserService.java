@@ -29,4 +29,6 @@ public interface UserService extends IService<User> {
     User getByUserName(String username);
 
     User getById(Long id);
+
+    boolean exits(User entity);
 }

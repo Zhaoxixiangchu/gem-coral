@@ -33,7 +33,7 @@ import static com.gemframework.common.constant.GemCommonRedisKeys.Queue.LOG_SYNC
 @EnableScheduling
 public class LogsRedisMQConsumer extends AbstractRedisMQConsumer<Map<String,Object>> {
 
-    private static final int consumerThreadCount = 10;
+    private static final int consumerThreadCount = 1;
 
     private static final int reidsReadTimeout = 30;
 

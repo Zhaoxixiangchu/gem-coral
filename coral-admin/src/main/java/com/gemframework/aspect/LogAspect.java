@@ -18,6 +18,8 @@ import com.gemframework.common.utils.GemIPHandler;
 import com.gemframework.model.common.BaseEntityVo;
 import com.gemframework.model.common.BaseResultData;
 import com.gemframework.model.entity.po.SysLogs;
+import com.gemframework.model.enums.OperateStatus;
+import com.gemframework.model.enums.OperateType;
 import com.gemframework.service.queue.MapQueueMessage;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
@@ -94,7 +96,7 @@ public class LogAspect {
         this.endTime = System.currentTimeMillis();
         //保存日志
         saveLog(point, result, (endTime - startTime));
-        log.debug("程序执行时间 {}-{}={}", endTime,startTime,endTime - startTime);
+        log.debug("程序执行时间 {}-{}={},运行结果 {}", endTime,startTime,endTime - startTime,result);
         return result;
     }
 
@@ -102,92 +104,58 @@ public class LogAspect {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
 
-        SysLogs logs = new SysLogs();
-        Log log = method.getAnnotation(Log.class);
+        SysLogs sysLogs = new SysLogs();
+        Log annotationLog = method.getAnnotation(Log.class);
+        String username = (String) SecurityUtils.getSubject().getPrincipal();
         if(StringUtils.isBlank(username)){
-            this.username = (String) SecurityUtils.getSubject().getPrincipal();
+            username = this.username;
         }
-        if(log != null && StringUtils.isNotBlank(username)){
-            //用户名
-            logs.setUsername(username);
-
-            //注解上的描述
-            logs.setOperation(log.value());
+        if(annotationLog != null && StringUtils.isNotBlank(username)){
+            //设置当前用户
+            sysLogs.setUsername(username);
+            //设置操作内容
+            sysLogs.setOperation(annotationLog.value());
             //请求的方法名
             String className = joinPoint.getTarget().getClass().getName();
             String methodName = signature.getName();
-            logs.setMethod(className + "." + methodName + "()");
+            //设置操方法名
+            sysLogs.setMethod(className + "." + methodName + "()");
             //请求的参数
             Object[] args = joinPoint.getArgs();
-            try{
+            if(args!=null){
                 String params = new Gson().toJson(args[0]);
-                logs.setParams(params);
-
+                //设置参数名
+                sysLogs.setParams(params);
+            }
+            //设置操作状态
+            sysLogs.setStatus(OperateStatus.SUCCESS.getCode());
+            sysLogs.setStatusCode(OperateStatus.SUCCESS.getCode());
+            sysLogs.setStatusMsg(result.toString());
+            if(result instanceof BaseResultData){
                 //将object 转化为controller封装返回的实体类：RequestResult
                 BaseResultData resultData = (BaseResultData) result;
+                sysLogs.setStatusCode(resultData.getCode());
+                sysLogs.setStatusMsg(resultData.getMsg());
                 if (resultData.getCode() == 0) {
-                    //操作流程成功
-                    if (StringUtils.isNotBlank(resultData.getMsg())) {
-                        logs.setMsg(resultData.getMsg());
-                    } else if (resultData.getData() instanceof String) {
-                        logs.setData(resultData.getData());
-                    } else {
-                        logs.setMsg("成功");
-                    }
+                    sysLogs.setStatus(OperateStatus.SUCCESS.getCode());
                 } else {
-                    logs.setMsg("失败");
+                    sysLogs.setStatus(OperateStatus.FAIL.getCode());
                 }
-            }catch (Exception e){
-                logs.setMsg(e.getMessage());
-            }catch (Throwable e) {
-                logs.setMsg(e.getMessage());
             }
-
             //获取request
             HttpServletRequest request = GemHttpUtils.getHttpServletRequest();
-            //设置IP地址
-            logs.setIp(GemIPHandler.getIpAddr(request));
-            logs.setTimes(time);
-            logs.setCreateTime(new Date());
-            logs.setUpdateTime(new Date());
+            //设置IP信息
+            sysLogs.setUserip(GemIPHandler.getIpAddr(request));
+
+            sysLogs.setTimes(time);
+            sysLogs.setCreateTime(new Date());
+            sysLogs.setUpdateTime(new Date());
             GemQueueMessage<Map<String,Object>> mapQueueMessage = new MapQueueMessage();
             Map<String,Object> map = new HashMap<>();
-            map.put(LOG_SYNC_DB_SAVE,logs);
+            map.put(LOG_SYNC_DB_SAVE,sysLogs);
             mapQueueMessage.setData(map);
             //向key为cacheKey的队列发送消息
             redisMQProducer.send(LOG_SYNC_DB,mapQueueMessage);
         }
-    }
-
-
-    public static String getParams(ProceedingJoinPoint point){
-        // 拦截的方法参数
-        Object[] args = point.getArgs();
-        JSONArray operateParamArray = new JSONArray();
-        for (int i = 0; i < args.length; i++) {
-            Object paramsObj = args[i];
-            //通过该方法可查询对应的object属于什么类型：
-            String type = paramsObj.getClass().getName();
-            if (paramsObj instanceof String && paramsObj instanceof JSONObject) {
-                String str = (String) paramsObj;
-                //将其转为jsonobject
-                JSONObject dataJson = JSONObject.parseObject(str);
-                if (dataJson == null || dataJson.isEmpty() || "null".equals(dataJson)) {
-                    break;
-                } else {
-                    operateParamArray.add(dataJson);
-                }
-            } else if (paramsObj instanceof Map) {
-                //get请求，以map类型传参
-                //1.将object的map类型转为jsonobject类型
-                Map<String, Object> map = (Map<String, Object>) paramsObj;
-                JSONObject json = new JSONObject(map);
-                operateParamArray.add(json);
-            }else if(paramsObj instanceof BaseEntityVo){
-                JSONObject dataJson = (JSONObject) JSONObject.toJSON(paramsObj);
-                operateParamArray.add(dataJson);
-            }
-        }
-        return operateParamArray.toJSONString();
     }
 }

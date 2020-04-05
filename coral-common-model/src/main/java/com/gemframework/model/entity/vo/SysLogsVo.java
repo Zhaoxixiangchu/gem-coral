@@ -21,29 +21,18 @@ import javax.validation.constraints.NotBlank;
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = false)
 public class SysLogsVo extends BaseEntityVo{
-	/**
-	 * 用户名
-	 */
+
 	@NotBlank(message = "用户名不能为空")
 	private String username;
-	/**
-	 * 用户操作
-	 */
 	private String operation;
-	/**
-	 * 请求方法
-	 */
 	private String method;
-	/**
-	 * 请求参数
-	 */
 	private String params;
-	/**
-	 * 执行时长(毫秒)
-	 */
 	private Long times;
-	/**
-	 * IP地址
-	 */
-	private String ip;
+	private String userip;
+	//请求前参数
+	private String beforeParams;
+	//操作执行状态信息
+	private Integer status;
+	private Integer statusCode;
+	private String statusMsg;
 }

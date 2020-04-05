@@ -74,6 +74,9 @@ public class RoleController extends BaseController {
     public BaseResultData save(@RequestBody RoleVo vo) {
         GemValidate(vo, StatusValidator.class);
         Role entity = GemBeanUtils.copyProperties(vo, Role.class);
+        if(roleService.exits(entity)){
+            return BaseResultData.ERROR(ErrorCode.ROLE_EXIST);
+        }
         if(!roleService.save(entity)){
             return BaseResultData.ERROR(ErrorCode.SAVE_OR_UPDATE_FAIL);
         }
@@ -90,6 +93,9 @@ public class RoleController extends BaseController {
     public BaseResultData update(@RequestBody RoleVo vo) {
         GemValidate(vo, UpdateValidator.class);
         Role entity = GemBeanUtils.copyProperties(vo, Role.class);
+        if(roleService.exits(entity)){
+            return BaseResultData.ERROR(ErrorCode.ROLE_EXIST);
+        }
         if(!roleService.updateById(entity)){
             return BaseResultData.ERROR(ErrorCode.SAVE_OR_UPDATE_FAIL);
         }

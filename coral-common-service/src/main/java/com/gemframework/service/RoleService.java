@@ -22,4 +22,6 @@ public interface RoleService extends IService<Role> {
     Set<Role> findRolesByFlags(Set<String> flags);
 
     Set<Role> findRolesByUsername(String username);
+
+    boolean exits(Role entity);
 }

@@ -126,4 +126,20 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
         return roles;
     }
 
+    @Override
+    public boolean exits(Role entity) {
+        QueryWrapper<Role> queryWrapper = new QueryWrapper();
+        queryWrapper.eq("name",entity.getName())
+                    .or()
+                    .eq("flag",entity.getFlag());
+        //编辑
+        if(entity.getId() != null && entity.getId() !=0){
+            queryWrapper.and(wrapper -> wrapper.ne("id",entity.getId()));
+        }
+        if(count(queryWrapper)>0){
+            return true;
+        }
+        return false;
+    }
+
 }

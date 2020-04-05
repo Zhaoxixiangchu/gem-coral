@@ -23,4 +23,6 @@ public interface RightService extends IService<Right> {
     Set<String> findRightsByRoles(Set<Role> roles);
 
     List<Right> findRightsByRolesAndType(Set<String> roles, MenuType type);
+
+    boolean exits(Right entity);
 }

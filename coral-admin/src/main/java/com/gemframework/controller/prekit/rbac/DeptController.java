@@ -111,6 +111,9 @@ public class DeptController extends BaseController {
     public BaseResultData save(@RequestBody DeptVo vo) {
         GemValidate(vo, StatusValidator.class);
         Dept entity = GemBeanUtils.copyProperties(vo, Dept.class);
+        if(deptService.exits(entity)){
+            return BaseResultData.ERROR(ErrorCode.DEPT_EXIST);
+        }
         if(!deptService.save(entity)){
             return BaseResultData.ERROR(ErrorCode.SAVE_OR_UPDATE_FAIL);
         }
@@ -127,6 +130,9 @@ public class DeptController extends BaseController {
     public BaseResultData update(@RequestBody DeptVo vo) {
         GemValidate(vo, UpdateValidator.class);
         Dept entity = GemBeanUtils.copyProperties(vo, Dept.class);
+        if(deptService.exits(entity)){
+            return BaseResultData.ERROR(ErrorCode.DEPT_EXIST);
+        }
         if(!deptService.updateById(entity)){
             return BaseResultData.ERROR(ErrorCode.SAVE_OR_UPDATE_FAIL);
         }

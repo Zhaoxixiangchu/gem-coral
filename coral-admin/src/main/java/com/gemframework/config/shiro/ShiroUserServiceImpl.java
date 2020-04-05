@@ -12,6 +12,7 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.gemframework.common.exception.GemException;
 import com.gemframework.common.utils.GemBeanUtils;
 import com.gemframework.mapper.UserMapper;
 import com.gemframework.model.entity.po.Role;
@@ -20,6 +21,7 @@ import com.gemframework.model.entity.po.UserRoles;
 import com.gemframework.model.entity.vo.RoleVo;
 import com.gemframework.model.entity.vo.UserRolesVo;
 import com.gemframework.model.entity.vo.UserVo;
+import com.gemframework.model.enums.ErrorCode;
 import com.gemframework.service.RoleService;
 import com.gemframework.service.UserRolesService;
 import com.gemframework.service.UserService;
@@ -52,6 +54,9 @@ public class ShiroUserServiceImpl extends ServiceImpl<UserMapper, User> implemen
         String salt = RandomStringUtils.randomAlphanumeric(32);
         user.setSalt(salt);
         user.setPassword(ShiroUtils.passwordSHA256(user.getPassword(), user.getSalt()));
+        if(exits(user)){
+            throw new GemException(ErrorCode.USER_EXIST);
+        }
         if(super.saveOrUpdate(user)){
             vo.setId(user.getId());
             if(StringUtils.isNotBlank(vo.getRoleIds())){
@@ -119,5 +124,23 @@ public class ShiroUserServiceImpl extends ServiceImpl<UserMapper, User> implemen
     @Override
     public User getById(Long id) {
         return super.getById(id);
+    }
+
+    @Override
+    public boolean exits(User entity) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper();
+        queryWrapper.eq("username",entity.getUsername())
+                .or()
+                .eq("phone",entity.getPhone())
+                .or()
+                .eq("email",entity.getEmail());
+        //编辑
+        if(entity.getId() != null && entity.getId() !=0){
+            queryWrapper.and(wrapper -> wrapper.ne("id",entity.getId()));
+        }
+        if(count(queryWrapper)>0){
+            return true;
+        }
+        return false;
     }
 }

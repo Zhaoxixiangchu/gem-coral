@@ -53,6 +53,10 @@
         </div>
     </div>
 </div>
+<!-- 表格状态列 -->
+<script type="text/html" id="sysLogsStatus">
+    <p>{{d.status==0?'成功':'失败'}}</p>
+</script>
 
 <!-- js部分1 -->
 <div th:replace="common/scripts :: common"></div>
@@ -72,11 +76,12 @@
         var cols = [
             {type: 'checkbox'},
             {field: 'username', title: '用户账号', sort: true},
-            {field: 'ip', title: '用户IP', sort: true},
+            {field: 'userip', title: '用户IP', sort: true},
             {field: 'operation', title: '操作内容', sort: true},
-            {field: 'params', title: '操作内容', sort: true},
-            {field: 'times', title: '操作耗时(ms)', sort: true},
-            {field: 'msg', title: '状态', sort: true},
+            {field: 'params', title: '参数'},
+            {field: 'times', title: '耗时(ms)', sort: true,align: 'center', width: 110},
+            {field: 'status', title: '状态', sort: true, templet: '#sysLogsStatus', align: 'center', width: 80},
+            {field: 'statusMsg', title: '消息', sort: true,align: 'center'},
             {
                 field: 'createTime', title: '操作时间', templet: function (d) {
                     return util.toDateString(d.createTime);
