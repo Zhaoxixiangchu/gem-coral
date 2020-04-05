@@ -32,6 +32,12 @@
                         </div>
                     </div>
                     <div class="layui-inline">
+                        <label class="layui-form-label">操作内容:</label>
+                        <div class="layui-input-inline">
+                            <input name="operation" class="layui-input" placeholder="请输入操作内容"/>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
                         <label class="layui-form-label">操作日期:</label>
                         <div class="layui-input-inline">
                             <input name="dateRange" class="layui-input icon-date" placeholder="选择日期范围"
@@ -75,13 +81,13 @@
         /* 渲染表格 */
         var cols = [
             {type: 'checkbox'},
-            {field: 'username', title: '用户账号', sort: true},
-            {field: 'userip', title: '用户IP', sort: true},
+            {field: 'username', title: '用户账号',align: 'center'},
+            {field: 'userip', title: '用户IP',align: 'center', width: 110},
             {field: 'operation', title: '操作内容', sort: true},
             {field: 'params', title: '参数'},
-            {field: 'times', title: '耗时(ms)', sort: true,align: 'center', width: 110},
+            {field: 'times', title: '耗时(ms)', sort: true, align: 'center', width: 110},
             {field: 'status', title: '状态', sort: true, templet: '#sysLogsStatus', align: 'center', width: 80},
-            {field: 'statusMsg', title: '消息', sort: true,align: 'center'},
+            {field: 'statusMsg', title: '消息', sort: true,align: 'center', width: 110},
             {
                 field: 'createTime', title: '操作时间', templet: function (d) {
                     return util.toDateString(d.createTime);

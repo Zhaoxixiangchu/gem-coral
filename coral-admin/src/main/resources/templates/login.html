@@ -14,6 +14,10 @@
 </head>
 <body>
 <div class="login-wrapper">
+    <div class="login-header">
+        <img th:src="@{/coral/images/logo.png}">
+        捷码开源权限管理系统V1.0
+    </div>
     <form class="layui-form">
         <h2>用户登录</h2>
         <div class="layui-form-item layui-input-icon-group">
@@ -158,6 +162,20 @@
         font-size: 26px;
     }
 
+    /** 头部样式 */
+    .login-header {
+        font-family: Myriad Pro, Helvetica Neue, Arial, Helvetica, sans-serif;
+        font-size: 20px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.85) !important;
+        padding: 30px;
+    }
+
+    .login-header img {
+        height: 40px;
+        margin-bottom: 10px;
+    }
+
     .login-copyright {
         color: #eee;
         padding-bottom: 20px;
@@ -168,7 +186,7 @@
 
     @media screen and (min-height: 550px) {
         .login-wrapper {
-            margin: -250px auto 0;
+            margin: -350px auto 0;
             position: absolute;
             top: 50%;
             left: 0;

@@ -8,6 +8,7 @@
  * 版权所有，侵权必究！
  */
 package com.gemframework.aspect;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.gemframework.annotation.Log;
@@ -122,7 +123,7 @@ public class LogAspect {
             sysLogs.setMethod(className + "." + methodName + "()");
             //请求的参数
             Object[] args = joinPoint.getArgs();
-            if(args!=null){
+            if(args.length > 0){
                 String params = new Gson().toJson(args[0]);
                 //设置参数名
                 sysLogs.setParams(params);
