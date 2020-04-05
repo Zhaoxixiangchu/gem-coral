@@ -14,6 +14,7 @@ import com.gemframework.model.common.BaseResultData;
 import com.gemframework.model.enums.ErrorCode;
 import com.gemframework.model.enums.OperateType;
 import com.gemframework.model.request.UserLoginRequest;
+import com.gemframework.utils.Base64Utils;
 import com.gemframework.utils.VerifyCodeUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
@@ -45,7 +46,8 @@ public class LoginController extends BaseController{
         // 创建主体
         Subject subject = SecurityUtils.getSubject();
         // 准备token
-        UsernamePasswordToken token = new UsernamePasswordToken(loginRequest.getUsername(),loginRequest.getPassword(),loginRequest.isRememberMe());
+        String password = Base64Utils.decode(loginRequest.getPassword());
+        UsernamePasswordToken token = new UsernamePasswordToken(loginRequest.getUsername(),password,loginRequest.isRememberMe());
         try {
         // 提交认证
             subject.login(token);

@@ -13,6 +13,7 @@ package com.gemframework.model.entity.vo;
 import com.gemframework.model.common.BaseEntityVo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.validation.constraints.NotNull;
 
@@ -27,6 +28,7 @@ import javax.validation.constraints.NotNull;
  * @Company: www.gemframework.com
  */
 @Data
+@ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = false)
 public class TaskLogsVo extends BaseEntityVo{
 

@@ -14,6 +14,7 @@ import com.gemframework.model.common.BaseEntityVo;
 import com.gemframework.model.common.validator.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -21,6 +22,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
+@ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = false)
 public class UserVo extends BaseEntityVo {
 

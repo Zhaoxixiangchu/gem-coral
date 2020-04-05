@@ -71,12 +71,18 @@ public class BaseController {
     public static QueryWrapper makeQueryMaps(BaseEntityVo vo) {
         QueryWrapper queryWrapper = setSort();
         queryWrapper.eq("deleted",0);
-        Map<String,Object> map = GemBeanUtils.ObjectToMap(vo);
+        Map<String,Object> map = GemBeanUtils.objectToMap(vo);
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             String fieldName = GemStringUtils.humpToLine(entry.getKey());
             Object paramVal = entry.getValue();
             log.info("key= " + fieldName + " and value= "+paramVal);
-            queryWrapper.like(paramVal != null && StringUtils.isNotBlank(String.valueOf(paramVal)),fieldName,paramVal);
+            if(entry.getKey().equalsIgnoreCase("startDate")){
+                queryWrapper.ge(paramVal != null && StringUtils.isNotBlank(String.valueOf(paramVal)),"update_time",paramVal);
+            }else if(entry.getKey().equalsIgnoreCase("endDate")){
+                queryWrapper.le(paramVal != null && StringUtils.isNotBlank(String.valueOf(paramVal)),"update_time",paramVal);
+            }else{
+                queryWrapper.like(paramVal != null && StringUtils.isNotBlank(String.valueOf(paramVal)),fieldName,paramVal);
+            }
         }
         return queryWrapper;
     }

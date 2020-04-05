@@ -115,4 +115,9 @@ public class ShiroUserServiceImpl extends ServiceImpl<UserMapper, User> implemen
         User user = userMapper.selectOne(queryWrapper);
         return user;
     }
+
+    @Override
+    public User getById(Long id) {
+        return super.getById(id);
+    }
 }

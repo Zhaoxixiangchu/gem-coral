@@ -49,7 +49,7 @@ public class SysLogsController extends BaseController {
      */
     @GetMapping("/page")
     @RequiresPermissions("sysLogs:page")
-    public BaseResultData page(PageInfo pageInfo, RoleVo vo) {
+    public BaseResultData page(PageInfo pageInfo, SysLogsVo vo) {
         QueryWrapper queryWrapper = makeQueryMaps(vo);
         Page page = sysLogsService.page(setOrderPage(pageInfo),queryWrapper);
         return BaseResultData.SUCCESS(page.getRecords(),page.getTotal());

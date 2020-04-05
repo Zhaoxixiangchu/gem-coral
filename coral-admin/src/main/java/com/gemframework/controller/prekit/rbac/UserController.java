@@ -86,7 +86,9 @@ public class UserController extends BaseController {
      * 编辑
      * @return
      */
-    @Log(type = OperateType.ALTER,value = "编辑"+moduleName)
+    @Log(type = OperateType.ALTER,value = "编辑"+moduleName,
+            serviceClass="shiroUserServiceImpl",queryMethod="getById",
+            parameterType="Long",parameterKey="id")
     @PostMapping("/update")
     @RequiresPermissions("user:update")
     public BaseResultData update(@RequestBody UserVo vo) {

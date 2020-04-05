@@ -47,16 +47,25 @@ public abstract class AbstractRedisMQConsumer<T> {
             executor.submit(new Runnable() {
                 @Override
                 public void run() {
-                    while (true){
-                        if(getSize(key) > 0){
-                            GemQueueMessage<T> message = redisUtils.lBRightPop(key,reidsReadTimeout,TimeUnit.SECONDS);
-                            if(message != null){
-                                consume(message);
-                            }
-                        }else{
-                            log.info("====已经消费完====");
-                            executor.shutdown();
+//                    while (true){
+//                        if(getSize(key) > 0){
+//                            GemQueueMessage<T> message = redisUtils.lBRightPop(key,reidsReadTimeout,TimeUnit.SECONDS);
+//                            if(message != null){
+//                                consume(message);
+//                            }
+//                        }else{
+//                            log.info("====已经消费完====");
+//                            executor.shutdown();
+//                        }
+//                    }
+                    if(getSize(key) > 0){
+                        GemQueueMessage<T> message = redisUtils.lBRightPop(key,reidsReadTimeout,TimeUnit.SECONDS);
+                        if(message != null){
+                            consume(message);
                         }
+                    }else{
+                        log.debug("====已经消费完====");
+                        executor.shutdown();
                     }
                 }
             });

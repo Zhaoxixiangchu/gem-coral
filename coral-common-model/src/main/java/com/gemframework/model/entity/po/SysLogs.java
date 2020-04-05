@@ -41,4 +41,19 @@ public class SysLogs extends BaseEntityPo{
 	 * IP地址
 	 */
 	private String ip;
+
+
+	/**
+	 * 请求参数
+	 */
+	private String beforeParams;
+
+	/**
+	 * 操作结果信息
+	 */
+	private String msg;
+	/**
+	 * 操作结果
+	 */
+	private Object data;
 }

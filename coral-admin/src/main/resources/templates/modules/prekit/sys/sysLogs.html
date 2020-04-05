@@ -34,7 +34,7 @@
                     <div class="layui-inline">
                         <label class="layui-form-label">操作日期:</label>
                         <div class="layui-input-inline">
-                            <input name="loginRecordDateSel" class="layui-input icon-date" placeholder="选择日期范围"
+                            <input name="dateRange" class="layui-input icon-date" placeholder="选择日期范围"
                                    autocomplete="off"/>
                         </div>
                     </div>
@@ -42,7 +42,7 @@
                         <button class="layui-btn icon-btn" lay-filter="loginRecordTbSearch" lay-submit>
                             <i class="layui-icon">&#xe615;</i>搜索
                         </button>&nbsp;
-                        <button id="loginRecordExportBtn" class="layui-btn icon-btn" type="button">
+                        <button shiro:hasPermission="sysLogs:export" id="exportBtn" class="layui-btn icon-btn" type="button">
                             <i class="layui-icon">&#xe67d;</i>导出
                         </button>
                     </div>
@@ -74,7 +74,9 @@
             {field: 'username', title: '用户账号', sort: true},
             {field: 'ip', title: '用户IP', sort: true},
             {field: 'operation', title: '操作内容', sort: true},
-            {field: 'times', title: '操作耗时', sort: true},
+            {field: 'params', title: '操作内容', sort: true},
+            {field: 'times', title: '操作耗时(ms)', sort: true},
+            {field: 'msg', title: '状态', sort: true},
             {
                 field: 'createTime', title: '操作时间', templet: function (d) {
                     return util.toDateString(d.createTime);
@@ -91,7 +93,7 @@
 
         /* 渲染时间选择 */
         laydate.render({
-            elem: 'input[name="loginRecordDateSel"]',
+            elem: 'input[name="dateRange"]',
             type: 'date',
             range: true,
             trigger: 'click'
@@ -99,29 +101,29 @@
 
         /* 表格搜索 */
         form.on('submit(loginRecordTbSearch)', function (data) {
-            if (data.field.loginRecordDateSel) {
-                var searchDate = data.field.loginRecordDateSel.split(' - ');
+            if (data.field.dateRange) {
+                var searchDate = data.field.dateRange.split(' - ');
                 data.field.startDate = searchDate[0];
                 data.field.endDate = searchDate[1];
             } else {
                 data.field.startDate = '';
                 data.field.endDate = '';
             }
-            data.field.loginRecordDateSel = undefined;
+            data.field.dateRange = undefined;
             insTb.reload({where: data.field, page: {curr: 1}});
             return false;
         });
 
         /* 导出excel */
-        $('#loginRecordExportBtn').click(function () {
-            var checkRows = table.checkStatus('loginRecordTable');
+        $('#exportBtn').click(function () {
+            var checkRows = table.checkStatus('dataTable');
             if (checkRows.data.length === 0) {
                 layer.msg('请选择要导出的数据', {icon: 2});
             } else {
                 tableX.exportDataX({
                     cols: insTb.config.cols,
                     data: checkRows.data,
-                    fileName: '操作日志'
+                    fileName: '系统日志'
                 });
             }
         });

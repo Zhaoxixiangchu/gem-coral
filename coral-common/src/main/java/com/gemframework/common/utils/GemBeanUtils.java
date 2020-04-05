@@ -80,11 +80,16 @@ public class GemBeanUtils {
                 .collect(Collectors.toList());
     }
 
-    public static Map<String,Object> ObjectToMap(Object obj) {
+    public static Map<String,Object> objectToMap(Object obj) {
         Map<String,Object> map = JSONObject.parseObject(JSON.toJSONString(obj));
         return map;
     }
 
+    public static <T> T mapToObject(Map map,Class<T> destinationClass) {
+        //map对象
+        String json =JSONObject.toJSONString(map);
+        return JSONObject.parseObject(json, destinationClass);
+    }
 
 
 

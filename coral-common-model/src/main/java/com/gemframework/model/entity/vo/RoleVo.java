@@ -14,10 +14,12 @@ import com.gemframework.model.common.validator.SuperValidator;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 
 @Data
+@ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = false)
 public class RoleVo extends BaseEntityVo {
 

@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.gemframework.model.common.validator.SuperValidator;
 import com.gemframework.model.common.validator.UpdateValidator;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -47,6 +48,23 @@ public abstract class BaseEntityVo implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date updateTime;
 
+
     //是否删除
     private int deleted;
+
+    /**
+     * 用于查询条件
+     */
+    //开始时间
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private String startDate;
+    //结束时间
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private String endDate;
+    //开始时间
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private String startTime;
+    //结束时间
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private String endTime;
 }

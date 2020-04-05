@@ -196,6 +196,7 @@
 
 <!-- js部分 -->
 <div th:replace="common/scripts :: common"></div>
+<div th:replace="common/scripts :: encode"></div>
 <script>
     layui.use(['admin','layer','form','notice'], function () {
         var $ = layui.jquery;
@@ -205,6 +206,7 @@
         var admin = layui.admin;
         // 表单提交
         form.on('submit(loginSubmit)', function (obj) {
+            obj.field.password = encode64(obj.field.password);
             $.ajax({
                 type: "post",
                 url: "login",

@@ -82,4 +82,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         User user = userMapper.selectOne(queryWrapper);
         return user;
     }
+
+    @Override
+    public User getById(Long id) {
+        return super.getById(id);
+    }
 }
