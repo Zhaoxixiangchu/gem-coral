@@ -188,16 +188,6 @@
         </div>
     </div>
 </script>
-<!-- 设置Shiro权限变量 -->
-<shiro:hasAllPermissions name="role:save">
-    <script>shiroSave = true;</script>
-</shiro:hasAllPermissions>
-<shiro:hasAnyPermissions name="role:delete">
-    <script>shiroDelete = true;</script>
-</shiro:hasAnyPermissions>
-<shiro:hasAnyPermissions name="role:update">
-    <script>shiroEdit = true;</script>
-</shiro:hasAnyPermissions>
 <!-- js部分 -->
 <div th:replace="common/scripts :: common"></div>
 <div th:replace="common/scripts :: jquery"></div>
@@ -229,7 +219,7 @@
             elem: '#dataTable',
             url: 'role/page',
             page: true,
-            toolbar: [shiroToolbar(shiroSave,shiroDelete,shiroEdit,shiroInfo)].join(''),
+            toolbar: [shiroToolbar(shiroSave,shiroDelete)].join(''),
             cellMinWidth: 100,
             cols: [cols],
             done: function (res) {
@@ -289,7 +279,7 @@
                 layer.close(i);
                 var loadIndex = layer.load(2);
                 $.post('role/delete', {
-                    id: obj.data ? obj.data.id : '',
+                    id: obj ? obj.id : '',
                     ids: obj.ids ? obj.ids.join(',') : ''
                 }, function (res) {
                     layer.close(loadIndex);

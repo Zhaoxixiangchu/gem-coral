@@ -48,3 +48,23 @@
         <script>shiroUpdate = true;</script>
     </shiro:hasAllPermissions>
 </div>
+<div th:fragment="demoShiroTag">
+    <script>
+        //全局变量 Shiro权限
+        var shiroSave = false;
+        var shiroDelete = false;
+        var shiroUpdate = false;
+        var shiroInfo = false;
+    </script>
+
+    <!-- 设置Shiro权限变量 -->
+    <shiro:hasAllPermissions name="demo:save">
+        <script>shiroSave = true;</script>
+    </shiro:hasAllPermissions>
+    <shiro:hasAllPermissions name="demo:delete">
+        <script>shiroDelete = true;</script>
+    </shiro:hasAllPermissions>
+    <shiro:hasAllPermissions name="demo:update">
+        <script>shiroUpdate = true;</script>
+    </shiro:hasAllPermissions>
+</div>

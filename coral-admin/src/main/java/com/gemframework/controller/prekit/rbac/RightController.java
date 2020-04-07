@@ -88,9 +88,6 @@ public class RightController extends BaseController {
     public BaseResultData save(@RequestBody RightVo vo) {
         GemValidate(vo, StatusValidator.class);
         Right entity = GemBeanUtils.copyProperties(vo,Right.class);
-        if(rightService.exits(entity)){
-            return BaseResultData.ERROR(ErrorCode.MENU_EXIST);
-        }
         if(!rightService.save(entity)){
             return BaseResultData.ERROR(ErrorCode.SAVE_OR_UPDATE_FAIL);
         }
@@ -107,9 +104,6 @@ public class RightController extends BaseController {
     public BaseResultData update(@RequestBody RightVo vo) {
         GemValidate(vo, UpdateValidator.class);
         Right entity = GemBeanUtils.copyProperties(vo,Right.class);
-        if(rightService.exits(entity)){
-            return BaseResultData.ERROR(ErrorCode.MENU_EXIST);
-        }
         if(!rightService.updateById(entity)){
             return BaseResultData.ERROR(ErrorCode.SAVE_OR_UPDATE_FAIL);
         }

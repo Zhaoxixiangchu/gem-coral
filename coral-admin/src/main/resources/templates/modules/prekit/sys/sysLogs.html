@@ -45,7 +45,7 @@
                         </div>
                     </div>
                     <div class="layui-inline">&emsp;
-                        <button class="layui-btn icon-btn" lay-filter="loginRecordTbSearch" lay-submit>
+                        <button class="layui-btn icon-btn" lay-filter="searchBtn" lay-submit>
                             <i class="layui-icon">&#xe615;</i>搜索
                         </button>&nbsp;
                         <button shiro:hasPermission="sysLogs:export" id="exportBtn" class="layui-btn icon-btn" type="button">
@@ -82,7 +82,7 @@
         var cols = [
             {type: 'checkbox'},
             {field: 'username', title: '用户账号',align: 'center'},
-            {field: 'userip', title: '用户IP',align: 'center', width: 110},
+            {field: 'userip', title: '用户IP',align: 'center', width: 150},
             {field: 'operation', title: '操作内容', sort: true},
             {field: 'params', title: '参数'},
             {field: 'times', title: '耗时(ms)', sort: true, align: 'center', width: 110},
@@ -111,7 +111,7 @@
         });
 
         /* 表格搜索 */
-        form.on('submit(loginRecordTbSearch)', function (data) {
+        form.on('submit(searchBtn)', function (data) {
             if (data.field.dateRange) {
                 var searchDate = data.field.dateRange.split(' - ');
                 data.field.startDate = searchDate[0];

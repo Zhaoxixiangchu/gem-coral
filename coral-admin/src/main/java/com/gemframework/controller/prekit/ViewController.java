@@ -28,9 +28,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class ViewController {
 	
+	@RequestMapping("prekit/{url}.html")
+	public String prekit(@PathVariable("url") String url){
+		return "modules/prekit/" + url;
+	}
 	@RequestMapping("prekit/{module}/{url}.html")
 	public String prekit(@PathVariable("module") String module,@PathVariable("url") String url){
 		return "modules/prekit/"+module+"/" + url;
+	}
+
+	@RequestMapping("extend/{url}.html")
+	public String extend(@PathVariable("url") String url){
+		return "modules/extend/" + url;
 	}
 
 	@RequestMapping("extend/{module}/{url}.html")

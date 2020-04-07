@@ -17,6 +17,8 @@ public interface GemModules {
 		String PATH_DESKTOP= PATH_PRE+"/desk";
 		//RBAC
 		String PATH_RBAC= PATH_PRE+"/rbac";
+		//示例模块
+		String PATH_DEMO= PATH_PRE+"/demo";
 		//系统模块
 		String PATH_SYSTEM= PATH_PRE+"/sys";
 	}
