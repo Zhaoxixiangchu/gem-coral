@@ -15,7 +15,6 @@ import com.gemframework.config.shiro.cache.GemCacheManager;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.session.mgt.SessionManager;
-import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
@@ -23,7 +22,6 @@ import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -62,7 +60,7 @@ public class ShiroConfig {
         // authc:所有url都必须认证通过才可以访问;
         // anon:所有url都都可以匿名访问;
         filterChainDefinitionMap.put("/login", "anon");
-        filterChainDefinitionMap.put("/login1", "anon");
+        filterChainDefinitionMap.put("/oauth/**", "anon");
         filterChainDefinitionMap.put("/coral/**", "anon");
         filterChainDefinitionMap.put("/assets/**", "anon");
         filterChainDefinitionMap.put("/katcha/code", "anon");
@@ -121,7 +119,7 @@ public class ShiroConfig {
      * @return
      */
     @Bean
-    @ConditionalOnProperty(prefix = "gem", name = "cluster", havingValue = "true")
+    @ConditionalOnProperty(prefix = "gem.system", name = "cluster", havingValue = "true")
     public SessionManager sessionManager() {
         GemSessionManager sessionManager = new GemSessionManager();
         sessionManager.setSessionDAO(cacheSessionDao());
@@ -133,7 +131,7 @@ public class ShiroConfig {
      * @return
      */
     @Bean
-    @ConditionalOnProperty(prefix = "gem", name = "cluster", havingValue = "false")
+    @ConditionalOnProperty(prefix = "gem.system", name = "cluster", havingValue = "false")
     public DefaultWebSessionManager defaultWebSessionManager(){
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
         return sessionManager;

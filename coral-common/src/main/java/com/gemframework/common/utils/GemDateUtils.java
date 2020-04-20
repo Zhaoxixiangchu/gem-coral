@@ -12,11 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * 日期处理
- * 
- * @author chenshun
- * @email sunlightcs@gmail.com
- * @date 2016年12月21日 下午12:53:33
+ * 时间处理工具
  */
 public class GemDateUtils {
 	/** 时间格式(yyyy-MM-dd) */
@@ -36,3 +32,5 @@ public class GemDateUtils {
         return null;
     }
 }
+
+

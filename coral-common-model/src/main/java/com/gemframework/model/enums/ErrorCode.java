@@ -58,7 +58,8 @@ public enum ErrorCode {
     MENU_EXIST(10003,"菜单已存在"),
     MODULE_EXIST(10004,"模块已存在"),
     MENU_LEVEL_EX(10005,"菜单级别错误，所属上级不能选择自己或子节点"),
-    ORIGINAL_PASSWORD_ERROR(10006,"原始密码错误"),
+    PASSWORD_EMPTY(10006,"密码不能为空"),
+    ORIGINAL_PASSWORD_ERROR(10007,"原始密码错误"),
 
     SYSTEM_EXCEPTION(999999,"系统异常"),
     ;

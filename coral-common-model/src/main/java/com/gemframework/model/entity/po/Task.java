@@ -29,7 +29,7 @@ import java.util.Date;
  * @Company: www.gemframework.com
  */
 @Data
-@TableName("gem_task")
+@TableName("gem_sys_task")
 public class Task extends BaseEntityPo {
 
 	//任务名称

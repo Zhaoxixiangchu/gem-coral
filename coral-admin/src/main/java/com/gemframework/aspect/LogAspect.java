@@ -9,23 +9,23 @@
  */
 package com.gemframework.aspect;
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.gemframework.annotation.Log;
 import com.gemframework.common.queue.GemQueueMessage;
 import com.gemframework.common.queue.RedisMQProducer;
 import com.gemframework.common.utils.GemHttpUtils;
 import com.gemframework.common.utils.GemIPHandler;
-import com.gemframework.model.common.BaseEntityVo;
 import com.gemframework.model.common.BaseResultData;
 import com.gemframework.model.entity.po.SysLogs;
 import com.gemframework.model.enums.OperateStatus;
-import com.gemframework.model.enums.OperateType;
 import com.gemframework.service.queue.MapQueueMessage;
 import com.google.gson.Gson;
+import eu.bitwalker.useragentutils.Browser;
+import eu.bitwalker.useragentutils.OperatingSystem;
+import eu.bitwalker.useragentutils.UserAgent;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -42,6 +42,8 @@ import java.util.Map;
 
 import static com.gemframework.common.constant.GemCommonRedisKeys.Queue.LOG_SYNC_DB;
 import static com.gemframework.common.constant.GemCommonRedisKeys.Queue.LOG_SYNC_DB_SAVE;
+import static com.gemframework.constant.GemSessionKeys.USER_BROWSER_KEY;
+import static com.gemframework.constant.GemSessionKeys.USER_OS_KEY;
 
 @Component  //声明组件
 @Aspect //  声明切面
@@ -102,6 +104,8 @@ public class LogAspect {
     }
 
     private void saveLog(ProceedingJoinPoint joinPoint, Object result, long time) throws Exception {
+        //获取request
+        HttpServletRequest request = GemHttpUtils.getHttpServletRequest();
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
 
@@ -143,8 +147,6 @@ public class LogAspect {
                     sysLogs.setStatus(OperateStatus.FAIL.getCode());
                 }
             }
-            //获取request
-            HttpServletRequest request = GemHttpUtils.getHttpServletRequest();
             //设置IP信息
             sysLogs.setUserip(GemIPHandler.getIpAddr(request));
 

@@ -11,7 +11,7 @@ package com.gemframework.controller.prekit;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.gemframework.common.config.redis.GemRedisProperties;
+import com.gemframework.common.config.GemSystemProperties;
 import com.gemframework.common.exception.GemException;
 import com.gemframework.common.utils.GemBeanUtils;
 import com.gemframework.common.utils.GemRedisUtils;
@@ -37,6 +37,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static com.gemframework.constant.GemRedisKeys.Auth.USER_ROLES;
+import static com.gemframework.constant.GemSessionKeys.CURRENT_USER_KEY;
 
 @Slf4j
 public class BaseController {
@@ -45,13 +46,16 @@ public class BaseController {
     GemRedisUtils gemRedisUtils;
 
     @Autowired
-    GemRedisProperties gemRedisProperties;
+    GemSystemProperties gemSystemProperties;
 
     @NotNull
     public static Page setOrderPage(PageInfo pageInfo) {
         OrderItem orderItem = new OrderItem();
-        orderItem.setColumn("sort_number").setAsc(SortType.asc.getCode() == 0);
-        orderItem.setColumn(pageInfo.getSort()).setAsc(pageInfo.getOrder().asc.getCode() == 0);
+        orderItem.setColumn("sort_number").setAsc(true);
+        orderItem.setColumn("update_time").setAsc(false);
+        if(pageInfo!=null && pageInfo.getOrder()!=null){
+            orderItem.setColumn(pageInfo.getSort()).setAsc(pageInfo.getOrder().getCode() == 0);
+        }
 
         List orders = new ArrayList();
         orders.add(orderItem);
@@ -75,7 +79,7 @@ public class BaseController {
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             String fieldName = GemStringUtils.humpToLine(entry.getKey());
             Object paramVal = entry.getValue();
-            log.info("key= " + fieldName + " and value= "+paramVal);
+            log.debug("key= " + fieldName + " and value= "+paramVal);
             if(entry.getKey().equalsIgnoreCase("startDate")){
                 queryWrapper.ge(paramVal != null && StringUtils.isNotBlank(String.valueOf(paramVal)),"update_time",paramVal);
             }else if(entry.getKey().equalsIgnoreCase("endDate")){
@@ -138,7 +142,7 @@ public class BaseController {
     }
 
     protected User getUser() {
-        return (User) SecurityUtils.getSubject().getSession().getAttribute("user");
+        return (User) SecurityUtils.getSubject().getSession().getAttribute(CURRENT_USER_KEY);
     }
 
     protected String getUsername() {
@@ -147,8 +151,8 @@ public class BaseController {
 
     protected Set<String> getRolesFlag() {
         String userName = (String)SecurityUtils.getSubject().getPrincipal();
-        //如果Redis开启则从redis中取
-        if(gemRedisProperties.isOpen()){
+        //如果Redis集群开启则从redis中取
+        if(gemSystemProperties.isCluster()){
             return (Set<String>) gemRedisUtils.get(userName + "_" + USER_ROLES);
         }else{
             return (Set<String>) SecurityUtils.getSubject().getSession().getAttribute(userName + "_" + USER_ROLES);

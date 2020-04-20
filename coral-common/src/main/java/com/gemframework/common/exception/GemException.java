@@ -37,4 +37,9 @@ public class GemException extends RuntimeException {
         super(msg);
         this.code = code;
     }
+
+    public GemException(String msg){
+        super(msg);
+        this.code = -1;
+    }
 }

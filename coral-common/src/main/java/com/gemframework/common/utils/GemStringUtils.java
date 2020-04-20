@@ -8,6 +8,9 @@
  */
 package com.gemframework.common.utils;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -54,6 +57,22 @@ public class GemStringUtils {
         return sb.toString();
     }
 
+
+    public static  String getKVFromJson(String jsonArr,String key){
+        JSONArray jsonArray = JSONArray.parseArray(jsonArr);
+        for (Object object : jsonArray) {
+            if (object instanceof JSONObject) {
+                JSONObject jsonObject = (JSONObject) object;
+                if (jsonObject.containsKey(key)) {
+                    String value = jsonObject.getString(key);
+                    if(value !=null){
+                        return value;
+                    }
+                }
+            }
+        }
+        return null;
+    }
 
     public static void main(String[] args) throws Exception {
 //        SysLog log = new SysLog();

@@ -1,4 +1,4 @@
-<!--
+﻿<!--
 * 开源版本请务必保留此注释头信息，若删除gemframe官方保留所有法律责任追究！
 * 本软件受国家版权局知识产权以及国家计算机软件著作权保护（登记号：2018SR503328）
 * 不得恶意分享产品源代码、二次转售等，违者必究。
@@ -15,8 +15,8 @@
                 lay-shrink="all" style="margin: 15px 0;">
             </ul>
             <!-- 系统二的菜单，加layui-hide隐藏 -->
-            <ul class="layui-nav layui-nav-tree layui-hide" nav-id="xt2" lay-filter="admin-side-nav"
-                style="margin: 15px 0;">
+            <ul id="sidebar-menu-plus" class="layui-nav layui-nav-tree layui-hide" nav-id="xt2" lay-filter="admin-side-nav"
+                lay-shrink="all" style="margin: 15px 0;">
                 <li class="layui-nav-item">
                     <a><i class="layui-icon layui-icon-table"></i>&emsp;<cite>表格页</cite></a>
                     <dl class="layui-nav-child">
@@ -27,8 +27,8 @@
             </ul>
 
             <!-- 系统三的菜单，加layui-hide隐藏 -->
-            <ul class="layui-nav layui-nav-tree layui-hide" nav-id="xt3" lay-filter="admin-side-nav"
-                style="margin: 15px 0;">
+            <ul id="sidebar-menu-extend" class="layui-nav layui-nav-tree layui-hide" nav-id="xt3" lay-filter="admin-side-nav"
+                lay-shrink="all" style="margin: 15px 0;">
                 <li class="layui-nav-item">
                     <a><i class="layui-icon layui-icon-form"></i>&emsp;<cite>表单页</cite></a>
                     <dl class="layui-nav-child">
@@ -36,6 +36,11 @@
                         <dd><a lay-href="../../page/template/form/form-advance.html">复杂表单</a></dd>
                     </dl>
                 </li>
+            </ul>
+
+            <!-- 系统四的菜单，加layui-hide隐藏 -->
+            <ul id="sidebar-menu-achart" class="layui-nav layui-nav-tree layui-hide" nav-id="xt4" lay-filter="admin-side-nav"
+                lay-shrink="all" style="margin: 15px 0;">
             </ul>
         </div>
     </div>

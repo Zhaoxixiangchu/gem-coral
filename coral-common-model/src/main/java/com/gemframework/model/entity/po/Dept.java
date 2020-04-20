@@ -14,7 +14,7 @@ import com.gemframework.model.common.BaseEntityPo;
 import lombok.Data;
 
 
-@TableName("gem_dept")
+@TableName("gem_sys_dept")
 @Data
 public class Dept extends BaseEntityPo {
 

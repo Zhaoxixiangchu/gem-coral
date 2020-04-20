@@ -47,6 +47,11 @@ public class ViewController {
 		return "modules/extend/"+module+"/" + url;
 	}
 
+	@RequestMapping("error/{url}.html")
+	public String error(@PathVariable("url") String url){
+		return "common/error/" + url;
+	}
+
 
 	@GetMapping("login")
 	public String login(){

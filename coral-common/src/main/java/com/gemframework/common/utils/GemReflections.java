@@ -136,7 +136,7 @@ public class GemReflections {
 				return field;
 			} catch (NoSuchFieldException e) {// NOSONAR
 				// Field不在当前类定义,继续向上转型
-				log.info("e="+e.getMessage());
+				log.error("e="+e.getMessage());
 			}
 		}
 		return null;

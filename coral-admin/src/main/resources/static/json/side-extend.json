@@ -1,0 +1,57 @@
+{
+  "code": 0,
+  "msg": "",
+  "data": [
+    {
+      "name": "微信功能",
+      "icon": "layui-icon layui-icon-login-wechat",
+      "url": "javascript:;",
+      "subMenus": [
+        {
+          "name": "微信配置",
+          "url": "https://mp.weixin.qq.com/",
+          "icon": "layui-icon layui-icon-home"
+        },
+        {
+          "name": "粉丝管理",
+          "url": "http://www.gemframework.com",
+          "icon": "layui-icon layui-icon-home"
+        }
+      ]
+    },
+    {
+      "name": "支付管理",
+      "icon": "layui-icon layui-icon-set",
+      "url": "javascript:;",
+      "subMenus": [
+        {
+          "name": "微信支付",
+          "url": "https://pay.weixin.qq.com/",
+          "icon": "layui-icon layui-icon-home"
+        },
+        {
+          "name": "支付宝支付",
+          "url": "https://www.taobao.com/",
+          "icon": "layui-icon layui-icon-home"
+        }
+      ]
+    },
+    {
+      "name": "对象存储",
+      "icon": "layui-icon layui-icon-set",
+      "url": "javascript:;",
+      "subMenus": [
+        {
+          "name": "阿里云OSS",
+          "url": "https://www.aliyun.com/product/oss",
+          "icon": "layui-icon layui-icon-home"
+        },
+        {
+          "name": "七牛云OSS",
+          "url": "https://www.qiniu.com",
+          "icon": "layui-icon layui-icon-home"
+        }
+      ]
+    }
+  ]
+}

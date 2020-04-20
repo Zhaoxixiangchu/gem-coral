@@ -29,6 +29,26 @@
         <span></span><span></span><span></span><span></span>
     </div>
 </div>
+<!-- 侧边栏渲染模板 -->
+<script id="sideNav" type="text/html">
+    {{#  layui.each(d, function(index, item){ }}
+    <li class="layui-nav-item">
+        <a target="_blank" lay-href="{{item.url}}"><i class="{{item.icon}}"></i>&emsp;<cite>{{ item.name }}</cite></a>
+        {{# if(item.subMenus&&item.subMenus.length>0){ getSubMenus(item.subMenus); } }}
+    </li>
+    {{#  }); }}
+    {{# function getSubMenus(subMenus){ }}
+    <dl class="layui-nav-child">
+        {{# layui.each(subMenus, function(index, subItem){ }}
+        <dd>
+            <a target="_blank" lay-href="{{ subItem.url }}"><i class="{{subItem.icon}}"></i>&emsp;{{ subItem.name }}</a>
+            {{# if(subItem.subMenus&&subItem.subMenus.length>0){ getSubMenus(subItem.subMenus); } }}
+        </dd>
+        {{# }); }}
+    </dl>
+    {{# } }}
+</script>
+
 
 <!-- js部分 -->
 <div th:replace="common/scripts :: jquery"></div>
@@ -36,14 +56,45 @@
 <div th:replace="common/scripts :: index"></div>
 <div th:replace="common/scripts :: custom"></div>
 <script>
-    layui.use(['index'], function () {
+
+    layui.use(['layer', 'element', 'admin', 'index', 'laytpl', 'element'], function () {
         var $ = layui.jquery;
+        var layer = layui.layer;
+        var admin = layui.admin;
         var index = layui.index;
+        var laytpl = layui.laytpl;
+        var element = layui.element;
+
         // 默认加载主页
         index.loadHome({
             menuPath: 'prekit/desk/board.html',
-            menuName: '<i class="layui-icon layui-icon-theme"></i>  仪表盘'
+            menuName: '<i class="layui-icon layui-icon-theme"></i>  仪表盘',
         });
+
+        // ajax渲染侧边栏-高级部分
+        $.get('json/side-plus.json', function (res) {
+            laytpl(sideNav.innerHTML).render(res.data, function (html) {
+                $('#sidebar-menu-plus').html(html);
+                element.render('nav');
+            });
+        }, 'json');
+
+        // ajax渲染侧边栏-扩展部分
+        $.get('json/side-extend.json', function (res) {
+            laytpl(sideNav.innerHTML).render(res.data, function (html) {
+                $('#sidebar-menu-extend').html(html);
+                element.render('nav');
+            });
+        }, 'json');
+
+        // ajax渲染侧边栏-监控大屏
+        $.get('json/side-achart.json', function (res) {
+            laytpl(sideNav.innerHTML).render(res.data, function (html) {
+                $('#sidebar-menu-achart').html(html);
+                element.render('nav');
+            });
+        }, 'json');
+
 
         if(top.location.href.indexOf("127.0.0.1") == -1){
             helloGem();

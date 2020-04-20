@@ -54,7 +54,7 @@
     <a href="http://www.gemframework.com" target="_blank" style="color: #FFF"> gemframework.com </a>版权所有</div>
 <style>
     body {
-        background-image: url("coral/images/bg_login5.jpg");
+        /*background-image: url("coral/images/bg_login5.jpg");*/
         background-repeat: no-repeat;
         background-size: cover;
         min-height: 100vh;
@@ -214,6 +214,7 @@
 
 <!-- js部分 -->
 <div th:replace="common/scripts :: common"></div>
+<div th:replace="common/scripts :: jquery"></div>
 <div th:replace="common/scripts :: encode"></div>
 <script>
     layui.use(['admin','layer','form','notice'], function () {
@@ -260,8 +261,22 @@
         $('.login-captcha').click(function () {
             this.src = this.src + '?t=' + (new Date).getTime();
         });
-        admin.changeTheme("theme-colorful");
+
+        var theme = ["colorful","blue","green","purple","pink","cyan"];
+        var i = Math.round(Math.random()*5);
+        admin.changeTheme("theme-"+theme[i]);
+
+        var img_url = ["coral/images/bg_login5.jpg"
+            ,"coral/images/bg_login.png"
+            ,"coral/images/bg_login1.png"
+            ,"coral/images/bg_login2.png"
+            ,"coral/images/bg_login3.png"
+            ,"coral/images/bg_login4.jpg"
+        ];
+        console.log(i+"="+img_url[i])
+        $("body").css("background-image","url("+img_url[i]+")");
     });
+
 </script>
 </body>
 </html>

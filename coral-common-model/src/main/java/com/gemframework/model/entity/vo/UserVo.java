@@ -38,6 +38,7 @@ public class UserVo extends BaseEntityVo {
     @NotBlank(message = "密码不能为空",groups = {SaveValidator.class, PasswordResetValidator.class,PasswordEditValidator.class})
     private String password;
 
+    private String avatarUrl;
     private String realname;
     private Integer jobnumber;
     private String post;

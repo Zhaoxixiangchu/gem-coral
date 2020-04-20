@@ -37,4 +37,5 @@ public class GemSystemProperties {
     private String generateCodeServerPath;
     //运行环境 test 测试、demo演示、dev开发、prod生产
     private String runtime;
+    private boolean cluster;
 }

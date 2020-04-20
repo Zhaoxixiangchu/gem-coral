@@ -50,7 +50,7 @@ public class GemIPHandler {
                 resout =  "IP地址有误";
             }
         }catch(Exception e){
-            log.info("获取IP地址异常："+e.getMessage());
+            log.error("获取IP地址异常："+e.getMessage());
             resout = "XX,XX";
         }
         log.debug("result: " + resout);

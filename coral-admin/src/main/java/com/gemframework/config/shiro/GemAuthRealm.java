@@ -9,7 +9,6 @@
 package com.gemframework.config.shiro;
 
 import com.gemframework.common.config.GemSystemProperties;
-import com.gemframework.common.config.redis.GemRedisProperties;
 import com.gemframework.common.constant.GemConstant;
 import com.gemframework.common.utils.GemRedisUtils;
 import com.gemframework.model.entity.po.Right;
@@ -41,6 +40,8 @@ import java.util.Set;
 
 import static com.gemframework.constant.GemRedisKeys.Auth.USER_RIGHTS;
 import static com.gemframework.constant.GemRedisKeys.Auth.USER_ROLES;
+import static com.gemframework.constant.GemSessionKeys.CURRENT_USER_KEY;
+import static com.gemframework.constant.GemSessionKeys.RUNTIME_KEY;
 
 /**
  * @Title: GemAuthRealm
@@ -68,8 +69,6 @@ public class GemAuthRealm extends AuthorizingRealm {
     @Autowired
     private GemRedisUtils gemRedisUtils;
 
-    @Autowired
-    private GemRedisProperties gemRedisProperties;
     @Autowired
     private GemSystemProperties gemSystemProperties;
 
@@ -111,8 +110,8 @@ public class GemAuthRealm extends AuthorizingRealm {
         }
         authorizationInfo.setStringPermissions(rightsSet);
 
-        //如果开启了redis则设置用户角色，权限到redis
-        if(gemRedisProperties.isOpen()){
+        //如果开启了集群则设置用户角色，权限到redis
+        if(gemSystemProperties.isCluster()){
             gemRedisUtils.set(getUserRolesKey(username),rolesFlagSet);
             gemRedisUtils.set(getUserRightsKey(username),rightsSet);
         }else{
@@ -139,8 +138,8 @@ public class GemAuthRealm extends AuthorizingRealm {
                 throw new LockedAccountException(ErrorCode.LOGIN_FAIL_LOCKEDACCOUNT.getMsg());
             }
             // 把当前用户存到 Session 中
-            SecurityUtils.getSubject().getSession().setAttribute("user", user);
-            SecurityUtils.getSubject().getSession().setAttribute("session_runtime",gemSystemProperties.getRuntime());
+            SecurityUtils.getSubject().getSession().setAttribute(CURRENT_USER_KEY, user);
+            SecurityUtils.getSubject().getSession().setAttribute(RUNTIME_KEY,gemSystemProperties.getRuntime());
             AuthenticationInfo authc = new SimpleAuthenticationInfo(user.getUsername(), user.getPassword(), ByteSource.Util.bytes(user.getSalt()),"gemRealm");
             //认证成功就授权
             doGetAuthorizationInfo(authc.getPrincipals());

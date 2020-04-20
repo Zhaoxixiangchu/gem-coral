@@ -1,5 +1,7 @@
+## :tw-1f1ec:  :tw-1f1ea:  :tw-1f1f2:  :tw-1f1eb:  :tw-1f1f7:  :tw-1f1e6:   :tw-1f1f2:  :tw-1f1ea:     
 ## **支持我就帮忙在上方依次Watch、Star一波再离开，感激支持！**  
-
+:tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345: :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345: :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345: :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345: :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345: :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345: :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345: :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345: :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345: :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345:  :tw-1f345: 
+***
 ![输入图片说明](https://images.gitee.com/uploads/images/2020/0405/203759_f05dec3c_1388237.png "gemlogo.png")
 ***
 [![License](https://img.shields.io/badge/License-MIT-blue)](http://www.gemframework.com) [![SpringBoot](https://img.shields.io/badge/SpringBoot-v2.2.x-blue)](https://spring.io/projects/spring-boot/)  [![MyBatis-Plus](https://img.shields.io/badge/MyBatisPlus-v3.3.x-yellow)](https://spring.io/projects/spring-boot/)  [![Shiro](https://img.shields.io/badge/Shiro-v1.4.x-brightgreen)](http://shiro.apache.org/) [![Layui](https://img.shields.io/badge/Layui-v2.5.6-orange)](http://www.layui.com/) [![Coral](https://img.shields.io/badge/Coral-v1.0.0-blue)](http://www.gemframework.com/) [![QQ1群](https://img.shields.io/badge/QQ%E7%BE%A4:72940788-%E6%BB%A1-red)](https://shang.qq.com/wpa/qunwpa?idkey=c39908fa28cb73b3e85d697436a52ca91e66b8870d020fcf4f555c51dca13b9a) [![QQ2群](https://img.shields.io/badge/QQ%E2%91%A1%E7%BE%A4-650255887-green)](https://shang.qq.com/wpa/qunwpa?idkey=c39908fa28cb73b3e85d697436a52ca91e66b8870d020fcf4f555c51dca13b9a)
@@ -81,6 +83,36 @@ Coral 企业快速开发框架，基于SpringBoot2.2x，MyBatis，Shiro等主流
 - | 孜孜不倦 | 
 
 
+### 技术选型
+|技术栈|前端技术|服务端技术|说明
+|-|-|-|-|
+|JDK||✔|Java基础开发环境|
+|Spring||✔|IoC和AOP容器框架|
+|SpringBoot||✔|简化配置的容器框架|
+|Mybatis||✔|持久层框架|
+|MySQL||✔|MySQL数据库|
+|Oracle||✔|Oracle数据库|
+|SQLServer||✔|MSSQL数据库|
+|Maven||✔|项目管理工具|
+|Redis||✔|NoSql中间件|
+|Fastjson||✔|对象序列化工具|
+|Swagger||✔|接口文档工具|
+|Lombok||✔|提供注解简化编程|
+|Kaptcha||✔|验证码工具|
+|Druid||✔|数据库连接池|
+|Thymeleaf||✔|视图模版技术|
+|JQuery|✔||JavaScript代码库|
+|Layer|✔||UI 框架|
+|Layui|✔||Web弹层组件|
+|Layui.tree|✔||Web树形组件|
+|Layui.xmSelect|✔||Web多选组件|
+|Layui.treeTable|✔||树形表格组件|
+|Layui.iconPicker|✔||图标选择器|
+|Layui.cityPicker|✔||城市选择器|
+|Layui.staps|✔||步骤操作组件|
+|Layui.layDate|✔||时间选择器|
+|Layui.QRcode|✔||二维码组件|
+|Layui.Player|✔||播放器组件|
 
 ### 基础能力
 
@@ -184,10 +216,10 @@ resource
 ### 问题反馈
 
 1.  开发文档：暂无
-2.  项目文档：http://pearl.mydoc.io/
-3.  官方社区：http://www.gemframework.com/bbs
+2.  项目文档：[http://doc.gemframework.com](https://www.kancloud.cn/gemos/gem_coral_dev/1619676)
+3.  官方社区：[http://bbs.gemframework.com](http://www.gemframework.com/bbs)
 4.  gitee：https://gitee.com/zzimo/gem
-5.  github：https://github.com/gem-team/gem-pearl
+5.  github：https://github.com/gem-team/gem-croal
 6.  官方网站：http://www.gemframework.com
 7.  官方QQ群：72940788、446017307
 8.  如需关注项目最新动态，同时也是对项目最好的支持 技术讨论、二次开发等咨询、问题和建议，请移步到官方社区，我会在第一时间进行解答和回复！

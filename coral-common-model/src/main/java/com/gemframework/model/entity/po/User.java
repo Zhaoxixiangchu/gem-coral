@@ -16,7 +16,7 @@ import lombok.Data;
 import java.util.Date;
 
 
-@TableName("gem_user")
+@TableName("gem_sys_user")
 @Data
 public class User extends BaseEntityPo {
 
@@ -24,6 +24,7 @@ public class User extends BaseEntityPo {
     private String username;
     private String password;
     private String salt;
+    private String avatarUrl;
     private String realname;
     private Integer jobnumber;
     private String post;

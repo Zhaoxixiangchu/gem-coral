@@ -14,7 +14,7 @@ import com.gemframework.model.common.BaseEntityPo;
 import lombok.Data;
 
 
-@TableName("gem_role_depts")
+@TableName("gem_sys_role_depts")
 @Data
 public class RoleDepts extends BaseEntityPo {
     private Long roleId;

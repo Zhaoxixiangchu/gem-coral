@@ -34,6 +34,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
 
 /**
+ * 重写DefaultSessionManager 修复多次请求session的BUG
  * 自定义WebSessionManager，用于替代DefaultWebSessionManager；
  * 解决：
  *      在shiro的一次认证过程中会调用10次左右的 doReadSession，如果使用内存缓存这个问题不大。

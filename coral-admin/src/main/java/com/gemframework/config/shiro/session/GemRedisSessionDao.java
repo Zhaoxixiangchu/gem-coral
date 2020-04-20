@@ -26,6 +26,16 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * @Title: GemRedisSessionDao
+ * @Package: com.gemframework.config.shiro.session
+ * @Date: 2020-04-18 21:42:55
+ * @Version: v1.0
+ * @Description: 自定义SessionDao
+ * @Author: nine QQ 769990999
+ * @Copyright: Copyright (c) 2020 wanyong
+ * @Company: www.gemframework.com
+ */
 @Slf4j
 @Component
 public class GemRedisSessionDao extends AbstractSessionDAO {
@@ -38,6 +48,11 @@ public class GemRedisSessionDao extends AbstractSessionDAO {
         return SHIRO_SESSION_PERFIX + key;
     }
 
+    /**
+     * 保存Session
+     * @param session
+     * @throws IOException
+     */
     protected void saveSession(Session session) throws IOException {
         if(session != null && session.getId() != null){
             String key = getKey(session.getId().toString());
@@ -46,6 +61,11 @@ public class GemRedisSessionDao extends AbstractSessionDAO {
         }
     }
 
+    /**
+     * 创建Session
+     * @param session
+     * @return
+     */
     @SneakyThrows
     @Override
     protected Serializable doCreate(Session session) {
@@ -56,6 +76,11 @@ public class GemRedisSessionDao extends AbstractSessionDAO {
         return sessionId;
     }
 
+    /**
+     * 读取Session
+     * @param sessionId
+     * @return
+     */
     @Override
     protected Session doReadSession(Serializable sessionId) {
         if(sessionId == null){
@@ -78,12 +103,21 @@ public class GemRedisSessionDao extends AbstractSessionDAO {
     }
 
 
+    /**
+     * 更新Session
+     * @param session
+     * @throws UnknownSessionException
+     */
     @SneakyThrows
     @Override
     public void update(Session session) throws UnknownSessionException {
         saveSession(session);
     }
 
+    /**
+     * 删除session
+     * @param session
+     */
     @Override
     public void delete(Session session) {
         if(session == null || session.getId() == null){

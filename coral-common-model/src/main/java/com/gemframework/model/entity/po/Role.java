@@ -14,7 +14,7 @@ import com.gemframework.model.common.BaseEntityPo;
 import lombok.Data;
 
 
-@TableName("gem_role")
+@TableName("gem_sys_role")
 @Data
 public class Role extends BaseEntityPo {
     private String name;

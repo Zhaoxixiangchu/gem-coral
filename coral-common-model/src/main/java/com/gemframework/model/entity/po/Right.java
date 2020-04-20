@@ -24,7 +24,7 @@ import lombok.Data;
  * @Copyright: Copyright (c) 2020 wanyong
  * @Company: www.gemframework.com
  */
-@TableName("gem_right")
+@TableName("gem_sys_right")
 @Data
 public class Right extends BaseEntityPo {
 

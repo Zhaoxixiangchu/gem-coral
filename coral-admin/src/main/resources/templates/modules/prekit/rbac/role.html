@@ -332,7 +332,7 @@
 
                     // 设置数据权限
                     form.on('submit(stepFormSubmit2)', function (data) {
-                        $.post(mRole?'role/update':'role/save', data.field, function (res) {
+                        $.post('role/update', data.field, function (res) {
                             if (res.code == 0) {
                                 admin.btnLoading('[lay-filter="stepFormSubmit2"]');
                                 setTimeout(function () {

@@ -12,7 +12,7 @@
         },
         makeHtml: function (datas) {
             // alert(_html+"=data.child===>"+_html)
-            return _html;
+            return get_html(datas);
         },
         loadMenu: function () {
             var mdata  ="";
@@ -25,7 +25,6 @@
                 cache:false, // 设置为 false 将不缓存此页面
                 dataType: 'json', // 返回对象
                 success: function(res) {
-                    console.log(res);
                     if(res.code == 0){
                         mdata  = res.data;
                         if(mdata == "" || mdata == null || mdata.length == 0){
@@ -67,10 +66,7 @@
                                 }
                             ];
                         }
-                        //TODO: 拼装HTML
-                        get_html(mdata)
                     }else{
-                        console.log(res.msg);
                         if(mdata == "" || mdata == null || mdata.length == 0){
                             mdata = menusData_def;
                         }
@@ -84,8 +80,8 @@
                     }
                 }
             })
-            // console.log("==="+_html)
-            $("#sidebar-menu").append(_html);
+            var left_html =  get_html(mdata)
+            $("#sidebar-menu").append(left_html);
         }
     };
     $(function () {
@@ -93,40 +89,51 @@
     });
 })(jQuery);
 
-var _html = "";
+
 function get_html(datas) {
+    var _html = "";
     for (var i=0;i<datas.length;i++){
         var data = datas[i];
         if(data.pid == '0'){
             _html += '<li class="layui-nav-item">';
-        }
-        //如果没有子对象
-        if(data.child == null){
-            if(data.pid != '0'){
-                _html += '<dd>';
+            //如果没有子对象
+            if(data.child == null){
+                _html += '<a lay-href="'+data.link+'">';
+                _html += '<i class="layui-icon '+data.icon+'"></i>&emsp;';
+                _html += '<cite>'+data.name+'</cite>';
+                _html += '</a>';
+            }else{
+                //如果有子菜单
+                _html += '<a>';
+                _html += '<i class="layui-icon '+data.icon+'"></i>&emsp;';
+                _html += '<cite>'+data.name+'</cite>';
+                _html += '</a>';
+                _html += '<dl class="layui-nav-child">';
+                _html += get_html(data.child);
+                _html += '</dl>';
             }
-            _html += '<a lay-href="'+data.link+'">';
-            _html += '<i class="layui-icon '+data.icon+'"></i>&emsp;';
-            _html += '<cite>'+data.name+'</cite>';
-            _html += '</a>';
-
-            if(data.pid != '0'){
+            _html += '</li>';
+        }else{
+            if(data.child == null){
+                _html += '<dd>';
+                _html += '<a lay-href="'+data.link+'">';
+                _html += '<i class="layui-icon '+data.icon+'"></i>&emsp;';
+                _html += '<cite>'+data.name+'</cite>';
+                _html += '</a>';
+                _html += '</dd>';
+            }else{
+                //如果有子菜单
+                _html += '<dd>';
+                _html += '<a lay-href="">';
+                _html += '<i class="layui-icon '+data.icon+'"></i>&emsp;';
+                _html += '<cite>'+data.name+'</cite>';
+                _html += '</a>';
+                _html += '<dl class="layui-nav-child">';
+                _html += get_html(data.child);
+                _html += '</dl>';
                 _html += '</dd>';
             }
-        }else{
-            //如果有子菜单
-            _html += '<a>';
-            _html += '<i class="layui-icon '+data.icon+'"></i>&emsp;';
-            _html += '<cite>'+data.name+'</cite>';
-            _html += '</a>';
-            _html += '<dl class="layui-nav-child">';
-            _html += '<dd>';
-            get_html(data.child);
-            _html += '</dd>';
-            _html += '</dl>';
-        }
-        if(data.pid == '0'){
-            _html += '</li>';
         }
     }
+    return _html;
 }

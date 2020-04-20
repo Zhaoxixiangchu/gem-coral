@@ -8,6 +8,7 @@
  */
 package com.gemframework.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gemframework.mapper.RoleMapper;
@@ -129,13 +130,12 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
     @Override
     public boolean exits(Role entity) {
         QueryWrapper<Role> queryWrapper = new QueryWrapper();
-        queryWrapper.eq("name",entity.getName())
-                    .or()
-                    .eq("flag",entity.getFlag());
+        queryWrapper.and(wrapper -> wrapper.eq("name",entity.getName()).or().eq("flag",entity.getFlag()));
         //编辑
         if(entity.getId() != null && entity.getId() !=0){
-            queryWrapper.and(wrapper -> wrapper.ne("id",entity.getId()));
+            queryWrapper.ne("id",entity.getId());
         }
+        log.info("queryWrapper="+ JSON.toJSONString(queryWrapper));
         if(count(queryWrapper)>0){
             return true;
         }

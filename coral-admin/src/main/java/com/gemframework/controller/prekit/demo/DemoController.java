@@ -34,9 +34,19 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @Title: DemoController
+ * @Package: com.gemframework.controller.prekit.demo
+ * @Date: 2020-04-16 13:36:13
+ * @Version: v1.0
+ * @Description: 这里写描述
+ * @Author: nine QQ 769990999
+ * @Copyright: Copyright (c) 2020 wanyong
+ * @Company: www.gemframework.com
+ */
 @Slf4j
 @RestController
-@RequestMapping(GemModules.PreKit.PATH_DEMO)
+@RequestMapping(GemModules.PreKit.PATH_DEMO+"/demo")
 public class DemoController extends BaseController {
 
     private static final String moduleName = "示例模块";

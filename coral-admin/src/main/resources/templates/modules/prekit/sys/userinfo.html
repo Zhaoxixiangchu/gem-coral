@@ -124,22 +124,22 @@
                             <img src="../../coral/images/avatar/user3-160x160.jpg" alt=""/>
                         </div>
                         <h2 style="padding-top: 20px;">
-                            <span th:text="${session.user.username}"></span>
+                            <span th:text="${session.session_user.username}"></span>
                         </h2>
                         <p style="padding-top: 8px;">匠心出品，专注于用户体验</p>
                     </div>
                     <div class="layui-text" style="padding-top: 30px;">
                         <div class="user-info-list-item">
                             <i class="layui-icon layui-icon-username"></i>
-                            <p><span th:text="${session.user.realname}"></span></p>
+                            <p><span th:text="${session.session_user.realname}"></span></p>
                         </div>
                         <div class="user-info-list-item">
                             <i class="layui-icon layui-icon-release"></i>
-                            <p><span th:text="${session.user.sex == 0 ? '男':'女'}"></span></p>
+                            <p><span th:text="${session.session_user.sex == 0 ? '男':'女'}"></span></p>
                         </div>
                         <div class="user-info-list-item">
                             <i class="layui-icon layui-icon-cellphone-fine"></i>
-                            <p><span th:text="${session.user.phone}"></span></p>
+                            <p><span th:text="${session.session_user.phone}"></span></p>
                         </div>
                     </div>
                     <div class="layui-line-dash"></div>
@@ -280,7 +280,7 @@
         });
 
         // 回显表单数据
-        $.get('user/info', {id:[[${session.user.id}]]}, function (res) {
+        $.get('user/info', {id:[[${session.session_user.id}]]}, function (res) {
             if (res.code === 0) {
                 form.val('userInfoForm',res.data);
             } else {

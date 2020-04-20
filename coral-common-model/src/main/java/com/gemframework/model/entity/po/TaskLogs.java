@@ -15,7 +15,7 @@ import com.gemframework.model.common.BaseEntityPo;
 import lombok.Data;
 
 @Data
-@TableName("gem_task_logs")
+@TableName("gem_sys_task_logs")
 public class TaskLogs extends BaseEntityPo{
 
 	//任务ID

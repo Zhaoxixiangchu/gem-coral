@@ -1,0 +1,52 @@
+{
+  "code": 0,
+  "msg": "",
+  "data": [
+    {
+      "name": "选择组件",
+      "icon": "layui-icon layui-icon-senior",
+      "url": "",
+      "subMenus": [
+        {
+          "name": "省份选择",
+          "url": "page/plus/demo1.html",
+          "icon": "layui-icon layui-icon-flag"
+        },
+        {
+          "name": "多选下拉",
+          "url": "page/plus/demo2.html",
+          "icon": "layui-icon layui-icon-template-1"
+        }
+      ]
+    },
+    {
+      "name": "媒体组件",
+      "icon": "layui-icon layui-icon-headset",
+      "url": "",
+      "subMenus": [
+        {
+          "name": "视频播放",
+          "url": "page/plus/demo3.html",
+          "icon": "layui-icon layui-icon-video"
+        },
+        {
+          "name": "视频弹幕",
+          "url": "page/plus/demo4.html",
+          "icon": "layui-icon layui-icon-play"
+        }
+      ]
+    },
+    {
+      "name": "提示组件",
+      "icon": "layui-icon layui-icon-util",
+      "url": "",
+      "subMenus": [
+        {
+          "name": "操作引导",
+          "url": "page/plus/demo5.html",
+          "icon": "layui-icon layui-icon-set"
+        }
+      ]
+    }
+  ]
+}
